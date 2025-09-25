@@ -1,89 +1,94 @@
 <!DOCTYPE html>
-<html>
-<head>
-  	<meta charset="utf-8">
-  	<meta name="viewport" content="initial-scale=1, width=device-width">
-  	
-  	<link rel="stylesheet"  href="./index.css" />
-  	<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,300;0,400;0,500;1,400&display=swap" />
-  	
-  	
-  	
+<html lang="pt-br">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+ <title>Protegon - Login</title>
+ <link rel="stylesheet" href="src/styles/login.css">
 </head>
 <body>
-  	
-  	<div class="login">
-    		<div class="fundo">
-    		</div>
-    		<i class="v01">V.0.1</i>
-    		<div class="bem-vindo">
-      			<img class="bem-vindo-child" alt="" src="Rectangle 27.svg">
-      			
-      			<div class="segurana-inteligente-para">Segurança Inteligente para Vidas em Risco</div>
-      			<div class="bem-vindo-sua-rede-container">
-        				<p class="sua-rede-de">Bem-vindo</p>
-        				<p class="sua-rede-de">Sua rede de proteção inteligente. Aqui, cada passo seu importa. </p>
-        				<p class="sua-rede-de">Estamos prontos para cuidar de você, mesmo quando as palavras faltarem. </p>
-        				<p class="sua-rede-de">Juntos, somos mais fortes.</p>
-      			</div>
-      			<div class="protegon-todos-os">© 2025 PROTEGON. Todos os direitos reservados.</div>
-      			<img class="image-22-icon" alt="" src="image 22.png">
-      			
-    		</div>
-    		<div class="login1">
-      			<div class="list-parent">
-        				<div class="list">
-          					<div class="row">
-            						<div class="input">
-              							<div class="title">Email</div>
-              							<div class="textfield">
-                								<div class="text">Insira seu email</div>
-              							</div>
-              							<div class="info">Seu e-mail é confidencial e não será compartilhado com terceiros.</div>
-            						</div>
-          					</div>
-          					<div class="row1">
-            						<div class="input1">
-              							<div class="title1">Senha</div>
-              							<div class="textfield1">
-                								<div class="text">Insira sua senha</div>
-              							</div>
-            						</div>
-          					</div>
-          					<div class="button">
-            						<div class="seconday">
-              							<div class="title2">Esqueceu sua senha?</div>
-            						</div>
-            						<div class="primary" id="primaryContainer">
-              							<div class="title2">Entrar</div>
-            						</div>
-          					</div>
-        				</div>
-        				<i class="criar-uma-nova" id="cRIARUMANOVA">CRIAR UMA NOVA CONTA</i>
-        				<i class="lembrar-login-e">LEMBRAR LOGIN E SENHA</i>
-        				<img class="check-shield-alternate-stream-icon" alt="" src="Check-Shield-Alternate--Streamline-Ultimate 1.png">
-        				
-      			</div>
-      			<img class="image-removebg-preview-12-1" alt="" src="image-removebg-preview (12) 1.png">
-      			
-    		</div>
-  	</div>
-  	
-  	
-  	
-  	
-  	<script>
-    		var primaryContainer = document.getElementById("primaryContainer");
-    		if(primaryContainer) {
-      			primaryContainer.addEventListener("click", function (e) {
-        				// Add your code here
-      			});
-    		}
-    		
-    		var cRIARUMANOVA = document.getElementById("cRIARUMANOVA");
-    		if(cRIARUMANOVA) {
-      			cRIARUMANOVA.addEventListener("click", function (e) {
-        				// Add your code here
-      			});
-    		}</script></body>
+    <div class="wrapper">
+      <!-- ESQUERDA -->
+      <aside class="left">
+        <div class="left-inner">
+          <img src="nome.protegon002.png" width="300px" 
+          height="60px"
+          alt="nome-protegon
+          " class="left-inner"/>
+          <br>
+         <br>
+          <br>
+         <p class="welcome">
+            Bem-vindo<br />
+            Sua rede de proteção inteligente. Aqui, cada passo seu importa.
+            Estamos prontos para cuidar de você, mesmo quando as palavras
+            faltarem. Juntos, somos mais fortes.
+          </p>
+
+          <!-- imagem grande do olho na esquerda (substitua pelo seu arquivo) -->
+         
+         <br>
+         <br>
+          <br>
+         <br>
+         <br>
+         <br>
+         <br>
+          <br>
+         <br>
+         <br>
+          <br>
+         <br>
+         <br>
+
+          <div class="left-footer">
+            Segurança Inteligente para Vidas em Risco<br />
+            © 2025 PROTEGON. Todos os direitos reservados.
+          </div>
+        </div>
+      </aside>
+
+      <!-- DIREITA -->
+      <main class="right">
+        <div class="login-card">
+          <!-- logo/ícone acima do formulário -->
+         <img class="logo-olho" src="image-removebg-preview (12) 1 (2).svg" width="350px" height="200px"
+         alt="logo-olho ">
+
+          <form>
+            <div class="input-group">
+              <label for="email">Email</label>
+              <input id="email" type="email" placeholder="Insira seu email" />
+              <div class="info">
+                Seu e-mail é confidencial e não será compartilhado com
+                terceiros.
+              </div>
+            </div>
+
+            <div class="input-group">
+              <label for="senha">Senha</label>
+              <input
+                id="senha"
+                type="password"
+                placeholder="Insira sua senha"
+              />
+            </div>
+
+            <div class="actions">
+              <a href="#" class="link-small">Esqueceu sua senha?</a>
+              <button type="submit" class="btn">Entrar</button>
+            </div>
+
+            <div class="extra">
+              <div>CRIAR UMA NOVA CONTA</div>
+              <div style="margin-top: 8px">LEMBRAR LOGIN E SENHA</div>
+            </div>
+          </form>
+        </div>
+      </main>
+    </div>
+    
+</body>
+    
+  </head>
 </html>
