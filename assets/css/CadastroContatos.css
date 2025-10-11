@@ -1,0 +1,536 @@
+.tela-cadastro-contatos-de-em {
+  	width: 100%;
+  	position: relative;
+  	background-color: #fff;
+  	height: 2426px;
+  	overflow: hidden;
+  	text-align: center;
+  	font-size: 13px;
+  	color: #000;
+  	font-family: Montserrat;
+}
+.novo-contato {
+  	position: absolute;
+  	top: 570px;
+  	left: 1579px;
+  	width: 301px;
+  	height: 43px;
+  	font-size: 15px;
+  	color: #fff;
+}
+.novo-contato-child {
+  	position: absolute;
+  	top: 0px;
+  	left: 0px;
+  	border-radius: 154px;
+  	background-color: #001c39;
+  	width: 301px;
+  	height: 43px;
+}
+.adicionar-novo-contato-container {
+  	position: absolute;
+  	top: 12px;
+  	left: 60px;
+  	display: inline-block;
+  	width: 195px;
+  	height: 15px;
+}
+.adicionar-novo-contato {
+  	margin: 0;
+}
+.image-17-icon {
+  	position: absolute;
+  	top: 5px;
+  	left: 19px;
+  	width: 33px;
+  	height: 33px;
+  	object-fit: cover;
+}
+.tela-cadastro-contatos-de-em-novo-contato {
+  	position: absolute;
+  	top: 1787px;
+  	left: 1542px;
+  	width: 301px;
+  	height: 43px;
+  	font-size: 15px;
+  	color: #fff;
+}
+.adicionar-novo-psicologo-container {
+  	position: absolute;
+  	top: 12px;
+  	left: 50px;
+  	display: inline-block;
+  	width: 215px;
+  	height: 15px;
+}
+.tela-cadastro-contatos-de-em-child {
+  	position: absolute;
+  	top: 179px;
+  	left: 1880px;
+  	background-color: #d9d9d9;
+  	width: 18px;
+  	height: 209px;
+}
+.cadastro {
+  	position: absolute;
+  	top: 691px;
+  	left: 351px;
+  	width: 572px;
+  	height: 560px;
+  	text-align: left;
+}
+.cadastro-child {
+  	position: absolute;
+  	top: 0px;
+  	left: 0px;
+  	border-radius: 10px;
+  	background-color: #001c39;
+  	width: 572px;
+  	height: 560px;
+}
+.cadastra-se-aqui {
+  	position: absolute;
+  	top: 39px;
+  	left: 97px;
+  	font-size: 15px;
+  	display: inline-block;
+  	color: #fff;
+  	text-align: center;
+  	width: 367px;
+  	height: 31.1px;
+}
+.cadastro-item {
+  	position: absolute;
+  	top: 281px;
+  	left: 53px;
+  	border-radius: 10px;
+  	background-color: #fff;
+  	border: 1px solid rgba(0, 0, 0, 0.79);
+  	box-sizing: border-box;
+  	width: 480px;
+  	height: 50.2px;
+}
+.cadastro-inner {
+  	position: absolute;
+  	top: 212px;
+  	left: 53px;
+  	border-radius: 10px;
+  	background-color: #fff;
+  	border: 1px solid rgba(0, 0, 0, 0.79);
+  	box-sizing: border-box;
+  	width: 480px;
+  	height: 50.2px;
+}
+.rectangle-icon {
+  	position: absolute;
+  	top: 86px;
+  	left: 53px;
+  	border-radius: 10px;
+  	width: 480px;
+  	height: 50.2px;
+}
+.rectangle-div {
+  	position: absolute;
+  	top: 464px;
+  	left: 125px;
+  	border-radius: 10px;
+  	background-color: #d3e3ff;
+  	width: 313px;
+  	height: 50.2px;
+}
+.nome-completo {
+  	position: absolute;
+  	top: 102px;
+  	left: 115px;
+  	display: inline-block;
+  	width: 330px;
+  	height: 16.1px;
+}
+.senha {
+  	position: absolute;
+  	top: 299px;
+  	left: 116px;
+  	display: inline-block;
+  	width: 330px;
+  	height: 16.1px;
+}
+.ao-clicar-em-container {
+  	position: absolute;
+  	top: 366px;
+  	left: 47px;
+  	font-size: 10px;
+  	display: inline-block;
+  	width: 475px;
+  	height: 24.1px;
+  	color: #fff;
+}
+.termos {
+  	color: #d3e3ff;
+}
+.tela-cadastro-contatos-de-em-termos {
+  	text-decoration: underline;
+}
+.poltica-de-privacidade {
+  	color: inherit;
+}
+.voc-poder-receber {
+  	color: #fff;
+}
+.nmero-de-telefone {
+  	position: absolute;
+  	top: 230px;
+  	left: 115px;
+  	display: inline-block;
+  	width: 330px;
+  	height: 16.1px;
+}
+.confirmar-cadastro {
+  	position: absolute;
+  	top: 481px;
+  	left: 203px;
+  	font-size: 15px;
+  	display: inline-block;
+  	text-align: center;
+  	width: 156px;
+  	height: 18.1px;
+}
+.tela-cadastro-contatos-de-em-cadastro-child {
+  	position: absolute;
+  	top: 150px;
+  	left: 54px;
+  	border-radius: 10px;
+  	background-color: #fff;
+  	width: 479px;
+  	height: 46.2px;
+}
+.e-mail {
+  	position: absolute;
+  	top: 166px;
+  	left: 120px;
+  	display: inline-block;
+  	width: 98px;
+  	height: 16.1px;
+}
+.image-11-icon {
+  	position: absolute;
+  	top: 155px;
+  	left: 66px;
+  	width: 34.1px;
+  	height: 34.1px;
+  	object-fit: cover;
+}
+.image-3-icon {
+  	position: absolute;
+  	top: 94px;
+  	left: 62px;
+  	border-radius: 10px;
+  	width: 35.1px;
+  	height: 35.1px;
+  	object-fit: cover;
+}
+.image-18-icon {
+  	position: absolute;
+  	top: 289px;
+  	left: 64px;
+  	width: 34.1px;
+  	height: 34.1px;
+  	object-fit: cover;
+}
+.tela-cadastro-contatos-de-em-image-18-icon {
+  	position: absolute;
+  	top: 219px;
+  	left: 65px;
+  	width: 34.1px;
+  	height: 34.1px;
+  	object-fit: cover;
+}
+.tela-contatos-de-em-cadastro {
+  	position: absolute;
+  	top: 691px;
+  	left: 1067px;
+  	width: 572px;
+  	height: 560px;
+  	text-align: left;
+}
+.cadastro2 {
+  	position: absolute;
+  	top: 1791px;
+  	left: 674px;
+  	width: 572px;
+  	height: 560px;
+  	text-align: left;
+}
+.permitir-cadastro {
+  	position: absolute;
+  	top: 480px;
+  	left: 207px;
+  	font-size: 15px;
+  	display: inline-block;
+  	text-align: center;
+  	width: 156px;
+  	height: 18.1px;
+}
+.aba-1 {
+  	position: absolute;
+  	top: 138px;
+  	left: 0px;
+  	width: 1926px;
+  	height: 354px;
+  	font-size: 20px;
+  	font-family: Roboto;
+}
+.aba-1-child {
+  	position: absolute;
+  	top: 0px;
+  	left: 0px;
+  	border-radius: 10px;
+  	background-color: #001c39;
+  	width: 1926px;
+  	height: 354px;
+}
+.aba-1-item {
+  	position: absolute;
+  	top: 0px;
+  	left: 0px;
+  	border-radius: 10px;
+  	width: 1871.7px;
+  	height: 353px;
+}
+.aba-1-inner {
+  	position: absolute;
+  	top: 0px;
+  	left: 0px;
+  	border-radius: 10px;
+  	width: 1808.5px;
+  	height: 353px;
+}
+.tela-cadastro-contatos-de-em-aba-1-child {
+  	position: absolute;
+  	top: 0px;
+  	left: 0px;
+  	border-radius: 10px;
+  	width: 1725.1px;
+  	height: 354px;
+}
+.cadastre-aqui-pessoas-container {
+  	position: absolute;
+  	top: 181px;
+  	left: calc(50% - 435px);
+  	font-weight: 300;
+  	display: inline-block;
+  	width: 915px;
+}
+.cadastro-contatos-emergenciais-container {
+  	position: absolute;
+  	top: 84px;
+  	left: calc(50% - 367px);
+  	font-size: 48px;
+  	font-weight: 900;
+  	text-align: left;
+  	display: inline-block;
+  	width: 735px;
+  	height: 56px;
+}
+.aba-2 {
+  	position: absolute;
+  	top: 1388px;
+  	left: -10px;
+  	width: 1936px;
+  	height: 221px;
+  	font-size: 20px;
+  	font-family: Roboto;
+}
+.aba-2-child {
+  	position: absolute;
+  	top: 0px;
+  	left: 0px;
+  	border-radius: 10px;
+  	background-color: #001c39;
+  	width: 1936px;
+  	height: 221px;
+}
+.aba-2-item {
+  	position: absolute;
+  	top: 0px;
+  	left: 0px;
+  	border-radius: 10px;
+  	width: 1881.5px;
+  	height: 220.4px;
+}
+.aba-2-inner {
+  	position: absolute;
+  	top: 0px;
+  	left: 0px;
+  	border-radius: 10px;
+  	width: 1817.8px;
+  	height: 220.4px;
+}
+.tela-cadastro-contatos-de-em-aba-2-child {
+  	position: absolute;
+  	top: 0px;
+  	left: 0px;
+  	border-radius: 10px;
+  	width: 1734px;
+  	height: 221px;
+}
+.permita-que-seu {
+  	position: absolute;
+  	top: 142px;
+  	left: calc(50% - 460px);
+  	font-weight: 300;
+  	display: inline-block;
+  	width: 919.8px;
+  	height: 28.7px;
+}
+.cadastro-psicologo {
+  	position: absolute;
+  	top: 53px;
+  	left: calc(50% - 257px);
+  	font-size: 48px;
+  	font-weight: 900;
+  	text-align: left;
+  	display: inline-block;
+  	width: 514.7px;
+  	height: 35px;
+}
+.rectangle-parent {
+  	position: absolute;
+  	top: 522px;
+  	left: 0px;
+  	width: 57px;
+  	height: 341px;
+}
+.group-child {
+  	position: absolute;
+  	top: 0px;
+  	left: 0px;
+  	border-radius: 10px;
+  	background-color: rgba(0, 28, 57, 0.54);
+  	width: 57px;
+  	height: 341px;
+}
+.image-8-icon {
+  	position: absolute;
+  	top: 20px;
+  	left: 0px;
+  	width: 48px;
+  	height: 48px;
+  	object-fit: cover;
+}
+.image-14-icon {
+  	position: absolute;
+  	top: 109px;
+  	left: 1px;
+  	width: 47px;
+  	height: 47px;
+  	object-fit: cover;
+}
+.image-15-icon {
+  	position: absolute;
+  	top: 194px;
+  	left: 6px;
+  	width: 38px;
+  	height: 38px;
+  	object-fit: cover;
+}
+.image-16-icon {
+  	position: absolute;
+  	top: 263px;
+  	left: 6px;
+  	width: 38px;
+  	height: 38px;
+  	object-fit: cover;
+}
+.navigation-parent {
+  	position: absolute;
+  	top: 24px;
+  	left: 284px;
+  	width: 1352px;
+  	height: 58px;
+  	text-align: left;
+  	font-size: 16px;
+  	color: #fff;
+  	font-family: Roboto;
+}
+.navigation {
+  	position: absolute;
+  	top: 0px;
+  	left: 0px;
+  	border-radius: 18px;
+  	background-color: #001c39;
+  	width: 1352px;
+  	height: 58px;
+}
+.design-sem-nome-removebg-previ-icon {
+  	position: absolute;
+  	top: 6px;
+  	left: 11px;
+  	width: 74.4px;
+  	height: 45.4px;
+  	object-fit: cover;
+}
+.group-item {
+  	position: absolute;
+  	top: 0px;
+  	left: 698px;
+  	border-radius: 4px;
+  	background-color: #d3e3ff;
+  	width: 84px;
+  	height: 41px;
+}
+.textfield {
+  	position: absolute;
+  	top: 11px;
+  	left: 855px;
+  	border-radius: 6px;
+  	border: 1px solid rgba(255, 255, 255, 0.21);
+  	box-sizing: border-box;
+  	width: 200px;
+  	display: flex;
+  	flex-direction: row;
+  	align-items: center;
+  	justify-content: flex-end;
+  	padding: 8px;
+  	gap: 4px;
+  	font-size: 14px;
+  	color: rgba(255, 255, 255, 0.78);
+}
+.text {
+  	flex: 1;
+  	position: relative;
+  	line-height: 20px;
+}
+.ic-search-icon {
+  	width: 20px;
+  	position: relative;
+  	max-height: 100%;
+}
+.tab {
+  	position: absolute;
+  	top: 11.5px;
+  	left: 710px;
+  	line-height: 24px;
+  	color: #000;
+  	cursor: pointer;
+}
+.tela-cadastro-contatos-de-em-tab {
+  	position: absolute;
+  	top: 11.5px;
+  	left: 565px;
+  	line-height: 24px;
+}
+.tab2 {
+  	position: absolute;
+  	top: 11.5px;
+  	left: 434px;
+  	line-height: 24px;
+  	cursor: pointer;
+}
+.tab3 {
+  	position: absolute;
+  	top: 11.5px;
+  	left: 301px;
+  	line-height: 24px;
+  	cursor: pointer;
+}
+
