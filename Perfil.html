@@ -1,313 +1,137 @@
 <!DOCTYPE html>
-<html>
+<html lang="pt-br" class="scroll-smooth">
 <head>
-  	<meta charset="utf-8">
-  	<meta name="viewport" content="initial-scale=1, width=device-width">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Perfil de Usuário</title>
+    
+    <script src="https://cdn.twind.style"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
-  	<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=[object Object]&display=swap" />
-  	<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=[object Object]&display=swap" />
-  	<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=[object Object]&display=swap" />
-	<link rel="stylesheet" href="/assets/css/Perfil.css">
-  	
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" integrity="sha512-SnH5WK+bZxgPHs44uWIX+LLJAJ9/2PkPKZ5QiAj6Ta86w+fsb2TkcmfRyVX3pBnMFcV7oQPJkl9QevSCWr3W6A==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&display=swap" rel="stylesheet">
+    
+    <link rel="stylesheet" href="style.css">
 </head>
-<body>
-  	
-  	<div class="perfil">
-    		<div class="perfil-child">
-    		</div>
-    		<div class="navigation-rail">
-      			<div class="menu-fab">
-        				<div class="menu">
-          					<img class="container-icon" alt="" src="container.svg">
-          					
-        				</div>
-        				<div class="fab-elevation-override">
-          					<div class="fab">
-            						<img class="state-layer-icon" alt="" src="state-layer.svg">
-            						
-          					</div>
-        				</div>
-      			</div>
-      			<div class="destinations">
-        				<div class="nav-item-1">
-          					<img class="perfil-container-icon" alt="" src="Container.svg">
-          					
-          					<div class="label">Mail</div>
-        				</div>
-        				<div class="nav-item-2">
-          					<img class="perfil-container-icon" alt="" src="Container.svg">
-          					
-          					<div class="perfil-label">Chat</div>
-        				</div>
-        				<div class="nav-item-2">
-          					<img class="perfil-container-icon" alt="" src="Container.svg">
-          					
-          					<div class="perfil-label">Spaces</div>
-        				</div>
-        				<div class="nav-item-4">
-          					<img class="perfil-container-icon" alt="" src="Container.svg">
-          					
-          					<div class="perfil-label">Meet</div>
-        				</div>
-      			</div>
-    		</div>
-    		<div class="analise">
-      			<div class="frame-parent">
-        				<div class="rectangle-wrapper">
-          					<div class="frame-child" data-scroll-to="rectangle">
-          					</div>
-        				</div>
-        				<div class="analise-de-bem-estar">Analise de Bem-Estar</div>
-        				<img class="group-child" alt="" src="Group 10.svg">
-        				
-        				<img class="icons8-feliz-48-2" alt="" src="icons8-feliz-48 2.png" id="icons8Feliz482">
-        				
-        				<img class="icons8-sad-26-2" alt="" src="icons8-sad-26 2.png" id="icons8Sad262">
-        				
-        				<img class="icons8-neutral-32-2" alt="" src="icons8-neutral-32 2.png" id="icons8Neutral322">
-        				
-        				<div class="semana" id="semanaText">Semana</div>
-        				<div class="ms" id="msText">Mês</div>
-        				<div class="ano" id="anoText">Ano</div>
-      			</div>
-    		</div>
-    		<div class="como-foi-seu-dia">
-      			<div class="group-parent">
-        				<div class="rectangle-parent">
-          					<div class="group-item">
-          					</div>
-          					<div class="salvar">Salvar</div>
-        				</div>
-        				<div class="como-foi-seu">Como foi seu dia hoje?</div>
-        				<div class="quer-escrever-um">Quer escrever um pouco sobre isso?</div>
-        				<div class="group-inner" id="rectangle">
-        				</div>
-        				<div class="hoje-aconteceu-algo" data-scroll-to="hojeAconteceuAlgo">Hoje aconteceu algo que me deixou desconfortável...</div>
-        				<div class="permitir-que-meu-container">
-          					<p class="permitir-que-meu">Permitir que meu psicólogo veja esta entrada</p>
-          					<p class="permitir-que-meu">Seu psicólogo poderá acompanhar como você se sente nos dias entre as sessões, mesmo que você não compartilhe verbalmente. Isso ajuda a oferecer apoio mais eficaz.</p>
-        				</div>
-        				<img class="icons8-dirio-80-2" alt="" src="icons8-diário-80 2.png">
-        				
-      			</div>
-      			<div class="trailing-element">
-        				<div class="checkboxes">
-          					<div class="state-layer">
-            						<div class="container">
-            						</div>
-            						<img class="check-small-icon" alt="" src="check_small.svg">
-            						
-          					</div>
-        				</div>
-      			</div>
-    		</div>
-    		<div class="cadastro">
-      			<div class="cadastro-child">
-      			</div>
-      			<b class="dados-cadastrais">Dados Cadastrais</b>
-      			<div class="cadastro-item">
-      			</div>
-      			<div class="cadastro-inner">
-      			</div>
-      			<div class="rectangle-div">
-      			</div>
-      			<img class="rectangle-icon" alt="" src="Rectangle 11.svg">
-      			
-      			<div class="perfil-cadastro-child">
-      			</div>
-      			<div class="nome-completo-maria">Nome completo:   Maria Clara Silva</div>
-      			<div class="cpf-856695-">CPF:    ***.856.695-**</div>
-      			<div class="endereo-av-pedro">Endereço:   Av Pedro Augusto....</div>
-      			<div class="nmero-de-telefone">Número de Telefone:   (62)8596-****</div>
-      			<b class="editar">Editar</b>
-      			<div class="cadastro-child2">
-      			</div>
-      			<div class="e-mail-mariaclaragmailcom">E-mail:   maria.clara@gmail.com</div>
-      			<img class="image-11-icon" alt="" src="image 11.png">
-      			
-      			<img class="image-3-icon" alt="" src="image 3.png">
-      			
-      			<img class="image-18-icon" alt="" src="image 18.png">
-      			
-      			<div class="ellipse-parent" id="groupContainer">
-        				<div class="ellipse-div" data-scroll-to="ellipse2">
-        				</div>
-        				<img class="lapis-1-icon" alt="" src="lapis 1.png">
-        				
-      			</div>
-      			<img class="cone-cpf-icon" alt="" src="Ícone CPF.png">
-      			
-    		</div>
-    		<div class="perfil2">
-      			<div class="maria-clara-silva">Maria Clara Silva</div>
-      			<img class="shape-icon" alt="" src="Shape.png">
-      			
-      			<div class="ellipse-group" id="groupContainer">
-        				<div class="ellipse-div" data-scroll-to="ellipse1">
-        				</div>
-        				<img class="perfil-lapis-1-icon" alt="" src="lapis 1.png">
-        				
-      			</div>
-      			<div class="ellipse-container" id="groupContainer1">
-        				<div class="ellipse-div" data-scroll-to="ellipse">
-        				</div>
-        				<img class="perfil-lapis-1-icon" alt="" src="lapis 1.png">
-        				
-      			</div>
-      			<div class="editar-nome">Editar Nome </div>
-      			<div class="biografia">Biografia...</div>
-    		</div>
-    		<div class="navigation-parent">
-      			<div class="navigation">
-      			</div>
-      			<img class="design-sem-nome-removebg-previ-icon" alt="" src="Design_sem_nome-removebg-preview 1.png">
-      			
-      			<div class="group-child3">
-      			</div>
-      			<div class="textfield">
-        				<div class="text">Search in site</div>
-        				<img class="ic-search-icon" alt="" src="ic-search.svg">
-        				
-      			</div>
-      			<div class="tab" id="tabText">Cadastro</div>
-      			<div class="perfil-tab">Alertas</div>
-      			<div class="tab2" id="tabText2">Perfil</div>
-      			<div class="tab3" id="tabText3">Inicio</div>
-    		</div>
-  	</div>
-  	
-  	
-  	
-  	
-  	<script>
-    		var icons8Feliz482 = document.getElementById("icons8Feliz482");
-    		if(icons8Feliz482) {
-      			icons8Feliz482.addEventListener("click", function () {
-        				var anchor = document.querySelector("[data-scroll-to='rectangle']");
-        				if(anchor) {
-          					anchor.scrollIntoView({"block":"start","behavior":"smooth"})
-        				}
-      			});
-    		}
-    		
-    		
-    		var icons8Sad262 = document.getElementById("icons8Sad262");
-    		if(icons8Sad262) {
-      			icons8Sad262.addEventListener("click", function () {
-        				var anchor = document.querySelector("[data-scroll-to='rectangle']");
-        				if(anchor) {
-          					anchor.scrollIntoView({"block":"start","behavior":"smooth"})
-        				}
-      			});
-    		}
-    		
-    		
-    		var icons8Neutral322 = document.getElementById("icons8Neutral322");
-    		if(icons8Neutral322) {
-      			icons8Neutral322.addEventListener("click", function () {
-        				var anchor = document.querySelector("[data-scroll-to='rectangle']");
-        				if(anchor) {
-          					anchor.scrollIntoView({"block":"start","behavior":"smooth"})
-        				}
-      			});
-    		}
-    		
-    		
-    		var semanaText = document.getElementById("semanaText");
-    		if(semanaText) {
-      			semanaText.addEventListener("click", function () {
-        				var anchor = document.querySelector("[data-scroll-to='rectangle']");
-        				if(anchor) {
-          					anchor.scrollIntoView({"block":"start","behavior":"smooth"})
-        				}
-      			});
-    		}
-    		
-    		
-    		var msText = document.getElementById("msText");
-    		if(msText) {
-      			msText.addEventListener("click", function () {
-        				var anchor = document.querySelector("[data-scroll-to='rectangle']");
-        				if(anchor) {
-          					anchor.scrollIntoView({"block":"start","behavior":"smooth"})
-        				}
-      			});
-    		}
-    		
-    		
-    		var anoText = document.getElementById("anoText");
-    		if(anoText) {
-      			anoText.addEventListener("click", function () {
-        				var anchor = document.querySelector("[data-scroll-to='rectangle']");
-        				if(anchor) {
-          					anchor.scrollIntoView({"block":"start","behavior":"smooth"})
-        				}
-      			});
-    		}
-    		
-    		
-    		var rectangle = document.getElementById("rectangle");
-    		if(rectangle) {
-      			rectangle.addEventListener("click", function () {
-        				var anchor = document.querySelector("[data-scroll-to='hojeAconteceuAlgo']");
-        				if(anchor) {
-          					anchor.scrollIntoView({"block":"start","behavior":"smooth"})
-        				}
-      			});
-    		}
-    		
-    		
-    		var groupContainer = document.getElementById("groupContainer");
-    		if(groupContainer) {
-      			groupContainer.addEventListener("click", function () {
-        				var anchor = document.querySelector("[data-scroll-to='ellipse2']");
-        				if(anchor) {
-          					anchor.scrollIntoView({"block":"start","behavior":"smooth"})
-        				}
-      			});
-    		}
-    		
-    		
-    		var groupContainer = document.getElementById("groupContainer");
-    		if(groupContainer) {
-      			groupContainer.addEventListener("click", function () {
-        				var anchor = document.querySelector("[data-scroll-to='ellipse1']");
-        				if(anchor) {
-          					anchor.scrollIntoView({"block":"start","behavior":"smooth"})
-        				}
-      			});
-    		}
-    		
-    		
-    		var groupContainer1 = document.getElementById("groupContainer1");
-    		if(groupContainer1) {
-      			groupContainer1.addEventListener("click", function () {
-        				var anchor = document.querySelector("[data-scroll-to='ellipse']");
-        				if(anchor) {
-          					anchor.scrollIntoView({"block":"start","behavior":"smooth"})
-        				}
-      			});
-    		}
-    		
-    		
-    		var tabText = document.getElementById("tabText");
-    		if(tabText) {
-      			tabText.addEventListener("click", function (e) {
-        				// Add your code here
-      			});
-    		}
-    		
-    		var tabText2 = document.getElementById("tabText2");
-    		if(tabText2) {
-      			tabText2.addEventListener("click", function (e) {
-        				window.location.href = "PERFIL.html"
-      			});
-    		}
-    		
-    		var tabText3 = document.getElementById("tabText3");
-    		if(tabText3) {
-      			tabText3.addEventListener("click", function (e) {
-        				// Add your code here
-      			});
-    		}</script></body>
+<body class="bg-gray-50 text-gray-800">
+
+    <div class="flex min-h-screen">
+        <!--menu-->
+    <div class="flex min-h-screen">
+        <aside class="bg-white w-24 flex flex-col items-center py-4 space-y-8 shadow-md">
+            <div class="menu">
+               <i class="fa-solid fa-bars"></i>
+            </div>
+            <!--menu home-->
+            <nav class="flex flex-col items-center space-y-4">
+                <div class="nav-icon bg-blue-100"> <i class="fa-solid fa-house"></i> 
+                </div>
+				<!--chat-->
+                <div class="nav-icon">
+                    <i class="fa-solid fa-comments"></i>
+                </div>
+				<!--Contatos de emergencia-->
+                <div class="nav-icon">
+                    <i class="fa-solid fa-address-book"></i>
+                </div>
+                <div class="nav-icon">
+                    <img class="w-7 h-7" alt="Meet" src="Container.svg">
+                </div>
+            </nav>
+        </aside>
+
+
+        <main class="flex-1 p-4 md:p-8">
+            <header class="flex flex-col md:flex-row justify-between items-center mb-8 gap-4">
+                <img class="h-12" alt="Logo" src="Design_sem_nome-removebg-preview 1.png">
+                <nav class="flex items-center gap-6 text-lg font-medium text-gray-600">
+                    <a href="#" class="hover:text-blue-600">Início</a>
+                    <a href="#" class="hover:text-blue-600">Alertas</a>
+                    <a href="perfil.html" class="text-blue-600 font-bold border-b-2 border-blue-600 pb-1">Perfil</a>
+                </nav>
+                <div class="relative w-full md:w-auto">
+                    <input type="search" placeholder="Pesquisar..." class="pl-10 pr-4 py-2 rounded-full border border-gray-300 w-full md:w-64 focus:outline-none focus:ring-2 focus:ring-blue-500">
+                    <img class="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5" alt="Ícone de busca" src="ic-search.svg">
+                </div>
+            </header>
+<!--foto perfil,biografia,-->
+            <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+                
+                <div class="lg:col-span-1 flex flex-col gap-8">
+                    <section class="widget-card text-center">
+                        <img class="w-32 h-32 rounded-full mx-auto mb-4 border-4 border-white shadow-md" src="./assets/img/foto perfil.png" alt="Foto de Perfil">
+                        <h1 id="view-user-name" class="text-2xl font-bold"></h1>
+                        <input type="text" id="edit-user-name" class="hidden text-2xl font-bold text-center border-b-2 w-full mx-auto">
+                        <p class="text-gray-500 mt-2">Biografia...</p>
+                        <div id="profile-actions" class="mt-4">
+                            <button id="edit-profile-button" class="text-blue-600 font-semibold hover:underline">Editar Perfil</button>
+                            <div id="edit-mode-buttons" class="hidden flex justify-center gap-4">
+                                <button id="save-profile-button" class="px-4 py-1 bg-green-500 text-white rounded-lg hover:bg-green-600">Salvar</button>
+                                <button id="cancel-edit-button" class="px-4 py-1 bg-gray-500 text-white rounded-lg hover:bg-gray-600">Cancelar</button>
+                            </div>
+                        </div>
+                         <button id="logout-button" class="mt-2 text-red-500 text-sm font-semibold hover:underline">Sair (Logout)</button>
+                    </section>
+
+                    <section id="analise-bem-estar" class="widget-card">
+                        <h2 class="text-xl font-bold mb-4">Análise de Bem-Estar</h2>
+                        <canvas id="behaviorChart" class="w-full rounded-md mb-4"></canvas>
+                        <div class="flex justify-around text-center text-gray-600 font-medium">
+                            <span data-periodo="semana" class="cursor-pointer text-blue-600 font-bold">Semana</span>
+                            <span data-periodo="mes" class="cursor-pointer hover:text-blue-600">Mês</span>
+                            <span data-periodo="ano" class="cursor-pointer hover:text-blue-600">Ano</span>
+                        </div>
+                    </section>
+                </div>
+<!--Diário-->
+                <div class="lg:col-span-2 flex flex-col gap-8">
+                    <section id="diario-section" class="widget-card">
+                        <div class="flex items-center gap-4 mb-4">
+                            <i class="fa-solid fa-book p-2 "></i>
+                            <div>
+                                <h2 class="text-xl font-bold">Como foi seu dia hoje?</h2>
+                                <p class="text-gray-500">Selecione seu humor e escreva um pouco sobre.</p>
+                            </div>
+                        </div>
+                        <div id="mood-selector" class="flex justify-center gap-4 mb-4">
+                            <button data-mood="feliz" class="text-4xl p-2 rounded-full hover:bg-gray-200 transition-transform transform hover:scale-110">😄</button>
+                            <button data-mood="neutro" class="text-4xl p-2 rounded-full hover:bg-gray-200 transition-transform transform hover:scale-110">😐</button>
+                            <button data-mood="triste" class="text-4xl p-2 rounded-full hover:bg-gray-200 transition-transform transform hover:scale-110">😢</button>
+                        </div>
+                        <textarea id="diary-text" class="w-full h-28 p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500" placeholder="Hoje aconteceu algo que me deixou desconfortável..."></textarea>
+                        <div class="flex items-center justify-between mt-4">
+                            <div class="flex items-center gap-2">
+                                <input type="checkbox" id="share-checkbox" class="h-5 w-5 rounded border-gray-300 text-blue-600 focus:ring-blue-500">
+                                <label for="share-checkbox" class="text-sm text-gray-600">Permitir que meu psicólogo veja esta entrada.</label>
+                            </div>
+                            <button id="save-diary-button" class="px-6 py-2 rounded-lg font-semibold text-white transition-transform transform hover:scale-105 bg-blue-600 hover:bg-blue-700">Salvar</button>
+                        </div>
+                        
+                        <hr class="my-6 border-gray-200">
+                        <h3 class="text-lg font-semibold mb-4">Suas Entradas</h3>
+                        <div id="past-entries-container" class="space-y-4 max-h-64 overflow-y-auto">
+                            </div>
+                    </section>
+
+                    <section class="widget-card">
+                        <div class="flex justify-between items-center mb-6">
+                            <h2 class="text-xl font-bold">Dados Cadastrais</h2>
+                            </div>
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            <div class="data-field"><strong>Nome completo:</strong> <span id="view-fullname"></span><input type="text" id="edit-fullname" class="hidden w-full bg-white p-1 rounded"></div>
+                            <div class="data-field"><strong>CPF:</strong> <span id="view-cpf"></span></div>
+                            <div class="data-field"><strong>E-mail:</strong> <span id="view-email"></span><input type="email" id="edit-email" class="hidden w-full bg-white p-1 rounded"></div>
+                            <div class="data-field"><strong>Telefone:</strong> <span id="view-phone"></span><input type="tel" id="edit-phone" class="hidden w-full bg-white p-1 rounded"></div>
+                            <div class="data-field md:col-span-2"><strong>Endereço:</strong> Av Pedro Augusto....</div>
+                        </div>
+                    </section>
+                </div>
+            </div>
+        </main>
+    </div>
+    
+    <script src="script.js" defer></script>
+</body>
 </html>
