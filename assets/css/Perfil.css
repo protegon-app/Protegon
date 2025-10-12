@@ -1,0 +1,38 @@
+/* Define a fonte padrão para o corpo do documento */
+body { 
+    font-family: 'Inter', sans-serif; 
+}
+
+/* Estilo padrão para os cards/widgets principais */
+.widget-card {
+    background-color: white;
+    padding: 1.5rem; 
+    border-radius: 1rem;
+    box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1); 
+}
+
+/* Estilo para os campos de dados cadastrais */
+.data-field {
+    background-color: #f3f4f6; 
+    padding: 0.75rem; 
+    border-radius: 0.5rem; 
+    border: 1px solid #e5e7eb; 
+    color: #374151; 
+}
+
+/* Estilo para os ícones da barra de navegação lateral */
+.nav-icon {
+    width: 4rem; 
+    height: 4rem; 
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 1rem; 
+    cursor: pointer;
+    transition: background-color 0.2s, color 0.2s;
+}
+
+.nav-icon:hover {
+    background-color: #eff6ff; 
+    color: #2563eb;
+}

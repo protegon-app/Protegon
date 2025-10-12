@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+    <link rel="stylesheet" href="./assets/css/style.css">
+    <link rel="stylesheet" href="./assets/css/CriarConta.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
+    
+    <title>Criar Conta</title>
+</head>
+
+<body class="bg-gray-100">
+
+    <main class="min-h-screen flex flex-col md:flex-row">
+        <!--Logo,titulo-->
+        <section class="md:w-2/5 bg-[#001C39] text-white p-8 md:p-12 flex flex-col min-h-[50vh] md:min-h-screen order-2 md:order-1">
+            <div class="flex-grow">
+                <h1 class="text-3xl md:text-4xl font-semibold tracking-widest uppercase">Protegon</h1>
+
+                <div class="mt-8 md:mt-12">
+                    <h2 class="text-2xl md:text-3xl font-bold">Bem-vindo</h2>
+                    <p class="mt-4 text-gray-300 leading-relaxed">
+                        Sua rede de proteção inteligente. Aqui, cada passo seu importa. Estamos prontos para cuidar de você, mesmo quando as palavras faltarem. Juntos, somos mais fortes.
+                    </p>
+                </div>
+            </div>
+            <!--Rodapé-->
+            <div class="mt-8 text-sm text-gray-400">
+                <p>Segurança Inteligente para Vidas em Risco</p>
+                <p>v3.1</p>
+            </div>
+        </section>
+        <!--Formulário de cadastro-->
+        <section class="w-full md:w-3/5 bg-gray-100 flex items-center justify-center p-6 md:p-10 order-1 md:order-2 shadow: md">
+
+            <div class="w-full max-w-lg bg-white p-8 rounded-xl shadow-lg">
+                <h3 class="text-xl font-bold text-center text-[#00356C] tracking-wider mb-8">CADASTRE-SE AQUI</h3>
+
+                <form id="cadastroForm" action="#" method="POST" class="space-y-5" novalidate>
+
+                    <!-- Campo: Nome Completo -->
+                    <div>
+                        <label for="name" class="flex items-center text-sm font-semibold text-[#00356c]/90 mb-1">
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-5 h-5 mr-2 text-[#00356c]/90">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 6a3.75 3.75 0 1 1-7.5 0 3.75 3.75 0 0 1 7.5 0ZM4.501 20.118a7.5 7.5 0 0 1 14.998 0A17.933 17.933 0 0 1 12 21.75c-2.676 0-5.216-.584-7.499-1.632Z" />
+                            </svg>
+                            Nome completo
+                        </label>
+                        <input type="text" id="name" name="fullName" placeholder="Digite seu nome completo" class="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-[#d3e3ff]" required>
+                        <div id="name-error" class="text-red-500 text-xs mt-1"></div>
+                    </div>
+
+                    <!-- Campo: CPF -->
+                    <div>
+                        <label for="cpf" class="text-sm font-semibold text-[#00356c]/90 mb-1 block">CPF</label>
+                        <input type="text" id="cpf" name="cpf" placeholder="Apenas os 11 dígitos" class="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-[#d3e3ff]" required pattern="[0-9]{11}" title="Digite os 11 dígitos do CPF, sem pontos ou traços.">
+                        <div id="cpf-error" class="text-red-500 text-xs mt-1"></div>
+                    </div>
+
+                    <!-- Campo: E-mail -->
+                    <div>
+                        <label for="email" class="flex items-center text-sm font-semibold text-[#00356c]/90 mb-1">
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-5 h-5 mr-2 text-[#00356c]/90">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M21.75 6.75v10.5a2.25 2.25 0 0 1-2.25 2.25h-15a2.25 2.25 0 0 1-2.25-2.25V6.75m19.5 0A2.25 2.25 0 0 0 19.5 4.5h-15a2.25 2.25 0 0 0-2.25 2.25m19.5 0v.243a2.25 2.25 0 0 1-1.07 1.916l-7.5 4.615a2.25 2.25 0 0 1-2.36 0L3.32 8.91a2.25 2.25 0 0 1-1.07-1.916V6.75" />
+                            </svg>
+                            E-mail
+                        </label>
+                        <input type="email" id="email" name="email" placeholder="Digite seu e-mail" class="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-[#d3e3ff]" required>
+                        <div id="email-error" class="text-red-500 text-xs mt-1"></div>
+                    </div>
+
+                    <!-- Campo: Telefone -->
+                    <div>
+                        <label for="telefone" class="flex items-center text-sm font-semibold text-[#00356c]/90 mb-1">
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-5 h-5 mr-2 text-[#00356c]/90">
+                                <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M18.427 14.768 17.2 13.542a1.733 1.733 0 0 0-2.45 0l-.613.613a1.732 1.732 0 0 1-2.45 0l-1.838-1.84a1.735 1.735 0 0 1 0-2.452l.612-.613a1.735 1.735 0 0 0 0-2.452L9.237 5.572a1.6 1.6 0 0 0-2.45 0c-3.223 3.2-1.702 6.896 1.519 10.117 3.22 3.221 6.914 4.745 10.12 1.535a1.601 1.601 0 0 0 0-2.456Z" />
+                            </svg>
+                            Telefone
+                        </label>
+                        <input type="tel" id="telefone" name="telefone" placeholder="(00) 00000-0000" class="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-[#d3e3ff]" required>
+                        <div id="telefone-error" class="text-red-500 text-xs mt-1"></div>
+                    </div>
+
+                    <!-- Campo: Senha -->
+                    <div>
+                        <label for="password" class="flex items-center text-sm font-semibold text-gray-600 mb-1">
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-5 h-5 mr-2 text-[#00356c]/90">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M16.5 10.5V6.75a4.5 4.5 0 1 0-9 0v3.75m-.75 11.25h10.5a2.25 2.25 0 0 0 2.25-2.25v-6.75a2.25 2.25 0 0 0-2.25-2.25H6.75a2.25 2.25 0 0 0-2.25 2.25v6.75a2.25 2.25 0 0 0 2.25 2.25Z" />
+                            </svg>
+                            Senha
+                        </label>
+                        <input type="password" id="password" name="password" placeholder="Mínimo de 8 caracteres" class="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-[#d3e3ff]" required minlength="8">
+                        <div id="password-error" class="text-red-500 text-xs mt-1"></div>
+                    </div>
+                    <div>
+                        <!-- Campo: Confirmar senha -->
+                        <label for="password_confirmation" class="flex items-center text-sm font-semibold text-gray-600 mb-1">
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-5 h-5 mr-2 text-[#00356c]/90">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M16.5 10.5V6.75a4.5 4.5 0 1 0-9 0v3.75m-.75 11.25h10.5a2.25 2.25 0 0 0 2.25-2.25v-6.75a2.25 2.25 0 0 0-2.25-2.25H6.75a2.25 2.25 0 0 0-2.25 2.25v6.75a2.25 2.25 0 0 0 2.25 2.25Z" />
+                            </svg>
+                            Confirmar Senha
+                        </label>
+                        <input type="password" id="password_confirmation" name="password_confirmation" placeholder="Digite a senha novamente" class="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-[#d3e3ff]" required>
+                        <div id="password_confirmation-error" class="text-red-500 text-xs mt-1"></div>
+                    </div>
+
+                    <!-- Campo: Data de Nascimento -->
+                    <div>
+                        <label class="text-sm font-semibold text-gray-600 mb-1 block">Data de nascimento</label>
+                        <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
+                            <input type="number" name="birthDay" placeholder="Dia" min="1" max="31" class="w-full px-4 py-2 text-center border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-[#d3e3ff]" required />
+                            <select name="birthMonth" class="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-[#d3e3ff]" required>
+                                <option value="" selected disabled>Mês</option>
+                                <option value="1">Janeiro</option>
+                                <option value="2">Fevereiro</option>
+                                <option value="3">Março</option>
+                                <option value="4">Abril</option>
+                                <option value="5">Maio</option>
+                                <option value="6">Junho</option>
+                                <option value="7">Julho</option>
+                                <option value="8">Agosto</option>
+                                <option value="9">Setembro</option>
+                                <option value="10">Outubro</option>
+                                <option value="11">Novembro</option>
+                                <option value="12">Dezembro</option>
+                            </select>
+                            <input type="number" name="birthYear" placeholder="Ano" min="1930" max="2025" class="w-full px-4 py-2 text-center border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-[#d3e3ff]" required />
+                        </div>
+                    </div>
+
+                    <!-- Campo: Gênero -->
+                    <div>
+                        <label class="text-sm font-semibold text-[#001C39] mb-2 block">Gênero</label>
+                        <div class="flex flex-wrap items-center gap-x-6 gap-y-2">
+                            <label class="flex items-center">
+                                <input type="radio" name="gender" value="masculino" class="text-blue-600 focus:ring-blue-500">
+                                <span class="ml-2 text-gray-700">Masculino</span>
+                            </label>
+                            <label class="flex items-center">
+                                <input type="radio" name="gender" value="feminino" class="text-blue-600 focus:ring-blue-500">
+                                <span class="ml-2 text-gray-700">Feminino</span>
+                            </label>
+                            <label class="flex items-center">
+                                <input type="radio" name="gender" value="outro" class="text-blue-600 focus:ring-blue-500">
+                                <span class="ml-2 text-gray-700">Outro</span>
+                            </label>
+                        </div>
+                    </div>
+
+                    <!-- Campo: Termos e Condições -->
+                    <div class="flex items-start text-sm">
+                        <input type="checkbox" id="terms" name="terms" class="mt-1 h-4 w-4 text-blue-600 border-gray-300 rounded focus:ring-[#d3e3ff]" required>
+                        <label for="terms" class="ml-3 text-gray-600">
+                            Ao clicar em Cadastrar-se, você concorda com nossos
+                            <a href="#" class="text-blue-600 hover:underline">Termos</a>,
+                            <a href="#" class="text-blue-600 hover:underline">Política de Privacidade</a> e
+                            <a href="#" class="text-blue-600 hover:underline">Política de Cookies</a>.
+                            Você poderá receber notificações por SMS e poderá cancelá-las quando quiser.
+                        </label>
+                    </div>
+                    <!-- Botão de cadastro -->
+                    <button type="submit" class="w-full bg-[#001C39] text-white font-bold font-mont text-center py-3 px-4 rounded-lg shadow-lg shadow-blue-950/40hover:bg-[#00356C] hover:shadow-xl hover:shadow-blue-950/30 hover:-translate-y-px transition-all ease-in-out duration-300">
+                        CADASTRE-SE
+                    </button>
+                    <div class="mt-8 pt-6 border-t border-gray-200 text-center text-sm text-[var(--azul-marinho)] space-y-3">
+                        <a href="./login.htm" class="block font-semibold hover:underline">Já tem login? Faça login</a>
+                    </div>
+                </form>
+            </div>
+        </section>
+    </main>
+
+</body>
+</html>
