@@ -1,0 +1,101 @@
+/* Paleta de cores */
+:root {
+  --azul-marinho-escuro: #001c39;
+  --azul-marinho: #00356c;
+  --azul-claro: #d3e3ff;
+  --branco: #ffff;
+ 
+}
+/**
+ * Componente de Botão Primário
+ * Usado para as principais ações, como "Entrar" e "Registrar".
+ */
+.btn-primario {
+  /* Estilos padrão (Mobile-First) */
+  display: inline-block;
+  padding: 0.5rem 1.25rem;
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: var(--branco);
+  background-color: var(--azul-marinho); 
+  border-radius: 6px;
+  text-align: center;
+  transition: all 0.3s;
+}
+
+.btn-primario:hover {
+  background-color: var(--azul-marinho-escuro);
+  transform: scale(1.05); /* Efeito de crescimento sutil */
+}
+
+/* Responsividade do botão para telas maiores */
+@media (min-width: 768px) {
+  .btn-primario {
+    padding: 0.5rem 1.5rem;
+    font-size: 1rem;
+  }
+}
+
+
+/* Animações do link do menu de navegação */
+.link-animado {
+  position: relative;
+  padding-bottom: 2px; /* Equivalente ao pb-1 */
+}
+
+.link-animado::after {
+  font-weight: bold;
+  content: '';
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  width: 0;
+  height: 2px;
+  background-color: var(--azul-claro);
+  transition: width 0.3s ease-in-out;
+}
+
+.link-animado:hover::after {
+   font-weight: bold;
+  width: 100%;
+}
+
+
+
+/* Componente de Card para a Seção de Pilares */
+.card-pilar {
+  /* bg-[var(--azul-claro)] p-8 rounded-xl shadow-lg */
+  background-color: var(--azul-claro);
+  padding: 2rem; /* p-8 */
+  border-radius: 0.75rem; /* rounded-xl */
+  box-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1); /* shadow-lg */
+  
+  /* transition-shadow duration-300 */
+  transition: box-shadow 0.3s, transform 0.3s;
+}
+
+/* hover:shadow-xl hover:-translate-y-2 */
+.card-pilar:hover {
+  box-shadow: 0 20px 25px -5px rgb(0 0 0 / 0.1), 0 8px 10px -6px rgb(0 0 0 / 0.1); /* shadow-xl */
+  transform: translateY(-0.5rem); /* -translate-y-2 */
+}
+
+/* Estilo para o título dentro do card */
+.card-pilar__titulo {
+  /* text-2xl font-semibold text-[var(--azul-marinho)] mb-3 */
+  font-size: 1.5rem; /* text-2xl */
+  line-height: 2rem;
+  font-weight: 600; /* font-semibold */
+  color: var(--azul-marinho);
+  margin-bottom: 0.75rem; /* mb-3 */
+}
+
+/* Estilo para o parágrafo dentro do card */
+.card-pilar__texto {
+  /* text-[var(--azul-marinho-escuro)] leading-relaxed */
+  color: var(--azul-marinho-escuro);
+  line-height: 1.625; /* leading-relaxed */
+}
+     
+    
+  
