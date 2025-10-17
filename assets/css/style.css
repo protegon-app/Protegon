@@ -37,8 +37,6 @@
   }
 }
 
->>>>>>> 17-Desenvolver-tela-institucional
-
 /* Animações do link do menu de navegação */
 .link-animado {
   position: relative;
@@ -98,7 +96,6 @@
   /* text-[var(--azul-marinho-escuro)] leading-relaxed */
   color: var(--azul-marinho-escuro);
   line-height: 1.625; /* leading-relaxed */
->>>>>>> 17-Desenvolver-tela-institucional
 }
      
     
