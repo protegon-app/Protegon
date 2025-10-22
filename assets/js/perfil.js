@@ -1,10 +1,15 @@
-// Estado da Aplicação
+// =========================================================
+// ESTADO DA APLICAÇÃO
+// =========================================================
 let currentPage = 'security';
-let countdownInterval = null;
-let timeRemaining = 60;
-let checkInTimeLeft = 71 * 60 * 60; // 71 horas em segundos
+let countdownInterval = null; // Usado para o timer do Sensor OU o timer de Check-in
+let timeRemaining = 60; // Tempo restante para o timer do Sensor
+const CHECKIN_INTERVAL_SECONDS = 72 * 60 * 60; // 72 horas em segundos
+let checkInTimeLeft = 71 * 60 * 60; // 71 horas em segundos (para inicializar o timer)
 
-// Dados Mock
+// =========================================================
+// DADOS MOCK
+// =========================================================
 const emergencyContacts = [
     { name: 'Maria Silva', phone: '+55 11 98765-4321', relationship: 'Mãe' },
     { name: 'Ana Santos', phone: '+55 11 98765-1234', relationship: 'Amiga' },
@@ -24,227 +29,249 @@ const chatMessages = [
     { sender: 'user', text: 'Gostaria de falar sobre como lidar com momentos difíceis.', time: '10:35' }
 ];
 
-// Inicialização
-document.addEventListener('DOMContentLoaded', function() {
-    initNavigation();
-    initEmergencyButtons();
-    renderPage('security');
-});
+// =========================================================
+// FUNÇÕES DE TEMPO E ESTILO (Check-in)
+// =========================================================
 
-// Sistema de Navegação
-function initNavigation() {
-    const navItems = document.querySelectorAll('.nav-item');
-    navItems.forEach(item => {
-        item.addEventListener('click', function() {
-            const page = this.dataset.page;
-            
-            // Atualizar estado ativo
-            navItems.forEach(nav => {
-                nav.classList.remove('bg-primary-dark', 'text-primary-light');
-            });
-            this.classList.add('bg-primary-dark', 'text-primary-light');
-            
-            // Renderizar página
-            renderPage(page);
-        });
-    });
-    
-    // Ativar primeira página
-    navItems[0].classList.add('bg-primary-dark', 'text-primary-light');
-}
+/**
+ * Formata o tempo restante (em segundos) em uma string no formato "2d 23h" ou "03h 15m".
+ * @returns {string} Tempo restante formatado.
+ */
+function formatTimeRemaining(timeInSeconds) {
+    const totalSeconds = Math.max(0, timeInSeconds);
+    const days = Math.floor(totalSeconds / 86400);
+    const hours = Math.floor((totalSeconds % 86400) / 3600);
+    const minutes = Math.floor((totalSeconds % 3600) / 60);
 
-// Renderizar Páginas
-function renderPage(page) {
-    currentPage = page;
-    const pageContent = document.getElementById('pageContent');
-    const pageTitle = document.getElementById('pageTitle');
-    
-    const pages = {
-        'security': { title: 'Central de Segurança', render: renderSecurityPage },
-        'profile': { title: 'Perfil do Usuário', render: renderProfilePage },
-        'notes': { title: 'Anotações', render: renderNotesPage },
-        'chat': { title: 'Chat com o Psicólogo', render: renderChatPage },
-        'emergency': { title: 'Contatos de Emergência', render: renderEmergencyContactsPage },
-        'settings': { title: 'Configurações', render: renderSettingsPage }
-    };
-    
-    pageTitle.textContent = pages[page].title;
-    pageContent.innerHTML = pages[page].render();
-    
-    // Reinicializar eventos específicos da página
-    if (page === 'security') {
-        initSecurityPage();
-    } else if (page === 'chat') {
-        initChatPage();
+    // Se houver dias, mostra dias e horas. Se não, horas e minutos.
+    if (days > 0) {
+        return `${days}d ${String(hours).padStart(2, '0')}h`;
     }
+    return `${String(hours).padStart(2, '0')}h ${String(minutes).padStart(2, '0')}m`;
 }
+
+/**
+ * Calcula a porcentagem de progresso do check-in (tempo decorrido).
+ * @returns {number} Porcentagem (0 a 100).
+ */
+function getProgressPercentage(timeInSeconds) {
+    const elapsed = CHECKIN_INTERVAL_SECONDS - timeInSeconds;
+    // O progresso é o tempo *decorrido* em relação ao total de 72h.
+    return Math.min(100, (elapsed / CHECKIN_INTERVAL_SECONDS) * 100);
+}
+
+
+// =========================================================
+// RENDERIZAÇÃO DE COMPONENTES DE SEGURANÇA
+// =========================================================
+
+/**
+ * Renderiza o bloco completo do Check-in de Segurança.
+ * @returns {string} O HTML formatado do componente.
+ */
+function renderSafetyCheckIn() {
+    const timeString = formatTimeRemaining(checkInTimeLeft);
+    const progressPercentage = getProgressPercentage(checkInTimeLeft);
+
+    // Dados Mock para Histórico
+    const checkInHistoryData = [
+        { date: '2025-10-16', time: '14:30', content: 'Confirmado' },
+        { date: '2025-10-13', time: '09:15', content: 'Confirmado' },
+        { date: '2025-10-10', time: '18:45', content: 'Confirmado' }
+    ];
+
+    const checkInHistoryHtml = checkInHistoryData.map(note => `
+        <div class="flex items-center justify-between text-sm">
+            <div class="flex items-center gap-2">
+                <i class="fas fa-check-circle text-green-600"></i>
+                <span class="text-[var(--azul-marinho-escuro)] opacity-70">${new Date(note.date).toLocaleDateString('pt-BR')} ${note.time}</span>
+            </div>
+            <span class="px-2 py-0.5 bg-green-100 text-green-700 rounded-full text-xs font-semibold">${note.content}</span>
+        </div>
+    `).join('');
+    
+    // Substituindo as variáveis Tailwind primárias (primary, primary-light) 
+    // pelas variáveis CSS que você definiu (var(--azul-marinho), var(--azul-claro))
+    
+    return `
+        <div class="bg-[var(--branco)] rounded-xl border-2 border-[var(--azul-claro)] p-6">
+            <div class="flex items-start justify-between mb-6">
+                <div class="flex items-center gap-3">
+                    <i class="fas fa-clock text-2xl text-[var(--azul-marinho)]"></i>
+                    <div>
+                        <h3 class="text-[var(--azul-marinho-escuro)] mb-1 font-semibold">Check-in de Segurança</h3>
+                        <p class="text-sm text-[var(--azul-marinho-escuro)] opacity-60">Confirme sua segurança a cada 72 horas</p>
+                    </div>
+                </div>
+                <span id="checkin-status-badge" class="px-3 py-1 bg-green-100 text-green-700 rounded-full text-xs font-semibold">Ativo</span>
+            </div>
+
+            <div class="mb-6">
+                <div class="flex items-center justify-between mb-2">
+                    <span class="text-sm text-[var(--azul-marinho-escuro)] opacity-70">Tempo até próximo check-in</span>
+                    <span id="checkin-timer-display" class="text-lg font-bold text-[var(--azul-marinho-escuro)]">${timeString}</span>
+                </div>
+                <div class="h-2 bg-gray-200 rounded-full overflow-hidden">
+                    <div id="checkin-progress-bar" class="h-full bg-[var(--azul-marinho)] transition-all duration-1000" style="width: ${progressPercentage}%;"></div>
+                </div>
+            </div>
+            
+            <button id="performCheckInBtn" onclick="performCheckIn()" class="w-full bg-[var(--azul-marinho)] hover:bg-[var(--azul-marinho-escuro)] text-[var(--branco)] py-3 rounded-lg font-semibold transition-colors">
+                <i class="fas fa-check mr-2"></i> Confirmar que Estou Segura
+            </button>
+
+            <div class="pt-4 border-t border-[var(--azul-claro)] mt-4">
+                <p class="text-xs text-[var(--azul-marinho-escuro)] opacity-60 mb-3">Histórico de Check-ins Recentes</p>
+                <div class="space-y-2">${checkInHistoryHtml}</div>
+            </div>
+
+            <div class="mt-4 p-3 bg-orange-50 border border-orange-200 rounded-lg">
+                <p class="text-xs text-orange-900"><strong>Importante:</strong> Se você não confirmar sua segurança em até 72 horas, seus contatos de emergência serão notificados.</p>
+            </div>
+        </div>
+    `;
+}
+
+/**
+ * Função de suporte para renderizar cada item do sensor de forma limpa
+ */
+function renderSensorItem(name, description, icon, sensitivity) {
+    return `
+        <div class="flex justify-between items-center p-3 bg-gray-50 rounded-lg hover:bg-gray-100 transition-colors">
+            <div class="flex items-center gap-3">
+                <i class="fas ${icon} text-primary text-xl"></i>
+                <div>
+                    <p class="font-semibold text-primary">${name} <span class="text-green-600 font-semibold text-sm ml-2">Ativo</span></p>
+                    <p class="text-xs text-gray-600">${description}</p>
+                    <div class="h-1 bg-gray-300 rounded-full overflow-hidden mt-1" style="width: 100px;">
+                        <div class="h-full bg-primary" style="width: ${sensitivity}%;"></div>
+                    </div>
+                </div>
+            </div>
+            <button onclick="testSensor('${name}')" class="px-4 py-2 border border-primary text-primary rounded-lg hover:bg-primary-light transition-colors text-sm font-semibold">
+                Testar
+            </button>
+        </div>
+    `;
+}
+
+/**
+ * Renderiza o bloco completo da Detecção Automática.
+ * @returns {string} O HTML formatado do componente.
+ */
+function renderAutomaticDetection() {
+    return `
+        <div class="bg-white rounded-xl border-2 border-primary-light p-6">
+            <div class="flex items-center gap-3 mb-6">
+                <div class="bg-primary-light p-3 rounded-full">
+                    <i class="fas fa-robot text-primary text-xl"></i>
+                </div>
+                <h3 class="text-xl font-bold text-primary">Detecção Automática</h3>
+                <span class="ml-auto px-3 py-1 bg-[var(--azul-marinho-escuro)] text-[var(--branco)] rounded-full text-xs font-semibold">4/4 Ativos</span>
+            </div>
+            
+            <div class="mb-4 p-3 bg-blue-50 border border-blue-200 rounded-lg">
+                <p class="text-sm text-blue-900 mb-2"><strong>Como funciona:</strong> Os sensores monitoram automaticamente padrões que podem indicar situações de perigo.</p>
+                <p class="text-sm text-blue-900">Quando acionados, você terá <strong>60 segundos</strong> para confirmar que está segura.</p>
+            </div>
+            
+            <div class="space-y-3">
+                ${renderSensorItem('Detector de Movimento Brusco', 'Detecta movimentos súbitos ou quedas do dispositivo', 'fa-bolt', 77)}
+                ${renderSensorItem('Detector de Sons Altos', 'Identifica gritos, sons altos ou vozes agressivas', 'fa-volume-up', 80)}
+                ${renderSensorItem('Detector de Queda', 'Detecta quedas bruscas que podem indicar perigo', 'fa-arrow-down', 70)}
+                ${renderSensorItem('Botão de Pânico por Agitação', 'Agite o celular 3 vezes rapidamente para disparar alerta', 'fa-mobile-alt', 85)}
+            </div>
+        </div>
+    `;
+}
+
+// =========================================================
+// RENDERIZAÇÃO DE PÁGINAS
+// =========================================================
 
 // Central de Segurança
 function renderSecurityPage() {
+    // Note: Esta função junta os blocos para formar o layout da página
     return `
-        <!-- Header da Central -->
-        <div class="bg-gradient-to-r from-primary-dark to-primary text-white rounded-xl p-8 border-2 border-primary mb-6">
+        <div class="bg-gradient-to-r from-[var(--azul-marinho-escuro)] to-[var(--azul-marinho)] text-[var(--branco)] rounded-xl p-8 border-2 border-[var(--azul-marinho-escuro)] mb-6">
+            
             <div class="flex justify-between items-start mb-6">
                 <div class="flex gap-4 items-center">
-                    <div class="bg-white p-4 rounded-full">
-                        <i class="fas fa-shield-alt text-3xl text-primary"></i>
+                    <div class="bg-[var(--branco)] p-4 rounded-full">
+                        <i class="fas fa-shield-alt text-3xl text-[var(--azul-marinho)]"></i>
                     </div>
                     <div>
                         <h2 class="text-2xl font-bold mb-2">Central de Segurança</h2>
-                        <p class="text-primary-light">Sistema de proteção integrado e monitoramento 24/7</p>
+                        <p class="text-[var(--azul-claro)]">Sistema de proteção integrado e monitoramento 24/7</p>
                     </div>
                 </div>
-                <span class="px-4 py-2 bg-green-100 text-green-700 rounded-full text-sm font-semibold border border-green-200">
+                <span class="px-4 py-2 bg-green-500 text-[var(--branco)] rounded-full text-sm font-semibold border-0">
                     Todos os Sistemas Ativos
                 </span>
             </div>
             
-            <!-- Status Rápido -->
             <div class="grid grid-cols-1 md:grid-cols-4 gap-4">
                 <div class="bg-white/10 backdrop-blur-sm rounded-lg p-4 border border-white/20">
-                    <div class="flex items-center gap-3 mb-2">
-                        <i class="fas fa-activity text-primary-light"></i>
-                        <span class="text-sm text-primary-light">Sensores</span>
-                    </div>
-                    <p class="text-3xl font-bold mb-1">4/4</p>
-                    <p class="text-xs text-primary-light">Ativos e monitorando</p>
+                    <div class="flex items-center gap-3 mb-2"><i class="fas fa-microchip text-[var(--azul-claro)]"></i><span class="text-sm text-[var(--azul-claro)]">Sensores</span></div>
+                    <p class="text-3xl font-bold mb-1">4/4</p><p class="text-xs text-[var(--azul-claro)]">Ativos e monitorando</p>
                 </div>
                 <div class="bg-white/10 backdrop-blur-sm rounded-lg p-4 border border-white/20">
-                    <div class="flex items-center gap-3 mb-2">
-                        <i class="fas fa-clock text-primary-light"></i>
-                        <span class="text-sm text-primary-light">Check-in</span>
-                    </div>
-                    <p class="text-3xl font-bold mb-1">71h</p>
-                    <p class="text-xs text-primary-light">Próximo em 71 horas</p>
+                    <div class="flex items-center gap-3 mb-2"><i class="fas fa-clock text-[var(--azul-claro)]"></i><span class="text-sm text-[var(--azul-claro)]">Check-in</span></div>
+                    <p class="text-3xl font-bold mb-1">${formatTimeRemaining(checkInTimeLeft)}</p><p class="text-xs text-[var(--azul-claro)]">Próximo em ${formatTimeRemaining(CHECKIN_INTERVAL_SECONDS)}</p>
                 </div>
                 <div class="bg-white/10 backdrop-blur-sm rounded-lg p-4 border border-white/20">
-                    <div class="flex items-center gap-3 mb-2">
-                        <i class="fas fa-shield-alt text-primary-light"></i>
-                        <span class="text-sm text-primary-light">Contatos</span>
-                    </div>
-                    <p class="text-3xl font-bold mb-1">3</p>
-                    <p class="text-xs text-primary-light">Contatos de emergência</p>
+                    <div class="flex items-center gap-3 mb-2"><i class="fas fa-user-friends text-[var(--azul-claro)]"></i><span class="text-sm text-[var(--azul-claro)]">Contatos</span></div>
+                    <p class="text-3xl font-bold mb-1">${emergencyContacts.length}</p><p class="text-xs text-[var(--azul-claro)]">Contatos de emergência</p>
                 </div>
                 <div class="bg-white/10 backdrop-blur-sm rounded-lg p-4 border border-white/20">
-                    <div class="flex items-center gap-3 mb-2">
-                        <i class="fas fa-mobile-alt text-primary-light"></i>
-                        <span class="text-sm text-primary-light">Localização</span>
-                    </div>
-                    <p class="text-3xl font-bold mb-1">ON</p>
-                    <p class="text-xs text-primary-light">GPS compartilhado</p>
+                    <div class="flex items-center gap-3 mb-2"><i class="fas fa-map-marker-alt text-[var(--azul-claro)]"></i><span class="text-sm text-[var(--azul-claro)]">Localização</span></div>
+                    <p class="text-3xl font-bold mb-1">ON</p><p class="text-xs text-[var(--azul-claro)]">GPS compartilhado</p>
                 </div>
             </div>
         </div>
 
-        <!-- Painel de Emergência -->
-        <div class="bg-white rounded-xl border-2 border-primary-light p-6 mb-6">
-            <div class="flex items-center gap-3 mb-6">
-                <div class="bg-primary-light p-3 rounded-full">
-                    <i class="fas fa-exclamation-triangle text-primary text-xl"></i>
+        <div class="bg-gradient-to-r from-[var(--azul-marinho-escuro)] to-[var(--azul-marinho)] text-[var(--branco)] rounded-xl p-8 border-2 border-[var(--azul-marinho-escuro)] mb-6"">
+            <div class="flex justify-between items-start mb-6">
+                <div class="flex items-center gap-3">
+                    <i class="fas fa-shield-alt text-2xl text-[var(--branco)]"></i>
+                    <h3 class="text-xl font-bold text-[var(--branco)]">Ações Rápidas</h3>
                 </div>
-                <h3 class="text-xl font-bold text-primary">Ações de Emergência</h3>
+                <span class="px-3 py-1 bg-green-100 text-green-700 rounded-full text-xs font-semibold"><i class="fas fa-location-arrow"></i> Localização Ativa</span>
             </div>
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                <button onclick="showEmergencyModal()" class="bg-red-600 hover:bg-red-700 text-white rounded-lg p-6 flex flex-col items-center gap-2 transition-colors">
+            
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                <button id="security-alert-imediato-btn" onclick="showEmergencyModal()" class="bg-red-600 hover:bg-red-700 text-[var(--branco)] rounded-lg p-6 flex flex-col items-center gap-2 transition-colors">
                     <i class="fas fa-exclamation-triangle text-3xl"></i>
-                    <span class="font-semibold text-lg">Alerta Imediato</span>
-                    <small class="text-sm opacity-90">Notificar contatos agora</small>
+                    <span class="font-semibold text-lg">Alerta de Emergência</span>
+                    <small class="text-sm opacity-90">Notifica contatos de confiança</small>
                 </button>
-                <button onclick="showToast('Gravação de áudio iniciada', 'info')" class="border-2 border-primary text-primary hover:bg-primary-light rounded-lg p-6 flex flex-col items-center gap-2 transition-colors">
-                    <i class="fas fa-microphone text-3xl"></i>
-                    <span class="font-semibold text-lg">Gravar Áudio</span>
-                    <small class="text-sm opacity-70">Gravar evidência sonora</small>
+                <button id="security-alert-silencioso-btn" onclick="showToast('Alerta silencioso ativado', 'info', 'Monitoramento discreto iniciado.')" class="bg-orange-600 hover:bg-orange-700 text-[var(--branco)] rounded-lg p-6 flex flex-col items-center gap-2 transition-colors">
+                    <i class="fas fa-bell-slash text-3xl"></i>
+                    <span class="font-semibold text-lg">Alerta Silencioso</span>
+                    <small class="text-sm opacity-90">Monitora sem notificação</small>
                 </button>
+                <button id="security-chamar-190-btn" onclick="showToast('Discando 190...', 'info', 'Chamada de emergência sendo iniciada')" class="bg-[var(--azul-claro)] hover:bg-[var(--azul-claro-houver)] text-[var(--azul-marinho)] rounded-lg p-6 flex flex-col items-center gap-2 transition-colors">
+                    <i class="fas fa-phone text-3xl"></i>
+                    <span class="font-semibold text-lg">Ligar 190</span>
+                    <small class="text-sm opacity-70">Polícia Militar</small>
+                </button>
+            </div>
+            
+            <div class="mt-6 pt-6 border-t border-gray-200">
+                <div class="grid grid-cols-4 gap-4 text-center text-sm text-[var(--branco)]">
+                    <div><p class="text-xs text-[var(--azul-claro)]">Último Check-in</p><p class="font-semibold">Há 5 minutos</p></div>
+                    <div><p class="text-xs text-[var(--azul-claro)]">Contatos Ativos</p><p class="font-semibold">${emergencyContacts.length} pessoas</p></div>
+                    <div><p class="text-xs text-[var(--azul-claro)]">Sensores Ativos</p><p class="font-semibold">4/4</p></div>
+                    <div><button class="text-[var(--azul-claro)] hover:text-[var(--branco)] opacity-80">Pausar Localização</button></div>
+                </div>
             </div>
         </div>
 
-        <!-- Grid com Check-in e Detecção -->
         <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-6">
-            <!-- Check-in de Segurança -->
-            <div class="bg-white rounded-xl border-2 border-primary-light p-6">
-                <div class="flex items-center gap-3 mb-6">
-                    <div class="bg-primary-light p-3 rounded-full">
-                        <i class="fas fa-check-circle text-primary text-xl"></i>
-                    </div>
-                    <h3 class="text-xl font-bold text-primary">Check-in de Segurança</h3>
-                </div>
-                <div class="text-center py-6">
-                    <div class="text-6xl font-bold text-primary mb-3" id="checkInTimer">71:00:00</div>
-                    <p class="text-gray-600 mb-6">Tempo restante para próximo check-in obrigatório</p>
-                    <button onclick="performCheckIn()" class="bg-primary hover:bg-primary-dark text-white px-6 py-3 rounded-lg font-semibold transition-colors">
-                        <i class="fas fa-check mr-2"></i>Fazer Check-in Agora
-                    </button>
-                </div>
-                <div class="bg-blue-50 border border-blue-200 rounded-lg p-4 mt-6">
-                    <p class="text-sm text-blue-900">
-                        <strong class="block mb-2">Como funciona?</strong>
-                        A cada 72 horas você deve confirmar que está segura. Se não confirmar, um alerta automático será enviado.
-                    </p>
-                </div>
-            </div>
-
-            <!-- Detecção Automática -->
-            <div class="bg-white rounded-xl border-2 border-primary-light p-6">
-                <div class="flex items-center gap-3 mb-6">
-                    <div class="bg-primary-light p-3 rounded-full">
-                        <i class="fas fa-robot text-primary text-xl"></i>
-                    </div>
-                    <h3 class="text-xl font-bold text-primary">Detecção Automática</h3>
-                </div>
-                <div class="space-y-3">
-                    <div class="flex justify-between items-center p-3 bg-gray-50 rounded-lg hover:bg-gray-100 transition-colors">
-                        <div class="flex items-center gap-3">
-                            <i class="fas fa-bolt text-primary text-xl"></i>
-                            <div>
-                                <p class="font-semibold text-primary">Movimento Brusco</p>
-                                <p class="text-xs text-gray-600">Detecta agitação repentina</p>
-                            </div>
-                        </div>
-                        <button onclick="testSensor('Movimento Brusco')" class="px-4 py-2 border border-primary text-primary rounded-lg hover:bg-primary-light transition-colors text-sm font-semibold">
-                            Testar
-                        </button>
-                    </div>
-                    <div class="flex justify-between items-center p-3 bg-gray-50 rounded-lg hover:bg-gray-100 transition-colors">
-                        <div class="flex items-center gap-3">
-                            <i class="fas fa-volume-up text-primary text-xl"></i>
-                            <div>
-                                <p class="font-semibold text-primary">Som Alto</p>
-                                <p class="text-xs text-gray-600">Detecta gritos e sons altos</p>
-                            </div>
-                        </div>
-                        <button onclick="testSensor('Som Alto')" class="px-4 py-2 border border-primary text-primary rounded-lg hover:bg-primary-light transition-colors text-sm font-semibold">
-                            Testar
-                        </button>
-                    </div>
-                    <div class="flex justify-between items-center p-3 bg-gray-50 rounded-lg hover:bg-gray-100 transition-colors">
-                        <div class="flex items-center gap-3">
-                            <i class="fas fa-arrow-down text-primary text-xl"></i>
-                            <div>
-                                <p class="font-semibold text-primary">Queda Detectada</p>
-                                <p class="text-xs text-gray-600">Detecta quedas bruscas</p>
-                            </div>
-                        </div>
-                        <button onclick="testSensor('Queda Detectada')" class="px-4 py-2 border border-primary text-primary rounded-lg hover:bg-primary-light transition-colors text-sm font-semibold">
-                            Testar
-                        </button>
-                    </div>
-                    <div class="flex justify-between items-center p-3 bg-gray-50 rounded-lg hover:bg-gray-100 transition-colors">
-                        <div class="flex items-center gap-3">
-                            <i class="fas fa-mobile-alt text-primary text-xl"></i>
-                            <div>
-                                <p class="font-semibold text-primary">Agitação do Celular</p>
-                                <p class="text-xs text-gray-600">Detecta balanço do telefone</p>
-                            </div>
-                        </div>
-                        <button onclick="testSensor('Agitação do Celular')" class="px-4 py-2 border border-primary text-primary rounded-lg hover:bg-primary-light transition-colors text-sm font-semibold">
-                            Testar
-                        </button>
-                    </div>
-                </div>
-            </div>
+            ${renderSafetyCheckIn()}
+            ${renderAutomaticDetection()} 
         </div>
 
-        <!-- Dicas de Segurança -->
         <div class="bg-white rounded-xl border-2 border-primary-light p-6">
             <h3 class="text-xl font-bold text-primary mb-4">Dicas de Segurança</h3>
             <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -278,60 +305,90 @@ function renderSecurityPage() {
 }
 
 function initSecurityPage() {
-    // Atualizar timer de check-in
-    updateCheckInTimer();
-    setInterval(updateCheckInTimer, 1000);
-}
-
-function updateCheckInTimer() {
-    const hours = Math.floor(checkInTimeLeft / 3600);
-    const minutes = Math.floor((checkInTimeLeft % 3600) / 60);
-    const seconds = checkInTimeLeft % 60;
+    // Inicia a atualização do timer a cada segundo
+    if (countdownInterval) clearInterval(countdownInterval); // Limpa o timer anterior (seja sensor ou check-in)
     
-    const timerElement = document.getElementById('checkInTimer');
-    if (timerElement) {
-        timerElement.textContent = `${String(hours).padStart(2, '0')}:${String(minutes).padStart(2, '0')}:${String(seconds).padStart(2, '0')}`;
-    }
+    let checkInTimerInterval = setInterval(() => {
+        checkInTimeLeft--;
+        
+        // Verifica se o tempo esgotou (alerta)
+        if (checkInTimeLeft < 0) {
+            clearInterval(checkInTimerInterval);
+            checkInTimeLeft = CHECKIN_INTERVAL_SECONDS; // Resetar para o próximo ciclo
+            showToast('Alerta de Check-in!', 'error', 'O prazo de 72 horas expirou. Alerta enviado aos contatos.');
+            // Precisa re-iniciar o timer após o alerta
+            initSecurityPage(); 
+            return;
+        }
+        
+        // Atualiza a visualização no bloco de Check-in (formato da imagem)
+        const timerDisplay = document.getElementById('checkin-timer-display');
+        const progressBar = document.getElementById('checkin-progress-bar');
+        
+        if (timerDisplay) timerDisplay.textContent = formatTimeRemaining(checkInTimeLeft);
+        if (progressBar) progressBar.style.width = getProgressPercentage(checkInTimeLeft) + '%';
+        
+    }, 1000);
     
-    checkInTimeLeft--;
-    if (checkInTimeLeft < 0) {
-        checkInTimeLeft = 72 * 60 * 60;
-    }
+    // Usa a variável global para o check-in, mas pode ser limpa por outra função
+    countdownInterval = checkInTimerInterval; 
 }
 
 function performCheckIn() {
-    checkInTimeLeft = 72 * 60 * 60;
+    checkInTimeLeft = CHECKIN_INTERVAL_SECONDS; // Resetar para 72 horas
     showToast('Check-in realizado com sucesso!', 'success', 'Próximo check-in em 72 horas');
+    
+    // Não precisa recarregar a página, a função initSecurityPage (rodando via setInterval)
+    // já se encarregará de atualizar o display no próximo segundo.
 }
 
 function testSensor(sensorName) {
     showSensorModal(sensorName);
 }
 
+// =========================================================
+// RENDERIZAÇÃO DE OUTRAS PÁGINAS
+// =========================================================
+
 // Perfil
 function renderProfilePage() {
+    // Definindo as variáveis para o usuário (pode vir de um estado real da aplicação)
+    const userName = "Mariana Moenchiali";
+    const userEmail = "marimoenchiali@email.com";
+    const userPhone = "+55 11 98765-4321";
+    const userBirthDate = "15/05/1990";
+    const userAddress = "Rua Example, 123 - São Paulo, SP";
+    const userSince = "Janeiro 2025";
+    const lastPasswordChange = "15 de Janeiro de 2025";
+    
+    // Contagem de estatísticas (usando os arrays mock)
+    const stats = [
+        { count: emergencyContacts.length, label: 'Contatos de Emergência', icon: 'fas fa-users' },
+        { count: 47, label: 'Check-ins Realizados', icon: 'fas fa-check-circle' },
+        { count: notes.length, label: 'Anotações Salvas', icon: 'fas fa-file-alt' },
+        { count: 5, label: 'Conversas com Psicólogo', icon: 'fas fa-comment-dots' }
+    ];
+
     return `
-        <!-- Card de Perfil Principal -->
-        <div class="bg-white rounded-xl border-2 border-primary-light overflow-hidden mb-6">
-            <!-- Banner -->
-            <div class="h-32 bg-gradient-to-r from-primary-dark to-primary"></div>
+        <div class="bg-white rounded-xl border-2 border-[var(--azul-claro)] overflow-hidden shadow-lg mb-8">
             
-            <!-- Informações do Perfil -->
+            <div class="h-32 bg-gradient-to-r from-[var(--azul-marinho-escuro)] to-[var(--azul-marinho)]"></div>
+            
             <div class="px-8 pb-8">
                 <div class="flex justify-between items-end -mt-16 mb-6">
                     <div class="flex gap-4 items-end">
                         <div class="relative">
-                            <img src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=400&h=400&fit=crop" 
-                                 alt="João Moenchiali" 
-                                 class="w-32 h-32 rounded-full border-4 border-white shadow-lg">
+                            <img src="./assets/img/foto perfil.png" 
+                                    alt="${userName}" 
+                                    class="w-32 h-32 rounded-full border-4 border-white shadow-lg object-cover">
                             <button onclick="showToast('Selecionando nova foto...', 'info')" 
-                                    class="absolute bottom-0 right-0 w-10 h-10 rounded-full bg-primary hover:bg-primary-dark text-white flex items-center justify-center transition-colors">
-                                <i class="fas fa-camera"></i>
+                                    class="absolute bottom-0 right-0 w-8 h-8 rounded-full bg-[var(--azul-marinho)] hover:bg-[var(--azul-marinho-escuro)] text-[var(--branco)] flex items-center justify-center text-sm transition-colors">
+                                <i class="fas fa-camera text-"></i>
                             </button>
                         </div>
                         <div class="mb-2">
-                            <h2 class="text-2xl font-bold text-primary mb-1">João Moenchiali</h2>
-                            <p class="text-primary/60">Usuário desde Janeiro 2025</p>
+                            <h2 class="text-2xl font-bold text-[var(--azul-marinho-escuro)] mb-1">${userName}</h2>
+                            <p class="text-primary/60">Usuário desde ${userSince}</p>
                         </div>
                     </div>
                     <span class="px-4 py-2 bg-green-100 text-green-700 rounded-full text-sm font-semibold border border-green-200 mb-2">
@@ -339,58 +396,68 @@ function renderProfilePage() {
                     </span>
                 </div>
 
-                <!-- Estatísticas -->
-                <div class="grid grid-cols-1 md:grid-cols-4 gap-4">
-                    <div class="p-4 bg-primary-light/30 rounded-lg text-center">
-                        <p class="text-3xl font-bold text-primary mb-1">3</p>
-                        <p class="text-xs text-primary/60">Contatos de Emergência</p>
-                    </div>
-                    <div class="p-4 bg-primary-light/30 rounded-lg text-center">
-                        <p class="text-3xl font-bold text-primary mb-1">47</p>
-                        <p class="text-xs text-primary/60">Check-ins Realizados</p>
-                    </div>
-                    <div class="p-4 bg-primary-light/30 rounded-lg text-center">
-                        <p class="text-3xl font-bold text-primary mb-1">12</p>
-                        <p class="text-xs text-primary/60">Anotações Salvas</p>
-                    </div>
-                    <div class="p-4 bg-primary-light/30 rounded-lg text-center">
-                        <p class="text-3xl font-bold text-primary mb-1">5</p>
-                        <p class="text-xs text-primary/60">Conversas com Psicólogo</p>
-                    </div>
+                <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mt-6">
+                    ${stats.map(stat => `
+                        <div class="p-4 bg-[var(--azul-claro)] rounded-lg text-center border border-[var(--azul-claro)]/50">
+                            <p class="text-3xl font-bold text-primary mb-1">${stat.count}</p>
+                            <p class="text-xs text-primary/80">${stat.label}</p>
+                        </div>
+                    `).join('')}
                 </div>
             </div>
         </div>
 
-        <!-- Informações Pessoais -->
-        <div class="bg-white rounded-xl border-2 border-primary-light p-6 mb-6">
-            <div class="flex items-center gap-3 mb-6">
-                <div class="bg-primary-light p-3 rounded-full">
-                    <i class="fas fa-user text-primary text-xl"></i>
+        <div class="bg-white rounded-xl border-2 border-primary-light p-6 mb-8">
+            <div class="flex items-center gap-3 mb-6 border-b border-primary-light pb-4">
+                <div class="w-10 h-10 rounded-full bg-primary-light text-primary flex items-center justify-center text-xl">
+                    <i class="fas fa-user"></i>
                 </div>
                 <h3 class="text-xl font-bold text-primary">Informações Pessoais</h3>
             </div>
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-x-6 gap-y-5 mb-8">
+                
                 <div>
                     <label class="block text-sm font-medium text-primary mb-2">Nome Completo</label>
-                    <input type="text" value="João Moenchiali" class="w-full px-4 py-2 border border-primary-light rounded-lg focus:outline-none focus:border-primary">
+                    <div class="relative">
+                        <input type="text" value="${userName}" class="w-full px-4 py-3 border border-primary-light rounded-lg focus:outline-none focus:border-primary">
+                        <i class="fas fa-user absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400"></i>
+                    </div>
                 </div>
+                
                 <div>
                     <label class="block text-sm font-medium text-primary mb-2">Email</label>
-                    <input type="email" value="joaomoenchiali@email.com" class="w-full px-4 py-2 border border-primary-light rounded-lg focus:outline-none focus:border-primary">
+                    <div class="relative">
+                        <input type="email" value="${userEmail}" class="w-full px-4 py-3 border border-primary-light rounded-lg focus:outline-none focus:border-primary">
+                        <i class="fas fa-envelope absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400"></i>
+                    </div>
                 </div>
+                
                 <div>
                     <label class="block text-sm font-medium text-primary mb-2">Telefone</label>
-                    <input type="tel" value="+55 11 98765-4321" class="w-full px-4 py-2 border border-primary-light rounded-lg focus:outline-none focus:border-primary">
+                    <div class="relative">
+                        <input type="tel" value="${userPhone}" class="w-full px-4 py-3 border border-primary-light rounded-lg focus:outline-none focus:border-primary">
+                        <i class="fas fa-phone absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400"></i>
+                    </div>
                 </div>
+                
                 <div>
                     <label class="block text-sm font-medium text-primary mb-2">Data de Nascimento</label>
-                    <input type="date" value="1990-05-15" class="w-full px-4 py-2 border border-primary-light rounded-lg focus:outline-none focus:border-primary">
+                    <div class="relative">
+                        <input type="text" value="${userBirthDate}" class="w-full px-4 py-3 border border-primary-light rounded-lg focus:outline-none focus:border-primary" onfocus="(this.type='date')" onblur="(this.type='text')">
+                        <i class="fas fa-calendar-alt absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400"></i>
+                    </div>
                 </div>
+                
                 <div class="md:col-span-2">
                     <label class="block text-sm font-medium text-primary mb-2">Endereço</label>
-                    <input type="text" value="Rua Example, 123 - São Paulo, SP" class="w-full px-4 py-2 border border-primary-light rounded-lg focus:outline-none focus:border-primary">
+                    <div class="relative">
+                        <input type="text" value="${userAddress}" class="w-full px-4 py-3 border border-primary-light rounded-lg focus:outline-none focus:border-primary">
+                        <i class="fas fa-map-marker-alt absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400"></i>
+                    </div>
                 </div>
             </div>
+            
             <div class="flex gap-3 pt-6 border-t border-primary-light">
                 <button onclick="showToast('Alterações salvas com sucesso!', 'success')" class="px-6 py-2 bg-primary hover:bg-primary-dark text-white rounded-lg font-semibold transition-colors">
                     Salvar Alterações
@@ -401,24 +468,26 @@ function renderProfilePage() {
             </div>
         </div>
 
-        <!-- Segurança -->
         <div class="bg-white rounded-xl border-2 border-primary-light p-6">
-            <div class="flex items-center gap-3 mb-6">
-                <div class="bg-primary-light p-3 rounded-full">
-                    <i class="fas fa-lock text-primary text-xl"></i>
+            <div class="flex items-center gap-3 mb-6 border-b border-primary-light pb-4">
+                <div class="w-10 h-10 rounded-full bg-primary-light text-primary flex items-center justify-center text-xl">
+                    <i class="fas fa-lock"></i>
                 </div>
                 <h3 class="text-xl font-bold text-primary">Segurança da Conta</h3>
             </div>
+            
             <div class="space-y-4">
                 <div class="flex justify-between items-center p-4 bg-gray-50 rounded-lg">
                     <div>
                         <p class="text-sm font-semibold text-primary mb-1">Senha</p>
-                        <p class="text-xs text-primary/60">Última alteração: 15 de Janeiro de 2025</p>
+                        <p class="text-xs text-primary/60">Última alteração: ${lastPasswordChange}</p>
                     </div>
-                    <button onclick="showToast('Redirecionando para alteração de senha...', 'info')" class="px-4 py-2 border border-primary text-primary rounded-lg hover:bg-primary-light text-sm font-semibold transition-colors">
+                    <button onclick="showToast('Redirecionando para alteração de senha...', 'info')" 
+                            class="px-4 py-2 border border-primary text-primary rounded-lg hover:bg-primary-light text-sm font-semibold transition-colors">
                         Alterar Senha
                     </button>
                 </div>
+                
                 <div class="flex justify-between items-center p-4 bg-gray-50 rounded-lg">
                     <div>
                         <p class="text-sm font-semibold text-primary mb-1">Autenticação em Dois Fatores</p>
@@ -427,6 +496,17 @@ function renderProfilePage() {
                     <span class="px-4 py-2 bg-orange-100 text-orange-700 rounded-full text-sm font-semibold border border-orange-200">
                         Desativado
                     </span>
+                </div>
+
+                <div class="flex justify-between items-center p-4 bg-gray-50 rounded-lg">
+                    <div>
+                        <p class="text-sm font-semibold text-primary mb-1">Sessões Ativas</p>
+                        <p class="text-xs text-primary/60">2 dispositivos conectados</p>
+                    </div>
+                    <button onclick="showToast('Gerenciando sessões ativas...', 'info')" 
+                            class="px-4 py-2 border border-primary text-primary rounded-lg hover:bg-primary-light text-sm font-semibold transition-colors">
+                        Gerenciar
+                    </button>
                 </div>
             </div>
         </div>
@@ -494,8 +574,8 @@ function renderChatPage() {
             </div>
             <div class="p-4 border-t border-primary-light flex gap-3">
                 <input type="text" placeholder="Digite sua mensagem..." id="chatInput" 
-                       class="flex-1 px-4 py-2 border border-primary-light rounded-lg focus:outline-none focus:border-primary"
-                       onkeypress="if(event.key==='Enter') sendMessage()">
+                        class="flex-1 px-4 py-2 border border-primary-light rounded-lg focus:outline-none focus:border-primary"
+                        onkeypress="if(event.key==='Enter') sendMessage()">
                 <button onclick="sendMessage()" class="px-6 py-2 bg-primary hover:bg-primary-dark text-white rounded-lg font-semibold transition-colors">
                     <i class="fas fa-paper-plane"></i>
                 </button>
@@ -514,6 +594,7 @@ function initChatPage() {
 function sendMessage() {
     const input = document.getElementById('chatInput');
     if (input && input.value.trim()) {
+        // Lógica de envio da mensagem aqui...
         showToast('Mensagem enviada!', 'success');
         input.value = '';
     }
@@ -618,7 +699,80 @@ function renderSettingsPage() {
     `;
 }
 
-// Sistema de Emergência
+// =========================================================
+// RENDERIZAÇÃO E NAVEGAÇÃO
+// =========================================================
+
+// Inicialização
+document.addEventListener('DOMContentLoaded', function() {
+    initNavigation();
+    initEmergencyButtons();
+    renderPage('security');
+});
+
+// Sistema de Navegação
+function initNavigation() {
+    const navItems = document.querySelectorAll('.item-nav-sidebar');
+    navItems.forEach(item => {
+        item.addEventListener('click', function() {
+            const page = this.dataset.page;
+            
+            // Limpar timer anterior para não ter conflito de setInterval
+            if (countdownInterval) clearInterval(countdownInterval);
+            
+            // Atualizar estado ativo
+            navItems.forEach(nav => {
+                // Aqui você deve usar as classes CSS corretas que o Tailwind gera para 'active'
+                nav.classList.remove('active'); 
+            });
+            this.classList.add('active');
+            
+            // Renderizar página
+            renderPage(page);
+        });
+    });
+    
+    // Ativar botão de navegação da página inicial ('security')
+    const initialActiveButton = document.querySelector(`.item-nav-sidebar[data-page="${currentPage}"]`);
+    if (initialActiveButton) initialActiveButton.classList.add('active');
+}
+
+// Renderizar Páginas
+function renderPage(page) {
+    currentPage = page;
+    const pageContent = document.getElementById('pageContent');
+    const pageTitle = document.getElementById('pageTitle');
+    
+    const pages = {
+        'security': { title: 'Central de Segurança', render: renderSecurityPage, init: initSecurityPage },
+        'profile': { title: 'Perfil do Usuário', render: renderProfilePage, init: null },
+        'notes': { title: 'Anotações', render: renderNotesPage, init: null },
+        'chat': { title: 'Chat com o Psicólogo', render: renderChatPage, init: initChatPage },
+        // O HTML da sidebar usa 'emergency' para contatos.
+        'emergency': { title: 'Contatos de Emergência', render: renderEmergencyContactsPage, init: null },
+        'settings': { title: 'Configurações', render: renderSettingsPage, init: null }
+    };
+    
+    if (!pages[page]) {
+        console.error(`Página "${page}" não encontrada.`);
+        return;
+    }
+    
+    pageTitle.textContent = pages[page].title;
+    pageContent.innerHTML = pages[page].render();
+    
+    // Reinicializar eventos específicos da página
+    if (pages[page].init) {
+        pages[page].init();
+    }
+}
+
+
+// =========================================================
+// UTILITÁRIOS (TOASTS E MODAIS)
+// =========================================================
+
+// Sistema de Emergência (Botões Flutuantes e da Sidebar)
 function initEmergencyButtons() {
     document.getElementById('floatingEmergencyBtn').addEventListener('click', showEmergencyModal);
     document.getElementById('sidebarEmergencyBtn').addEventListener('click', showEmergencyModal);
@@ -648,13 +802,14 @@ function showSensorModal(sensorName) {
     modal.classList.remove('hidden');
     modal.classList.add('flex');
     
-    // Iniciar countdown
-    timeRemaining = 60;
-    updateSensorCountdown();
-    
+    // Limpa qualquer timer anterior (seja de check-in ou outro sensor)
     if (countdownInterval) {
         clearInterval(countdownInterval);
     }
+    
+    // Iniciar countdown
+    timeRemaining = 60;
+    updateSensorCountdown();
     
     countdownInterval = setInterval(() => {
         timeRemaining--;
@@ -690,6 +845,9 @@ function confirmSafe() {
     modal.classList.remove('flex');
     
     showToast('Obrigado por confirmar!', 'success', 'Sensor resetado. Continuamos monitorando sua segurança.');
+    
+    // Re-inicia o timer de check-in se estiver na página de segurança
+    if (currentPage === 'security') initSecurityPage();
 }
 
 function sendAlertNow() {
@@ -702,6 +860,9 @@ function sendAlertNow() {
     modal.classList.remove('flex');
     
     showToast('Alerta de emergência enviado!', 'error', 'Seus contatos foram notificados com sua localização.');
+    
+    // Re-inicia o timer de check-in se estiver na página de segurança
+    if (currentPage === 'security') initSecurityPage();
 }
 
 // Sistema de Toasts
@@ -755,10 +916,14 @@ window.addEventListener('click', function(event) {
     }
     
     if (event.target === sensorModal) {
+        // Se o modal do sensor for fechado, o timer deve ser parado
         if (countdownInterval) {
             clearInterval(countdownInterval);
         }
         sensorModal.classList.add('hidden');
         sensorModal.classList.remove('flex');
+        
+        // Re-inicia o timer de check-in se estiver na página de segurança
+        if (currentPage === 'security') initSecurityPage();
     }
 });
