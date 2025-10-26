@@ -388,7 +388,7 @@ function renderProfilePage() {
                         </div>
                         <div class="mb-2">
                             <h2 class="text-2xl font-bold text-[var(--azul-marinho-escuro)] mb-1">${userName}</h2>
-                            <p class="text-primary/60">Usuário desde ${userSince}</p>
+                            <p class="text-gray-600/60">Usuário desde ${userSince}</p>
                         </div>
                     </div>
                     <span class="px-4 py-2 bg-green-100 text-green-700 rounded-full text-sm font-semibold border border-green-200 mb-2">
@@ -398,100 +398,100 @@ function renderProfilePage() {
 
                 <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mt-6">
                     ${stats.map(stat => `
-                        <div class="p-4 bg-[var(--azul-claro)] rounded-lg text-center border border-[var(--azul-claro)]/50">
-                            <p class="text-3xl font-bold text-primary mb-1">${stat.count}</p>
-                            <p class="text-xs text-primary/80">${stat.label}</p>
+                        <div class="p-4 bg-[var(--azul-claro)] rounded-lg text-center border border-[var(--branco)]">
+                            <p class="text-3xl font-bold text-[var(--azul-marinho)] mb-1">${stat.count}</p>
+                            <p class="text-xs text-[var(--azul-marinho)]">${stat.label}</p>
                         </div>
                     `).join('')}
                 </div>
             </div>
         </div>
 
-        <div class="bg-white rounded-xl border-2 border-primary-light p-6 mb-8">
-            <div class="flex items-center gap-3 mb-6 border-b border-primary-light pb-4">
-                <div class="w-10 h-10 rounded-full bg-primary-light text-primary flex items-center justify-center text-xl">
+        <div class="bg-white rounded-xl border-2 border-[var(--azul-claro)] p-6 mb-8">
+            <div class="flex items-center gap-3 mb-6 border-b border-gray-600/30 pb-4">
+                <div class="w-10 h-10 rounded-full bg-[var(--azul-claro)] text-[var(--azul-marinho)] flex items-center justify-center text-xl">
                     <i class="fas fa-user"></i>
                 </div>
-                <h3 class="text-xl font-bold text-primary">Informações Pessoais</h3>
+                <h3 class="text-xl font-bold text-[var(--azul-marinho-escuro)]">Informações Pessoais</h3>
             </div>
             
             <div class="grid grid-cols-1 md:grid-cols-2 gap-x-6 gap-y-5 mb-8">
                 
                 <div>
-                    <label class="block text-sm font-medium text-primary mb-2">Nome Completo</label>
+                    <label class="block text-sm font-medium text-[var(--azul-marinho-escuro)] mb-2">Nome Completo</label>
                     <div class="relative">
-                        <input type="text" value="${userName}" class="w-full px-4 py-3 border border-primary-light rounded-lg focus:outline-none focus:border-primary">
-                        <i class="fas fa-user absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400"></i>
+                        <input type="text" value="${userName}" class="w-full px-4 py-3 border border-[var(--azul-claro)] rounded-lg focus:outline-none focus:border-[var(--azul-claro)]">
+                        <i class="fas fa-user absolute right-3 top-1/2 transform -translate-y-1/2 text-[var(--azul-claro-houver)]"></i>
                     </div>
                 </div>
                 
                 <div>
-                    <label class="block text-sm font-medium text-primary mb-2">Email</label>
+                    <label class="block text-sm font-medium text-[var(--azul-marinho-escuro)] mb-2">Email</label>
                     <div class="relative">
-                        <input type="email" value="${userEmail}" class="w-full px-4 py-3 border border-primary-light rounded-lg focus:outline-none focus:border-primary">
-                        <i class="fas fa-envelope absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400"></i>
+                        <input type="email" value="${userEmail}" class="w-full px-4 py-3 border border-[var(--azul-claro)] rounded-lg focus:outline-none focus:[var(--azul-claro)]">
+                        <i class="fas fa-envelope absolute right-3 top-1/2 transform -translate-y-1/2 text-[var(--azul-claro-houver)]"></i>
                     </div>
                 </div>
                 
                 <div>
-                    <label class="block text-sm font-medium text-primary mb-2">Telefone</label>
+                    <label class="block text-sm font-medium text-[var(--azul-marinho-escuro)] mb-2">Telefone</label>
                     <div class="relative">
-                        <input type="tel" value="${userPhone}" class="w-full px-4 py-3 border border-primary-light rounded-lg focus:outline-none focus:border-primary">
-                        <i class="fas fa-phone absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400"></i>
+                        <input type="tel" value="${userPhone}" class="w-full px-4 py-3 border border-[var(--azul-claro)] rounded-lg focus:outline-none focus:[var(--azul-claro)]">
+                        <i class="fas fa-phone absolute right-3 top-1/2 transform -translate-y-1/2 text-[var(--azul-claro-houver)]"></i>
                     </div>
                 </div>
                 
                 <div>
-                    <label class="block text-sm font-medium text-primary mb-2">Data de Nascimento</label>
+                    <label class="block text-sm font-medium text-[var(--azul-marinho-escuro)] mb-2">Data de Nascimento</label>
                     <div class="relative">
-                        <input type="text" value="${userBirthDate}" class="w-full px-4 py-3 border border-primary-light rounded-lg focus:outline-none focus:border-primary" onfocus="(this.type='date')" onblur="(this.type='text')">
-                        <i class="fas fa-calendar-alt absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400"></i>
+                        <input type="text" value="${userBirthDate}" class="w-full px-4 py-3 border border-[var(--azul-claro)] rounded-lg focus:outline-none focus:border-[var(--azul-claro)]" onfocus="(this.type='date')" onblur="(this.type='text')">
+                        <i class="fas fa-calendar-alt absolute right-3 top-1/2 transform -translate-y-1/2 text-[var(--azul-claro-houver)]"></i>
                     </div>
                 </div>
                 
                 <div class="md:col-span-2">
-                    <label class="block text-sm font-medium text-primary mb-2">Endereço</label>
+                    <label class="block text-sm font-medium text-[var(--azul-marinho-escuro)] mb-2">Endereço</label>
                     <div class="relative">
-                        <input type="text" value="${userAddress}" class="w-full px-4 py-3 border border-primary-light rounded-lg focus:outline-none focus:border-primary">
-                        <i class="fas fa-map-marker-alt absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400"></i>
+                        <input type="text" value="${userAddress}" class="w-full px-4 py-3 border [var(--azul-claro)]-light rounded-lg focus:outline-none focus:[var(--azul-claro)]">
+                        <i class="fas fa-map-marker-alt absolute right-3 top-1/2 transform -translate-y-1/2 text-[var(--azul-claro-houver)]"></i>
                     </div>
                 </div>
             </div>
             
-            <div class="flex gap-3 pt-6 border-t border-primary-light">
-                <button onclick="showToast('Alterações salvas com sucesso!', 'success')" class="px-6 py-2 bg-primary hover:bg-primary-dark text-white rounded-lg font-semibold transition-colors">
+            <div class="flex gap-3 pt-6 border-t border-gray-600/30">
+                <button onclick="showToast('Alterações salvas com sucesso!', 'success')" class="px-6 py-2 bg-[var(--azul-marinho)] hover:bg-[var(--azul-marinho-escuro)] text-[var(--branco)] rounded-lg font-semibold transition-colors">
                     Salvar Alterações
                 </button>
-                <button class="px-6 py-2 border border-primary text-primary rounded-lg hover:bg-primary-light font-semibold transition-colors">
+                <button class="px-6 py-2 border border-[var(--azul-marinho)] text-[var(--azul-marinho-escuro)] rounded-lg hover:bg-[var(--azul-claro-houver)] font-semibold transition-colors">
                     Cancelar
                 </button>
             </div>
         </div>
 
-        <div class="bg-white rounded-xl border-2 border-primary-light p-6">
-            <div class="flex items-center gap-3 mb-6 border-b border-primary-light pb-4">
-                <div class="w-10 h-10 rounded-full bg-primary-light text-primary flex items-center justify-center text-xl">
+        <div class="bg-white rounded-xl border-2 border-[var(--azul-claro)] p-6">
+            <div class="flex items-center gap-3 mb-6 border-b border-gray-600/30 pb-4">
+                <div class="w-10 h-10 rounded-full bg-[var(--azul-claro)] text-[var(--azul-marinho)] flex items-center justify-center text-xl">
                     <i class="fas fa-lock"></i>
                 </div>
-                <h3 class="text-xl font-bold text-primary">Segurança da Conta</h3>
+                <h3 class="text-xl font-bold text-[var(--azul-marinho-escuro)]">Segurança da Conta</h3>
             </div>
             
             <div class="space-y-4">
                 <div class="flex justify-between items-center p-4 bg-gray-50 rounded-lg">
                     <div>
-                        <p class="text-sm font-semibold text-primary mb-1">Senha</p>
-                        <p class="text-xs text-primary/60">Última alteração: ${lastPasswordChange}</p>
+                        <p class="text-sm font-semibold text-[var(--azul-marinho-escuro)] mb-1">Senha</p>
+                        <p class="text-xs text-[var(--azul-marinho-escuro)]">Última alteração: ${lastPasswordChange}</p>
                     </div>
                     <button onclick="showToast('Redirecionando para alteração de senha...', 'info')" 
-                            class="px-4 py-2 border border-primary text-primary rounded-lg hover:bg-primary-light text-sm font-semibold transition-colors">
+                            class="px-4 py-2 border border-[var(--azul-marinho-escuro)] text-[var(--azul-marinho)] rounded-lg hover:bg-[var(--azul-claro-houver)] text-sm font-semibold transition-colors">
                         Alterar Senha
                     </button>
                 </div>
                 
                 <div class="flex justify-between items-center p-4 bg-gray-50 rounded-lg">
                     <div>
-                        <p class="text-sm font-semibold text-primary mb-1">Autenticação em Dois Fatores</p>
-                        <p class="text-xs text-primary/60">Adicione uma camada extra de segurança</p>
+                        <p class="text-sm font-semibold text-[var(--azul-marinho-escuro)] mb-1">Autenticação em Dois Fatores</p>
+                        <p class="text-xs text-[var(--azul-marinho-escuro)]">Adicione uma camada extra de segurança</p>
                     </div>
                     <span class="px-4 py-2 bg-orange-100 text-orange-700 rounded-full text-sm font-semibold border border-orange-200">
                         Desativado
@@ -500,11 +500,11 @@ function renderProfilePage() {
 
                 <div class="flex justify-between items-center p-4 bg-gray-50 rounded-lg">
                     <div>
-                        <p class="text-sm font-semibold text-primary mb-1">Sessões Ativas</p>
-                        <p class="text-xs text-primary/60">2 dispositivos conectados</p>
+                        <p class="text-sm font-semibold text-[var(--azul-marinho-escuro)] mb-1">Sessões Ativas</p>
+                        <p class="text-xs text-[var(--azul-marinho-escuro)]">2 dispositivos conectados</p>
                     </div>
                     <button onclick="showToast('Gerenciando sessões ativas...', 'info')" 
-                            class="px-4 py-2 border border-primary text-primary rounded-lg hover:bg-primary-light text-sm font-semibold transition-colors">
+                            class="px-4 py-2 border border-[var(--azul-marinho-escuro)] text-[var(--azul-marinho)] rounded-lg hover:bg-[var(--azul-claro-houver)] text-sm font-semibold transition-colors">
                         Gerenciar
                     </button>
                 </div>
