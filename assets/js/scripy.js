@@ -28,7 +28,7 @@ document.addEventListener("DOMContentLoaded", function () {
         // 6. A "ROTA" (Redirecionamento)
         // O navegador será enviado para a página de perfil.
         // Altere "perfil.html" se o nome do seu arquivo for outro.
-        window.location.href = "perfil.html";
+        window.location.href = "Perfil.html";
       } else {
         // Caso de "erro" na simulação
         alert("Por favor, preencha o e-mail e a senha.");
