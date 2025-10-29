@@ -77,4 +77,3 @@ CREATE TABLE alertas (
     FOREIGN KEY (id_usuario) REFERENCES usuario(id_usuario)
     
 ) ENGINE = InnoDB;
-
