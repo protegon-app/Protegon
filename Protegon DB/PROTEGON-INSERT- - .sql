@@ -5,11 +5,11 @@
 USE protegon_db
 
 -- USUARIOS
-INSERT INTO usuario (id_usuario, nome, email, senha, data_nascimento, telefone, cidade)
+INSERT INTO usuario (nome, email, senha, data_nascimento, telefone, cidade)
 VALUES
-(1, 'Juliana Silva', 'juliana.silva@email.com', 'senha123', '1995-08-20', '62987654321', 'Trindade-GO'),
-(2, 'Carla Almeida', 'carla.almeida@email.com', 'senha456', '2001-03-15', '62998877665', 'Goiânia-GO'),
-(3, 'Mariana Santos', 'mariana.santos@email.com', 'senha789', '1988-11-25', '61912345678', 'Brasília-DF');
+( 'Juliana Silva', 'juliana.silva2@email.com', 'senha123', '1995-08-20', '62987654321', 'Trindade-GO'),
+( 'Carla Almeida', 'carla.almeida4@email.com', 'senha456', '2001-03-15', '62998877665', 'Goiânia-GO'),
+('Mariana Santos', 'mariana.santos5@email.com', 'senha789', '1988-11-25', '61912345678', 'Brasília-DF');
 
 
 
@@ -23,12 +23,14 @@ VALUES
 -- CONTATOS_EMERGENCIA
 INSERT INTO contatos_emergencia (id_contato, nome_contato, telefone_contato, email_contato, id_usuario)
 VALUES
-(1, 'Mãe da Juliana', '62991112233', 'mae.juliana@email.com', 1), -- Contato para Juliana (id_usuario 1)
-(2, 'Irmão da Carla', '64994445566', 'irmao.carla@email.com', 2), -- Contato para Carla (id_usuario 2)
-(3, 'Vizinho da Mariana', '61993334455', NULL, 3), -- Contato para Mariana (id_usuario 3)
-(4, 'Amigo da Juliana', '62996667788', 'amigo.ju@email.com', 1); -- Segundo Contato para Juliana (id_usuario 1)
+(1, 'Mãe da Juliana', ' 62991112233', 'mae.juliana@email.com', 1), -- Contato para Juliana (id_usuario 1)
+(2, 'Irmão da Carla', ' 64994445566', 'irmao.carla@email.com', 2), -- Contato para Carla (id_usuario 2)
+(3, 'Vizinho da Mariana', ' 61993334455', NULL, 3), -- Contato para Mariana (id_usuario 3)
+(4, 'Amigo da Juliana', ' 62996667788', 'amigo.ju@email.com', 1); -- Segundo Contato para Juliana (id_usuario 1)
 
 -- ALERTAS
+
+
 INSERT INTO alertas (id_alerta, id_usuario, data_hora, localizacao, tipo_alerta, status_alerta)
 VALUES
 (1, 1, '2025-09-14 14:30:00', 'Latitude: -30.0346, Longitude: -51.2177', 'manual', 'resolvido'), -- Alerta de Juliana

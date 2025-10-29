@@ -21,7 +21,7 @@ CREATE TABLE usuario (
   senha VARCHAR(30) NOT NULL,
   data_nascimento DATE NOT NULL,
   telefone VARCHAR(15) NOT NULL,
-  cidade TEXT(25) NOT NULL,
+  cidade VARCHAR(25) NOT NULL,
   
   PRIMARY KEY (id_usuario),
   UNIQUE KEY (email)
@@ -61,14 +61,14 @@ CREATE TABLE contatos_emergencia (
    ON UPDATE CASCADE
 
 ) ENGINE = InnoDB;
-
+ALTER TABLE contatos_emergencia ADD COLUMN telefone_contato VARCHAR(20);
 -- ALERTAS
 
 CREATE TABLE alertas (
     id_alerta INT NOT NULL AUTO_INCREMENT,
     id_usuario INT NOT NULL,
     data_hora DATETIME NOT NULL,
-    localizacao VARCHAR(500),
+    localizacao DECIMAL(10,8),
     tipo_alerta VARCHAR(100) NOT NULL,
     status_alerta VARCHAR(50) NOT NULL,
 
