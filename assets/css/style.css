@@ -1,0 +1,102 @@
+/* Paleta de cores */
+:root {
+    --azul-marinho-escuro: #001c39;
+    --azul-marinho: #00356c;
+    --azul-claro: #d3e3ff;
+    --azul-claro-houver: #93ADD9;
+    --branco: #ffffff;
+  
+
+    /* Mapeamento de variáveis Tailwind/Global para suas cores (essencial para o funcionamento) */
+    --background: #f5f7fa;
+    --foreground: #827ce0;
+    --primary: var(--azul-marinho);
+    --primary-foreground: var(--branco);
+    --input-background: #f3f3f5;
+    --border: rgba(0, 0, 0, 0.1);
+    --ring: rgba(0, 0, 0, 0.5); /* Valor genérico */
+}
+
+/* Estilos de base */
+body {
+    font-family: 'Inter', sans-serif; /* Garante que a fonte seja aplicada */
+}
+
+/**
+ * Componente de Botão Primário
+ */
+.btn-primario {
+    /* Base for Button */
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem; /* gap-2 */
+    line-height: 1.5; /* text-base */
+    white-space: nowrap;
+    
+    /* User's styles */
+    padding: 0.5rem 1.5rem;
+    font-size: 1rem;
+    font-weight: 600;
+    color: var(--branco);
+    background-color: var(--azul-marinho); 
+    border-radius: 6px;
+    text-align: center;
+    transition: all 0.3s;
+    border: none;
+    cursor: pointer;
+}
+
+.btn-primario:hover {
+    background-color: var(--azul-marinho-escuro);
+    transform: scale(1.05);
+}
+
+/* Componente de Card */
+.card-pilar {
+    background-color: var(--azul-claro);
+    /* Manter a flexibilidade do padding com Tailwind no HTML */
+    padding: 0;
+    border-radius: 0.75rem;
+    box-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
+    transition: box-shadow 0.3s, transform 0.3s;
+    border: 2px solid var(--azul-claro);
+}
+
+.card-pilar:hover {
+    box-shadow: 0 20px 25px -5px rgb(0 0 0 / 0.1), 0 8px 10px -6px rgb(0 0 0 / 0.1);
+    transform: translateY(-0.5rem);
+}
+
+/* Títulos dentro dos cards */
+.card-pilar h2, .card-pilar h3, .card-pilar h4 {
+    color: var(--azul-marinho);
+}
+
+/* Textos e parágrafos dentro dos cards */
+.card-pilar p, .card-pilar label, .card-pilar strong {
+    color: var(--azul-marinho-escuro);
+}
+
+/* NOVO: Estilo para os campos de dados para melhor legibilidade */
+.data-field {
+    background-color: rgba(255, 255, 255, 0.5); /* Fundo branco semitransparente */
+    padding: 0.75rem;
+    border-radius: 8px;
+    margin-bottom: 0.5rem;
+}
+
+@keyframes pulse-glow {
+            0%, 100% { box-shadow: 0 0 20px rgba(220, 38, 38, 0.5); }
+            50% { box-shadow: 0 0 30px rgba(220, 38, 38, 0.8); }
+        }
+        .pulse-btn {
+            animation: pulse-glow 2s infinite;
+        }
+        @keyframes slideUp {
+            from { transform: translateY(100%); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
+        }
+        .slide-up {
+            animation: slideUp 0.3s ease-out;
+        }

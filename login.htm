@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Protegon - Login</title>
+    
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <link rel="stylesheet" href="./assets/css/style.css">
+    <link rel="stylesheet" href="./assets/css/CriarConta.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
+</head>
+
+<body class="font-sans bg-gray-100">
+
+    <div class="min-h-screen grid grid-cols-1 md:grid-cols-2">
+        
+        <aside class="bg-[var(--azul-marinho-escuro)] text-white p-8 md:p-12 flex flex-col">
+            <div class="flex flex-col justify-between h-full">
+                <div>
+                    <img src="./assets/img/nome.protegon002.png" width="300px" height="60px" alt="nome-protegon" />
+                    <p class="mt-8 text-lg text-white leading-relaxed">
+                        Bem-vindo! <br />
+                        Sua rede de proteção inteligente. Aqui, cada passo seu importa. Estamos prontos para cuidar de você, mesmo quando as palavras faltarem. Juntos, somos mais fortes.
+                    </p>
+                </div>
+
+                <div class="text-sm text-gray-400">
+                    <p>Segurança Inteligente para Vidas em Risco</p>
+                    <p>© 2025 PROTEGON. Todos os direitos reservados.</p>
+                </div>
+            </div>
+        </aside>
+
+        <main class="bg-gray-50 flex items-center justify-center p-6 md:p-12">
+            <div class="w-full max-w-md">
+                
+                <img class="mx-auto mb-8 w-64 h-auto" src="./assets/img/image-removebg-preview (12) 1 (2).svg" alt="logo-olho" />
+
+                <form id="form-login" class="bg-white p-8 rounded-lg shadow-lg">
+                    <div class="mb-6">
+                        <label for="email" class="block mb-2 text-sm font-medium text-[var(--azul-marinho)]">Email</label>
+                        <input id="email" type="email" placeholder="Insira seu email" 
+                               class="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:[var(--azul-claro)]" />
+                        <div class="mt-2 text-xs text-gray-500">
+                            Seu e-mail é confidencial e não será compartilhado com terceiros.
+                        </div>
+                    </div>
+
+                    <div class="mb-4">
+                        <label for="senha" class="block mb-2 text-sm font-medium text-[var(--azul-marinho)]">Senha</label>
+                        <input id="senha" type="password" placeholder="Insira sua senha" 
+                               class="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-[var(--azul-claro)]" />
+                    </div>
+
+                    <div class="flex items-center justify-between mt-6">
+                        <a href="#" class="text-sm text-[var(--azul-marinho)] hover:underline">Esqueceu sua senha?</a>
+                        <button type="submit" 
+                                class="px-6 py-2 bg-[var(--azul-marinho)] text-white font-semibold rounded-md hover:bg-[var(--azul-marinho-escuro)] transition-colors duration-300">
+                            Entrar
+                        </button>
+                    </div>
+
+                    <div class="mt-8 pt-6 border-t border-gray-200 text-center text-sm text-[var(--azul-marinho)] space-y-3">
+                        <a href="./CriarConta.html" class="block font-semibold hover:underline">CRIAR UMA NOVA CONTA</a>
+                        <a href="#" class="block hover:underline">LEMBRAR LOGIN E SENHA</a>
+                    </div>
+                </form>
+            </div>
+        </main>
+    </div>
+
+</body>
+</html>
+<script src="./assets/js/scripy.js"></script>
