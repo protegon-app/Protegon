@@ -7,7 +7,7 @@ Este é o diretório do back-end para a aplicação Protegon. Ele contém a API 
 * **Python 3.10+**
 * **FastAPI**: O framework principal da API.
 * **SQLAlchemy**: O ORM (Tradutor) para comunicação com o banco de dados.
-* **PostgreSQL**: O banco de dados (pode ser trocado no `config.py`).
+* **MySQL**: O banco de dados (pode ser trocado no `config.py`).
 * **Pydantic**: Para validação de dados (`shecmas`).
 * **JWT (python-jose)**: Para autenticação e segurança.
 * **Bcrypt**: Para hashing (criptografia) de senhas.
@@ -21,7 +21,7 @@ Siga estes passos para configurar e rodar o projeto localmente.
 ### 1. Pré-requisitos
 
 * Você precisa ter o **Python 3.10+** instalado.
-* Você precisa ter um servidor **PostgreSQL** rodando na sua máquina.
+* Você precisa ter um servidor **MySQL** rodando na sua máquina (ex: MySQL Community Server, XAMPP, WAMP).
 
 ### 2. Instalação
 
@@ -36,7 +36,7 @@ Siga estes passos para configurar e rodar o projeto localmente.
     python3 -m venv venv
     source venv/bin/activate
     
-    # No Windows
+    # No Windows (PowerShell/CMD)
     python -m venv venv
     .\venv\Scripts\activate
     ```
@@ -49,8 +49,8 @@ Siga estes passos para configurar e rodar o projeto localmente.
 
 ### 3. Configuração do Banco de Dados
 
-1.  Acesse o seu PostgreSQL (pelo DBeaver, PgAdmin ou `psql`).
-2.  Crie um novo banco de dados para o projeto.
+1.  Acesse o seu MySQL (pelo MySQL Workbench, DBeaver, ou `mysql` no terminal).
+2.  Crie um novo banco de dados (também chamado de "schema" no MySQL) para o projeto.
     ```sql
     CREATE DATABASE protegon_db;
     ```
@@ -64,8 +64,8 @@ Este projeto usa um arquivo `.env` para guardar informações sensíveis (senhas
 
     ```env
     # URL de conexão do seu banco de dados
-    # Formato: "postgresql://USUARIO:SENHA@localhost:5432/NOME_DO_BANCO"
-    DATABASE_URL="postgresql://postgres:sua_senha_aqui@localhost:5432/protegon_db"
+    # Formato: "mysql+mysqlconnector://USUARIO:SENHA@localhost:PORTA/NOME_DO_BANCO"
+    DATABASE_URL="mysql+mysqlconnector://root:sua_senha_aqui@localhost:3306/protegon_db"
     
     # Chave secreta para criar os tokens JWT (pode ser qualquer string longa e aleatória)
     SECRET_KEY="sua-chave-secreta-muito-forte-aqui-123456"
