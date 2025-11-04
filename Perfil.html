@@ -58,6 +58,9 @@
                     <i class="fas fa-users w-5"></i>
                     <span class="text-sm">Contatos de Emergência</span>
                 </button>
+                <!-- Botão do menu lateral -->
+
+
                 <button class=" item-nav-sidebar w-full flex items-center gap-3 px-4 py-3 rounded-lg text-left" data-page="settings">
                     <i class="fas fa-cog w-5"></i>
                     <span class="text-sm">Configurações</span>
@@ -202,7 +205,40 @@
     <!-- Toast Container -->
     <div id="toastContainer" class="fixed bottom-6 left-1/2 transform -translate-x-1/2 z-50 space-y-3 pointer-events-none"></div>
 
+    <!-- MODAL DE ADICIONAR CONTATO -->
+<div id="addContactModal" class="hidden fixed inset-0 bg-black/40 backdrop-blur-sm z-50 flex items-center justify-center">
+    <div class="bg-gray-50 rounded-xl p-6 w-[90%] max-w-md shadow-xl border border-gray-200">
+
+        <h2 class="text-xl font-bold text-[var(--azul-marinho-escuro)] mb-4 flex items-center gap-2">
+            <i class="fas fa-user-plus"></i> Novo Contato
+        </h2>
+
+        <input id="contactName" type="text" placeholder="Nome completo"
+            class="w-full p-2 mb-3 border border-gray-300 rounded-lg">
+
+        <input id="contactPhone" type="text" placeholder="Telefone"
+            class="w-full p-2 mb-3 border border-gray-300 rounded-lg">
+
+        <input id="contactRelation" type="text" placeholder="Parentesco"
+            class="w-full p-2 mb-4 border border-gray-300 rounded-lg">
+
+        <div class="flex justify-end gap-3">
+            <button onclick="closeAddContactModal()"
+                class="px-4 py-2 border border-gray-300 rounded-lg text-gray-600 hover:bg-gray-200">
+                Cancelar
+            </button>
+
+            <button onclick="saveNewEmergencyContact()"
+                class="px-4 py-2 bg-[var(--azul-marinho)] text-white rounded-lg hover:bg-[var(--azul-marinho-escuro)]">
+                Salvar
+            </button>
+        </div>
+    </div>
+</div>
+
     <script src="./assets/js/perfil.js"></script>
+
+
 </body>
 
 </html>

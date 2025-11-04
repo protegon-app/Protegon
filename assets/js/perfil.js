@@ -1,15 +1,22 @@
 // =========================================================
 // ESTADO DA APLICAÇÃO
-// =========================================================
+// =========================================================let emergencyContacts = [];
+
 let currentPage = 'security';
 let countdownInterval = null; // Usado para o timer do Sensor OU o timer de Check-in
 let timeRemaining = 60; // Tempo restante para o timer do Sensor
 const CHECKIN_INTERVAL_SECONDS = 72 * 60 * 60; // 72 horas em segundos
 let checkInTimeLeft = 71 * 60 * 60; // 71 horas em segundos (para inicializar o timer)
 
+
+
+
+
 // =========================================================
 // DADOS MOCK
 // =========================================================
+
+
 const emergencyContacts = [
     { name: 'Maria Silva', phone: '+55 11 98765-4321', relationship: 'Mãe' },
     { name: 'Ana Santos', phone: '+55 11 98765-1234', relationship: 'Amiga' },
@@ -367,15 +374,147 @@ function sendMessage() {
     }
 }
 
+// === Modal de adicionar contato ===
+// ==== Funções fora ====
+function showAddContactModal() {
+  const modal = document.createElement('div');
+  modal.id = 'addContactModal';
+  modal.className = 'fixed inset-0 bg-black/40 flex items-center justify-center z-50';
+  modal.innerHTML = `
+    <div class="bg-white rounded-xl shadow-xl w-11/12 max-w-md p-6">
+      <h2 class="text-xl font-bold text-[var(--azul-marinho)] mb-4">Adicionar Contato</h2>
+      <div class="space-y-3">
+        <input id="newName" type="text" placeholder="Nome" class="w-full border rounded-lg px-3 py-2">
+        <input id="newPhone" type="text" placeholder="Telefone" class="w-full border rounded-lg px-3 py-2">
+        <input id="newRelation" type="text" placeholder="Relação (Ex: Mãe, Amigo...)" class="w-full border rounded-lg px-3 py-2">
+      </div>
+      <div class="flex justify-end gap-3 mt-5">
+        <button onclick="closeAddContactModal()" class="px-4 py-2 border rounded-lg text-gray-700 hover:bg-gray-100">Cancelar</button>
+        <button onclick="saveNewContact()" class="px-4 py-2 bg-[var(--azul-marinho)] text-white rounded-lg hover:bg-[var(--azul-marinho-escuro)]">Salvar</button>
+      </div>
+    </div>
+  `;
+  document.body.appendChild(modal);
+}
+
+function showAddContactModal() {
+    document.getElementById("addContactModal").classList.remove("hidden");
+}
+
+function closeAddContactModal() {
+    document.getElementById("addContactModal").classList.add("hidden");
+}
+
+function saveNewEmergencyContact() {
+    const name = document.getElementById("contactName").value.trim();
+    const phone = document.getElementById("contactPhone").value.trim();
+    const relation = document.getElementById("contactRelation").value.trim();
+
+    if (!name || !phone || !relation) {
+        showToast("Preencha todos os campos!", "error");
+        return;
+    }
+
+
+    // ✅ Fecha o modal
+    closeAddContactModal();
+
+    // outras páginas...
+}
+
+
+    // ✅ Mensagem
+    showToast("Contato adicionado com sucesso!", "success");
+
+
+function renderContent(page) {
+    const content = document.getElementById("content");
+
+    if (page === "emergency") {
+        content.innerHTML = renderEmergencyContactsPage();
+    }
+}
+
 // Contatos de Emergência (Com responsividade básica)
 function renderEmergencyContactsPage() {
+
     return `
         <div class="bg-white rounded-xl border-2 border-[var(--azul-claro)] p-4 sm:p-6">
-            <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-6 gap-4"> <div class="flex items-center gap-3"> <div class="bg-[var(--azul-claro)] p-3 rounded-full"> <i class="fas fa-users text-[var(--azul-marinho)] text-xl"></i> </div> <h3 class="text-xl font-bold text-[var(--azul-marinho-escuro)]">Contatos de Emergência</h3> </div> <button onclick="showToast('Adicionando contato...', 'info')" class="w-full sm:w-auto px-4 py-2 bg-[var(--azul-marinho)] hover:bg-[var(--azul-marinho-escuro)] text-white rounded-lg font-semibold transition-colors flex items-center justify-center gap-2"> <i class="fas fa-plus mr-2"></i>Adicionar Contato </button> </div>
-            <div class="space-y-3"> ${emergencyContacts.map(contact => `<div class="p-4 bg-gray-50 rounded-lg flex flex-col sm:flex-row justify-between items-start sm:items-center hover:bg-gray-100 transition-colors gap-4"> <div class="flex items-center gap-4"> <div class="w-12 h-12 rounded-full bg-[var(--azul-marinho)] text-white flex items-center justify-center text-xl font-bold"> ${contact.name.charAt(0)} </div> <div> <h4 class="font-semibold text-[var(--azul-marinho-escuro)] mb-1">${contact.name}</h4> <p class="text-sm text-gray-600 mb-0.5">${contact.phone}</p> <p class="text-xs text-[var(--azul-marinho)]/60">${contact.relationship}</p> </div> </div> <div class="flex gap-2 w-full sm:w-auto"> <button onclick="showToast('Ligando...', 'info')" class="flex-1 sm:flex-none px-3 py-2 border border-[var(--azul-marinho)] text-[var(--azul-marinho)] rounded-lg hover:bg-[var(--azul-claro)] transition-colors"> <i class="fas fa-phone"></i> </button> <button onclick="showToast('Editando...', 'info')" class="flex-1 sm:flex-none px-3 py-2 border border-[var(--azul-marinho)] text-[var(--azul-marinho)] rounded-lg hover:bg-[var(--azul-claro)] transition-colors"> <i class="fas fa-edit"></i> </button> </div> </div>`).join('')} </div>
+            
+            <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-6 gap-4"> 
+                <div class="flex items-center gap-3"> 
+                    <div class="bg-[var(--azul-claro)] p-3 rounded-full"> 
+                        <i class="fas fa-users text-[var(--azul-marinho)] text-xl"></i> 
+                    </div> 
+                    <h3 class="text-xl font-bold text-[var(--azul-marinho-escuro)]">Contatos de Emergência</h3> 
+                </div> 
+
+                <!-- BOTÃO QUE ABRE O MODAL -->
+                <button onclick="showAddContactModal()" 
+                    class="w-full sm:w-auto px-4 py-2 bg-[var(--azul-marinho)] hover:bg-[var(--azul-marinho-escuro)] text-white rounded-lg font-semibold transition-colors flex items-center justify-center gap-2"> 
+                    <i class="fas fa-plus mr-2"></i>Adicionar Contato 
+                </button> 
+            </div>
+
+            <div class="space-y-3">
+                ${emergencyContacts.map(contact => `
+                    <div class="p-4 bg-gray-50 rounded-lg flex flex-col sm:flex-row justify-between items-start sm:items-center hover:bg-gray-100 transition-colors gap-4"> 
+                        <div class="flex items-center gap-4"> 
+                            <div class="w-12 h-12 rounded-full bg-[var(--azul-marinho)] text-white flex items-center justify-center text-xl font-bold"> 
+                                ${contact.name.charAt(0)} 
+                            </div> 
+                            <div> 
+                                <h4 class="font-semibold text-[var(--azul-marinho-escuro)] mb-1">${contact.name}</h4> 
+                                <p class="text-sm text-gray-600 mb-0.5">${contact.phone}</p> 
+                                <p class="text-xs text-[var(--azul-marinho)]/60">${contact.relationship}</p> 
+                            </div> 
+                        </div> 
+
+                        <div class="flex gap-2 w-full sm:w-auto"> 
+                            <button onclick="showToast('Ligando...', 'info')" 
+                                class="flex-1 sm:flex-none px-3 py-2 border border-[var(--azul-marinho)] text-[var(--azul-marinho)] rounded-lg hover:bg-[var(--azul-claro)] transition-colors"> 
+                                <i class="fas fa-phone"></i> 
+                            </button> 
+                        </div> 
+                    </div>
+                `).join('')}
+            </div>
+
         </div>
+<div id="addContactModal" class="hidden fixed inset-0 bg-black/40 backdrop-blur-sm z-50 flex items-center justify-center">
+    <div class="bg-gray-50 rounded-xl p-6 w-[90%] max-w-md shadow-xl border border-gray-200">
+
+        <h2 class="text-xl font-bold text-[var(--azul-marinho-escuro)] mb-4 flex items-center gap-2">
+            <i class="fas fa-user-plus"></i> Novo Contato
+        </h2>
+
+        <input id="contactName" type="text" placeholder="Nome completo"
+            class="w-full p-2 mb-3 border border-gray-300 rounded-lg">
+
+        <input id="contactPhone" type="text" placeholder="Telefone"
+            class="w-full p-2 mb-3 border border-gray-300 rounded-lg">
+
+        <input id="contactRelation" type="text" placeholder="Parentesco"
+            class="w-full p-2 mb-4 border border-gray-300 rounded-lg">
+
+        <div class="flex justify-end gap-3">
+            <button onclick="closeAddContactModal()"
+                class="px-4 py-2 border border-gray-300 rounded-lg text-gray-600 hover:bg-gray-200">
+                Cancelar
+            </button>
+
+            <button onclick="saveNewEmergencyContact()"
+                class="px-4 py-2 bg-[var(--azul-marinho)] text-white rounded-lg hover:bg-[var(--azul-marinho-escuro)]">
+                Salvar
+            </button>
+        </div>
+    </div>
+</div>
+
+      
     `;
 }
+
 
 // Configurações (Com responsividade básica)
 function renderSettingsPage() {
