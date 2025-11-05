@@ -20,7 +20,7 @@ let currentNoteIdToDelete = null; // VARIÁVEL DE ESTADO PARA EXCLUSÃO (CRÍTIC
 let emergencyContacts = [
 { id: 'c1', name: 'Maria Silva', phone: '+5511987654321', relationship: 'Mãe' },
 { id: 'c2', name: 'Ana Santos', phone: '+5511987651234', relationship: 'Amiga' },
- { id: 'c3', name: 'Dr. João Souza', phone: '+5511987655678', relationship: 'Psicólogo' }
+{ id: 'c3', name: 'Dr. João Souza', phone: '+5511987655678', relationship: 'Psicólogo' }
 ];
 
 
@@ -158,11 +158,11 @@ function renderSensorItem(sensor) {
 
     return `
         <div id="${sensor.id}" class="sensor-item flex justify-between items-start p-4 bg-[var(--azul-claro)] rounded-lg border border-[var(--azul-marinho)] transition-opacity duration-300 ${inactiveClass}">
-           
+            
             <div class="flex items-start gap-3 flex-1 min-w-0">
                 <i class="fas ${sensor.icon} text-[var(--branco)] text-lg bg-[var(--azul-marinho)] p-3 rounded-full w-12 h-12 text-center flex items-center justify-center flex-shrink-0"></i>
-               
-           
+                
+            
                 <div class="flex-1">
                     <p class="font-semibold text-[var(--azul-marinho-escuro)]">
                         ${sensor.name}
@@ -171,7 +171,7 @@ function renderSensorItem(sensor) {
                     <p class="text-xs text-gray-700/80 mb-2 break-words">
                         ${sensor.description}
                     </p>
-                   
+                    
                     <div class="flex items-center justify-between text-xs mb-1 max-w-[200px]">
                         <span class="text-gray-600">Sensibilidade</span>
                         <span>${sensor.sensitivity}%</span>
@@ -188,8 +188,8 @@ function renderSensorItem(sensor) {
                     </button>
                 </div>
             </div>
-           
-       
+            
+        
             <div class="ml-4 flex-shrink-0">
                 <label class="relative inline-flex items-center cursor-pointer">
                     <input type="checkbox" ${toggleChecked} class="sr-only peer" onchange="toggleSensor('${sensor.id}', this.checked)">
@@ -393,11 +393,11 @@ function renderNoteForm(note = null) {
     const noteContent = isEditing ? note.content : '';
     // Ação de salvamento dinâmica (criação ou edição)
     const saveAction = isEditing ? `saveEditedNote(${note.id})` : `saveNewNote()`;
-   
+    
     return `
         <div id="noteForm" class="bg-white rounded-xl border-2 border-[var(--azul-claro)] p-6 shadow-md transition-all duration-300">
             <h4 class="text-lg font-semibold text-[var(--azul-marinho-escuro)] mb-4">${formTitle}</h4>
-           
+            
             <div class="mb-4">
                 <label for="noteTitle" class="sr-only">Título da anotação</label>
                 <input
@@ -408,7 +408,7 @@ function renderNoteForm(note = null) {
                     class="w-full px-4 py-3 border border-[var(--azul-claro)] rounded-lg focus:outline-none focus:border-[var(--azul-marinho)]"
                 >
             </div>
-           
+            
             <div class="mb-4">
                 <label for="noteContent" class="sr-only">Escreva sua anotação aqui...</label>
                 <textarea
@@ -427,7 +427,7 @@ function renderNoteForm(note = null) {
                 multiple
                 class="hidden"
             >
-           
+            
             <div class="flex flex-col sm:flex-row justify-between items-center gap-4">
                 <button
                     onclick="document.getElementById('noteImageUpload').click()"
@@ -435,7 +435,7 @@ function renderNoteForm(note = null) {
                 >
                     <i class="fas fa-image"></i> Adicionar Fotos
                 </button>
-               
+                
                 <div class="flex gap-3 w-full sm:w-auto">
                     <button
                         onclick="cancelNoteForm()"
@@ -525,10 +525,10 @@ function editNote(id) {
         showToast('Erro', 'error', 'Anotação não encontrada.');
         return;
     }
-   
+    
     // Limpa o botão "Nova Anotação" e garante que apenas um formulário esteja aberto
     toggleNewNoteButton(false);
-   
+    
     const formContainer = document.getElementById('newNoteFormContainer');
     if (formContainer) {
         formContainer.innerHTML = renderNoteForm(noteToEdit);
@@ -589,19 +589,19 @@ function confirmDeleteNote(id, title) {
 function deleteNoteFromModal() {
     const id = currentNoteIdToDelete;
     closeDeleteNoteModal(); // Fecha o modal após capturar o ID
-   
+    
     if (id === null) return; // Se não houver ID, ignora
 
 
     const initialLength = notes.length;
     // Simula a chamada ao Backend, removendo o item do array
     const updatedNotes = notes.filter(note => note.id !== id);
-   
+    
     if (updatedNotes.length === initialLength) {
         showToast('Erro', 'error', 'Anotação não encontrada para exclusão.');
         return;
     }
-   
+    
     // Atualiza o array global 'notes'
     notes.length = 0;
     notes.push(...updatedNotes);
@@ -616,23 +616,23 @@ function deleteNoteFromModal() {
 
 // Anotações (Com layout atualizado e responsivo)
 function renderNotesPage() {
-   
+    
     // Mapeia os dados das notas para o novo formato de cartão HTML
     const notesHtml = notes.map(note => `
         <div class="p-6 bg-white rounded-xl border-2 border-gray-200 shadow-sm hover:border-[var(--azul-marinho)] transition-all duration-300">
-           
+            
             <div class="flex justify-between items-start mb-2">
                 <div>
                     <h4 class="font-semibold text-lg text-[var(--azul-marinho-escuro)] mb-1">${note.title}</h4>
                     <p class="text-sm text-gray-500">${note.eventDate}</p>
                 </div>
                 <div class="flex gap-3">
-                   
+                    
                     <button onclick="editNote(${note.id})"
                             class="text-[var(--azul-marinho)] hover:text-[var(--azul-marinho-escuro)] transition-colors text-lg">
                         <i class="fas fa-edit"></i>
                     </button>
-                   
+                    
                     <button onclick="confirmDeleteNote(${note.id}, '${note.title.replace(/'/g, "\\'")}')"
                             class="text-red-500 hover:text-red-700 transition-colors text-lg">
                         <i class="fas fa-trash-alt"></i>
@@ -657,7 +657,7 @@ function renderNotesPage() {
 
     return `
         <div class="max-w-4xl mx-auto">
-           
+            
             <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-8 gap-4">
                 <h2 class="text-3xl font-bold text-[var(--azul-marinho-escuro)]">Anotações</h2>
                 <button
@@ -668,15 +668,15 @@ function renderNotesPage() {
                     <i class="fas fa-plus"></i> Nova Anotação
                 </button>
             </div>
-           
+            
             <div id="newNoteFormContainer" class="mb-6"></div>
-           
+            
             <h3 class="text-xl font-semibold text-[var(--azul-marinho-escuro)] mb-4 border-b border-gray-300 pb-2">Minhas Anotações</h3>
-           
+            
             <div class="space-y-6" id="notesListContainer">
                 ${notesHtml.length > 0 ? notesHtml : '<p class="text-gray-500 text-center">Nenhuma anotação encontrada.</p>'}
             </div>
-           
+            
             <div class="mt-8 p-4 bg-blue-50 border border-blue-200 rounded-lg text-sm text-blue-900">
                 <i class="fas fa-info-circle mr-2"></i> Suas anotações são privadas.
             </div>
@@ -713,9 +713,9 @@ function sendMessage() {
 }
 
 
-// === Modal de adicionar contato ===
-// ==== Funções fora ====
-// === Modal de adicionar contato ===
+// =========================================================
+// FUNÇÕES DO MODAL DE CONTATOS (CRUD)
+// =========================================================
 
 /**
  * Abre o modal para ADICIONAR um novo contato.
@@ -811,26 +811,79 @@ function saveNewEmergencyContact() {
     renderPage('emergency');
 }
 
+// =========================================================
+// ✅ INÍCIO DA SUBSTITUIÇÃO
+// A função "confirmDelete" antiga foi substituída por este bloco
+// =========================================================
+
 /**
- * Pede confirmação e EXCLUI um contato.
+ * ✅ AC A.5 (Modificado): Abre o modal de confirmação para EXCLUIR.
+ * Substitui o confirm() do navegador pelo novo modal customizado.
  */
 function confirmDelete(id) {
     const contact = emergencyContacts.find(c => c.id === id);
     if (!contact) return;
 
-    // Modal de confirmação (usando o 'confirm' do navegador)
-    if (confirm(`Tem certeza que deseja excluir ${contact.name}?`)) {
+    // 1. Preenche os dados no modal de confirmação
+    // (Mostra o nome do contato que será excluído)
+    const nameEl = document.getElementById('contactToDeleteName');
+    if (nameEl) {
+        nameEl.textContent = contact.name;
+    }
+    
+    // 2. Armazena o ID no botão de confirmação para ser usado depois
+    const confirmBtn = document.getElementById('confirmDeleteBtn');
+    if (confirmBtn) {
+        confirmBtn.dataset.idToDelete = id; 
+    }
+
+    // 3. Abre o modal
+    const modal = document.getElementById('deleteConfirmationModal');
+    if (modal) {
+        modal.classList.remove('hidden');
+    }
+}
+
+/**
+ * Fecha o modal de confirmação de exclusão (Contatos).
+ */
+function closeDeleteModal() {
+    const modal = document.getElementById('deleteConfirmationModal');
+    if (modal) {
+        modal.classList.add('hidden');
+    }
+    
+    // Limpa o ID do botão por segurança
+    const confirmBtn = document.getElementById('confirmDeleteBtn');
+    if (confirmBtn) {
+        delete confirmBtn.dataset.idToDelete;
+    }
+}
+
+/**
+ * Executa a exclusão (Contatos) após a confirmação no modal.
+ * Esta função é chamada pelo botão "Sim, Excluir".
+ */
+function executeDelete() {
+    const confirmBtn = document.getElementById('confirmDeleteBtn');
+    const id = confirmBtn?.dataset.idToDelete; // Lê o ID que guardamos
+
+    if (id) {
         // Filtra o array, removendo o contato com o ID correspondente
         emergencyContacts = emergencyContacts.filter(c => c.id !== id);
 
-        showToast("Contato excluído.", "info");
+        showToast("Contato excluído.", "info"); // AC A.7: Feedback
 
         // Re-renderiza a página para mostrar a lista atualizada
         renderPage('emergency');
     }
+
+    // Fecha o modal
+    closeDeleteModal();
 }
-
-
+// =========================================================
+// ✅ FIM DA SUBSTITUIÇÃO
+// =========================================================
 
 
 // Contatos de Emergência (Com responsividade básica)
@@ -961,7 +1014,7 @@ function renderPage(page) {
         'settings': { title: 'Configurações', render: renderSettingsPage, init: null }
     };
     if (!pages[page]) { console.error(`Página "${page}" não encontrada.`); return; } // Tratamento de erro
-   
+    
     // Atualiza título e conteúdo da página
     pageTitle.textContent = pages[page].title;
     pageContent.innerHTML = pages[page].render();
@@ -1057,7 +1110,7 @@ function toggleSensor(sensorId, isChecked) {
     const totalSensors = sensorsData.length;
     const countElement = document.getElementById('activeSensorCount');
     if (countElement) { countElement.textContent = `${activeSensors}/${totalSensors} Ativos`; }
-   
+    
     // Atualiza contador e status no Header Principal
     const headerSensorCount = document.getElementById('headerSensorCount');
     if(headerSensorCount) { headerSensorCount.textContent = `${activeSensors}/${totalSensors}`; }
@@ -1121,7 +1174,7 @@ function showDeleteNoteModal(id, title) {
     currentNoteIdToDelete = id; // Armazena o ID globalmente
     const modal = document.getElementById('deleteNoteModal');
     const titleEl = document.getElementById('noteToDeleteTitle');
-   
+    
     if (titleEl) {
         titleEl.textContent = title;
     }
@@ -1146,19 +1199,19 @@ function closeDeleteNoteModal() {
 function deleteNoteFromModal() {
     const id = currentNoteIdToDelete;
     closeDeleteNoteModal(); // Fecha o modal após capturar o ID
-   
+    
     if (id === null) return; // Se não houver ID, ignora
 
 
     const initialLength = notes.length;
     // Simula a chamada ao Backend, removendo o item do array
     const updatedNotes = notes.filter(note => note.id !== id);
-   
+    
     if (updatedNotes.length === initialLength) {
         showToast('Erro', 'error', 'Anotação não encontrada para exclusão.');
         return;
     }
-   
+    
     // Atualiza o array global 'notes'
     notes.length = 0;
     notes.push(...updatedNotes);
@@ -1198,16 +1251,17 @@ function showToast(title, type = 'info', description = '') {
 window.addEventListener('click', function(event) {
     const emergencyModal = document.getElementById('emergencyModal');
     const sensorModal = document.getElementById('sensorModal');
-    const deleteNoteModal = document.getElementById('deleteNoteModal'); // Adicionando o novo modal
-   
+    const deleteNoteModal = document.getElementById('deleteNoteModal'); 
+    const deleteContactModal = document.getElementById('deleteConfirmationModal'); //
+
     if (event.target === emergencyModal) { closeEmergencyModal(); }
-   
+    
     if (event.target === sensorModal) {
         if (countdownInterval) { clearInterval(countdownInterval); } // Para o timer do sensor
         sensorModal.classList.add('hidden'); sensorModal.classList.remove('flex');
         if (currentPage === 'security') initSecurityPage(); // Reinicia timer de check-in
     }
-   
-    if (event.target === deleteNoteModal) { closeDeleteNoteModal(); } // Fecha o modal de exclusão
+    
+    if (event.target === deleteNoteModal) { closeDeleteNoteModal(); } 
+    if (event.target === deleteContactModal) { closeDeleteModal(); } 
 });
-
