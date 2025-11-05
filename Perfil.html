@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -10,7 +11,9 @@
     <link rel="stylesheet" href="./assets/css/style.css">
     <link rel="stylesheet" href="./assets/css/Perfil.css">
 
+
 </head>
+
 
 <body class="bg-gray-50">
     <!-- Botão Flutuante de Emergência -->
@@ -18,6 +21,7 @@
         <i class="fas fa-exclamation-triangle text-xl"></i>
         <span class="text-xs font-bold">SOS</span>
     </button>
+
 
     <!-- Container Principal -->
     <div class="flex min-h-screen">
@@ -28,6 +32,7 @@
                 <img src="./assets/img/nome.protegon002.png" alt="protegon">
             </div>
 
+
             <!-- Botão de Emergência na Sidebar -->
             <div class="mb-6">
                 <button id="sidebarEmergencyBtn" class="w-full bg-red-600 hover:bg-red-700 text-white rounded-lg py-5 flex items-center justify-center gap-2 shadow-lg transition-colors">
@@ -35,6 +40,7 @@
                     <span class="font-semibold">SOS Emergência</span>
                 </button>
             </div>
+
 
             <!-- Menu de Navegação -->
             <nav class="flex-1 space-y-2">
@@ -67,6 +73,7 @@
                 </button>
             </nav>
 
+
             <!-- Info do Usuário -->
             <div class="mt-auto pt-6 border-t border-[var(--branco)] flex items-center gap-3">
                 <div class="w-10 h-10 rounded-full bg-[var(--azul-claro)] text-[var(--azul-marinho)] flex items-center justify-center text-sm">
@@ -78,6 +85,7 @@
                 </div>
             </div>
         </aside>
+
 
         <!-- Conteúdo Principal -->
         <main class="flex-1 flex flex-col">
@@ -91,6 +99,7 @@
                             <input type="text" placeholder="Search here..." class="w-full pl-10 pr-4 py-2 border border-[var(--azul-claro)] rounded-lg focus:outline-none focus:border-[var(--azul-claro)]">
                         </div>
                     </div>
+
 
                     <!-- User Actions -->
                     <div class="flex items-center gap-4">
@@ -109,6 +118,7 @@
                 </div>
             </header>
 
+
             <!-- Área de Conteúdo -->
             <div class="flex-1 p-8 overflow-auto">
                 <div class="max-w-6xl mx-auto">
@@ -119,8 +129,9 @@
         </main>
     </div>
 
+
     <!-- Modal de Emergência -->
-    <div id="emergencyModal" class="fixed inset-0 bg-blue-700/50 z-50 hidden items-center justify-center">
+   <div id="emergencyModal" class="fixed inset-0 bg-blue-700/50 z-50 hidden items-center justify-center">
         <div class="bg-[var(--branco)] rounded-xl max-w-md w-full mx-4 shadow-2xl">
             <div class="border-b-2 border-red-200 p-6">
                 <h3 class="text-xl font-bold text-red-700 flex items-center gap-2">
@@ -140,14 +151,14 @@
                 <button onclick="closeEmergencyModal()" class="px-4 py-2 border border-[var(--azul-claro)] text-[var(--azul-marinho-escuro)] rounded-lg ">
                     Cancelar
                 </button>
-                <button onclick="confirmEmergency()" class="px-4 py-2 bg-red-600 hover:bg-red-700 text-white rounded-lg transition-colors">
+                <button onclick="confirmEmergency()" class="px-4 py-2 bg-[var(--azul-claro)]text-white rounded-lg transition-colors">
                     Sim, Ativar SOS
                 </button>
             </div>
         </div>
     </div>
 
-    <!-- Modal de Alerta de Sensor -->
+
     <div id="sensorModal" class="fixed inset-0 bg-black/50 z-50 hidden items-center justify-center">
         <div class="bg-white rounded-xl max-w-md w-full mx-4 shadow-2xl">
             <div class="border-b-2 border-orange-200 p-6">
@@ -158,18 +169,17 @@
                 <p class="text-sm text-gray-600 mt-2">Detectamos uma atividade suspeita. Por favor, confirme sua segurança.</p>
             </div>
             <div class="p-6 space-y-4">
-                <!-- Countdown -->
                 <div class="text-center py-4">
                     <div class="text-7xl font-bold text-orange-600 mb-2" id="countdown">60</div>
                     <p class="text-sm text-gray-600">segundos para confirmar que está segura</p>
                 </div>
 
-                <!-- Progress Bar -->
+
                 <div class="h-3 bg-gray-200 rounded-full overflow-hidden">
                     <div id="progressFill" class="h-full bg-orange-600 transition-all duration-1000" style="width: 100%"></div>
                 </div>
 
-                <!-- Alert Box -->
+
                 <div class="bg-orange-50 border border-orange-200 rounded-lg p-4 space-y-2">
                     <p class="text-sm text-orange-900">
                         <strong>O que está acontecendo?</strong>
@@ -182,7 +192,7 @@
                     </p>
                 </div>
 
-                <!-- Actions -->
+
                 <div class="grid grid-cols-2 gap-3">
                     <button onclick="confirmSafe()" class="bg-green-600 hover:bg-green-700 text-white rounded-lg py-4 flex flex-col items-center gap-1 transition-colors">
                         <i class="fas fa-check-circle text-2xl"></i>
@@ -195,15 +205,42 @@
                     </button>
                 </div>
 
+
                 <p class="text-center text-xs text-gray-500">
                     Em situação de perigo? Não responda e aguarde o alerta automático.
                 </p>
             </div>
         </div>
     </div>
+   
+    <div id="deleteNoteModal" class="fixed inset-0 bg-red-700/50 z-50 hidden items-center justify-center">
+        <div class="bg-[var(--branco)] rounded-xl max-w-sm w-full mx-4 shadow-2xl">
+            <div class="border-b-2 border-red-200 p-6">
+                <h3 class="text-xl font-bold text-red-700 flex items-center gap-2">
+                    <i class="fas fa-trash-alt"></i>
+                    Confirmar Exclusão
+                </h3>
+            </div>
+            <div class="p-6 text-[var(--azul-marinho-escuro)]">
+                <p class="mb-4">Tem certeza que deseja excluir a anotação:</p>
+                <p class="font-semibold text-lg text-red-600 truncate" id="noteToDeleteTitle">Título da Anotação?</p>
+                <p class="mt-2 text-sm text-gray-700">Esta ação não pode ser desfeita.</p>
+            </div>
+            <div class="border-t border-gray-200 p-4 flex gap-3 justify-end">
+                <button onclick="closeDeleteNoteModal()" class="px-4 py-2 border border-[var(--azul-claro)] text-[var(--azul-marinho-escuro)] rounded-lg ">
+                    Cancelar
+                </button>
+                <button onclick="deleteNoteFromModal()" class="px-4 py-2 bg-red-600 hover:bg-red-700 text-white rounded-lg transition-colors">
+                    Sim, Excluir
+                </button>
+            </div>
+        </div>
+    </div>
+
 
     <!-- Toast Container -->
     <div id="toastContainer" class="fixed bottom-6 left-1/2 transform -translate-x-1/2 z-50 space-y-3 pointer-events-none"></div>
+
 
     <!-- MODAL DE ADICIONAR CONTATO -->
 <div id="addContactModal" class="hidden fixed inset-0 bg-black/40 backdrop-blur-sm z-50 flex items-center justify-center">
@@ -236,9 +273,12 @@
     </div>
 </div>
 
+
     <script src="./assets/js/perfil.js"></script>
 
 
 </body>
 
+
 </html>
+

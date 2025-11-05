@@ -8,7 +8,7 @@ let timeRemaining = 60; // Tempo restante para o timer do Sensor
 const CHECKIN_INTERVAL_SECONDS = 72 * 60 * 60; // 72 horas em segundos
 let checkInTimeLeft = 71 * 60 * 60; // 71 horas em segundos (para inicializar o timer)
 let editingContactId = null;
-
+let currentNoteIdToDelete = null; // VARIÁVEL DE ESTADO PARA EXCLUSÃO (CRÍTICO)
 
 
 
@@ -22,6 +22,7 @@ let emergencyContacts = [
 { id: 'c2', name: 'Ana Santos', phone: '+5511987651234', relationship: 'Amiga' },
  { id: 'c3', name: 'Dr. João Souza', phone: '+5511987655678', relationship: 'Psicólogo' }
 ];
+
 
 const notes = [
     {
@@ -50,12 +51,14 @@ const notes = [
     }
 ];
 
+
 const chatMessages = [
     { sender: 'psychologist', text: 'Olá! Como você está se sentindo hoje?', time: '10:30' },
     { sender: 'user', text: 'Estou me sentindo melhor, obrigada.', time: '10:32' },
     { sender: 'psychologist', text: 'Que bom! Gostaria de conversar sobre algo específico?', time: '10:33' },
     { sender: 'user', text: 'Gostaria de falar sobre como lidar com momentos difíceis.', time: '10:35' }
 ];
+
 
 // ARRAY DE DADOS DOS SENSORES (com estado isActive)
 const sensorsData = [
@@ -66,9 +69,12 @@ const sensorsData = [
 ];
 
 
+
+
 // =========================================================
 // FUNÇÕES DE TEMPO E ESTILO (Check-in)
 // =========================================================
+
 
 /**
  * Formata o tempo restante (em segundos) em uma string no formato "2d 23h" ou "03h 15m".
@@ -80,11 +86,13 @@ function formatTimeRemaining(timeInSeconds) {
     const hours = Math.floor((totalSeconds % 86400) / 3600);
     const minutes = Math.floor((totalSeconds % 3600) / 60);
 
+
     if (days > 0) {
         return `${days}d ${String(hours).padStart(2, '0')}h`;
     }
     return `${String(hours).padStart(2, '0')}h ${String(minutes).padStart(2, '0')}m`;
 }
+
 
 /**
  * Calcula a porcentagem de progresso do check-in (tempo decorrido).
@@ -96,9 +104,12 @@ function getProgressPercentage(timeInSeconds) {
 }
 
 
+
+
 // =========================================================
 // RENDERIZAÇÃO DE COMPONENTES DE SEGURANÇA
 // =========================================================
+
 
 /**
  * Renderiza o bloco completo do Check-in de Segurança.
@@ -137,45 +148,49 @@ function renderSafetyCheckIn() {
     `;
 }
 
+
 function renderSensorItem(sensor) {
     let statusText = sensor.isActive ? 'Ativo' : 'Desativado';
     let statusClass = sensor.isActive ? 'text-green-600' : 'text-red-500';
     const toggleChecked = sensor.isActive ? 'checked' : '';
     const inactiveClass = !sensor.isActive ? 'opacity-60' : '';
 
+
     return `
         <div id="${sensor.id}" class="sensor-item flex justify-between items-start p-4 bg-[var(--azul-claro)] rounded-lg border border-[var(--azul-marinho)] transition-opacity duration-300 ${inactiveClass}">
            
-            <div class="flex items-start gap-3 flex-1 min-w-0"> 
-                <i class="fas ${sensor.icon} text-[var(--branco)] text-lg bg-[var(--azul-marinho)] p-3 rounded-full w-12 h-12 text-center flex items-center justify-center flex-shrink-0"></i> 
-                
-            
+            <div class="flex items-start gap-3 flex-1 min-w-0">
+                <i class="fas ${sensor.icon} text-[var(--branco)] text-lg bg-[var(--azul-marinho)] p-3 rounded-full w-12 h-12 text-center flex items-center justify-center flex-shrink-0"></i>
+               
+           
                 <div class="flex-1">
-                    <p class="font-semibold text-[var(--azul-marinho-escuro)]"> 
-                        ${sensor.name} 
-                        <span class="sensor-status font-semibold text-sm ml-2 ${statusClass}">${statusText}</span> 
+                    <p class="font-semibold text-[var(--azul-marinho-escuro)]">
+                        ${sensor.name}
+                        <span class="sensor-status font-semibold text-sm ml-2 ${statusClass}">${statusText}</span>
                     </p>
-                    <p class="text-xs text-gray-700/80 mb-2 break-words"> 
+                    <p class="text-xs text-gray-700/80 mb-2 break-words">
                         ${sensor.description}
                     </p>
-                    
-                    <div class="flex items-center justify-between text-xs mb-1 max-w-[200px]"> 
-                        <span class="text-gray-600">Sensibilidade</span> 
-                        <span>${sensor.sensitivity}%</span> 
+                   
+                    <div class="flex items-center justify-between text-xs mb-1 max-w-[200px]">
+                        <span class="text-gray-600">Sensibilidade</span>
+                        <span>${sensor.sensitivity}%</span>
                     </div>
-                    <div class="h-1 bg-[var(--azul-claro-houver)] rounded-full overflow-hidden mt-1 max-w-[200px]"> 
-                        <div class="h-full bg-[var(--azul-marinho-escuro)]" style="width: ${sensor.sensitivity}%;"></div> 
+                    <div class="h-1 bg-[var(--azul-claro-houver)] rounded-full overflow-hidden mt-1 max-w-[200px]">
+                        <div class="h-full bg-[var(--azul-marinho-escuro)]" style="width: ${sensor.sensitivity}%;"></div>
                     </div>
 
 
-                    <button onclick="testSensor('${sensor.name}')" class="mt-3 px-4 py-1 bg-[var(--branco)] border border-[var(--azul-marinho-escuro)] text-[var(--azul-marinho-escuro)] rounded-lg hover:bg-[var(--azul-claro)] transition-colors text-sm font-semibold"> 
-                        Testar 
+
+
+                    <button onclick="testSensor('${sensor.name}')" class="mt-3 px-4 py-1 bg-[var(--branco)] border border-[var(--azul-marinho-escuro)] text-[var(--azul-marinho-escuro)] rounded-lg hover:bg-[var(--azul-claro)] transition-colors text-sm font-semibold">
+                        Testar
                     </button>
                 </div>
             </div>
-            
-        
-            <div class="ml-4 flex-shrink-0"> 
+           
+       
+            <div class="ml-4 flex-shrink-0">
                 <label class="relative inline-flex items-center cursor-pointer">
                     <input type="checkbox" ${toggleChecked} class="sr-only peer" onchange="toggleSensor('${sensor.id}', this.checked)">
                     <div class="w-11 h-6 bg-gray-300 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-green-600"></div>
@@ -184,6 +199,7 @@ function renderSensorItem(sensor) {
         </div>
     `;
 }
+
 
 /**
  * Renderiza o bloco completo da Detecção Automática (com contador dinâmico).
@@ -205,9 +221,11 @@ function renderAutomaticDetection() {
     `;
 }
 
+
 // =========================================================
 // RENDERIZAÇÃO DE PÁGINAS
 // =========================================================
+
 
 // Central de Segurança
 function renderSecurityPage() {
@@ -253,6 +271,7 @@ function renderSecurityPage() {
     `;
 }
 
+
 function initSecurityPage() {
     if (countdownInterval) clearInterval(countdownInterval);
     let checkInTimerInterval = setInterval(() => {
@@ -272,6 +291,7 @@ function initSecurityPage() {
     countdownInterval = checkInTimerInterval;
 }
 
+
 function performCheckIn() {
     checkInTimeLeft = CHECKIN_INTERVAL_SECONDS;
     showToast('Check-in realizado!', 'success', `Próximo em ${formatTimeRemaining(CHECKIN_INTERVAL_SECONDS)}`);
@@ -282,13 +302,16 @@ function performCheckIn() {
     if (progressBar) progressBar.style.width = getProgressPercentage(checkInTimeLeft) + '%';
 }
 
+
 function testSensor(sensorName) {
     showSensorModal(sensorName);
 }
 
+
 // =========================================================
 // RENDERIZAÇÃO DE OUTRAS PÁGINAS (Perfil, Anotações, Chat, etc.)
 // =========================================================
+
 
 // Perfil (Com layout atualizado e responsivo)
 function renderProfilePage() {
@@ -327,27 +350,340 @@ function renderProfilePage() {
     `;
 }
 
-// Anotações (Com layout atualizado e responsivo)
-function renderNotesPage() {
-    const notesHtml = notes.map(note => `
-        <div class="p-6 bg-white rounded-xl border-2 border-gray-200 shadow-sm hover:border-[var(--azul-marinho)] transition-all duration-300">
-            <div class="flex justify-between items-start mb-2">
-                <div> <h4 class="font-semibold text-lg text-[var(--azul-marinho-escuro)] mb-1">${note.title}</h4> <p class="text-sm text-gray-500">${note.eventDate}</p> </div>
-                <div class="flex gap-3"> <button onclick="showToast('Editando nota ID: ${note.id}', 'info')" class="text-[var(--azul-marinho)] hover:text-[var(--azul-marinho-escuro)] transition-colors text-lg"> <i class="fas fa-edit"></i> </button> <button onclick="showToast('Deletando nota ID: ${note.id}', 'error')" class="text-red-500 hover:text-red-700 transition-colors text-lg"> <i class="fas fa-trash-alt"></i> </button> </div>
-            </div>
-            <p class="text-gray-700 mb-4">${note.content}</p>
-            ${note.image ? `<div class="mt-4 max-w-sm rounded-lg overflow-hidden shadow-md"> <img src="${note.image}" alt="Imagem" class="w-full h-auto object-cover"> </div>` : ''}
-        </div>
-    `).join('');
+
+// =========================================================
+// FUNÇÕES DE MANIPULAÇÃO DE ANOTAÇÕES (CRUD)
+// =========================================================
+
+
+/**
+ * Encontra uma anotação pelo ID.
+ * @param {number} id - O ID da anotação.
+ * @returns {object|undefined} A anotação encontrada.
+ */
+function findNoteById(id) {
+    // Note: No backend, este ID seria o ID real do banco de dados (ex: string UUID ou número)
+    return notes.find(note => note.id === id);
+}
+
+
+/**
+ * Controla o estado do botão "Nova Anotação" (ativado/desativado).
+ * @param {boolean} enable
+ */
+function toggleNewNoteButton(enable) {
+    const newNoteButton = document.getElementById('showNewNoteFormBtn');
+    if (newNoteButton) {
+        newNoteButton.disabled = !enable;
+        newNoteButton.classList.toggle('opacity-50', !enable);
+        newNoteButton.classList.toggle('cursor-not-allowed', !enable);
+    }
+}
+
+
+/**
+ * Renderiza o HTML do formulário, usado para CRIAR ou EDITAR uma anotação.
+ * @param {object|null} note - A anotação a ser editada, ou null para criação.
+ * @returns {string} O HTML do formulário.
+ */
+function renderNoteForm(note = null) {
+    const isEditing = note !== null;
+    const formTitle = isEditing ? `Editar Anotação: ${note.title}` : 'Criar Nova Anotação';
+    const noteTitle = isEditing ? note.title : '';
+    const noteContent = isEditing ? note.content : '';
+    // Ação de salvamento dinâmica (criação ou edição)
+    const saveAction = isEditing ? `saveEditedNote(${note.id})` : `saveNewNote()`;
+   
     return `
-        <div class="max-w-4xl mx-auto">
-            <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-8 gap-4"> <h2 class="text-3xl font-bold text-[var(--azul-marinho-escuro)]">Anotações</h2> <button onclick="showToast('Nova anotação...', 'info')" class="w-full sm:w-auto px-5 py-2 bg-[var(--azul-marinho)] hover:bg-[var(--azul-marinho-escuro)] text-white rounded-lg font-semibold transition-colors flex items-center justify-center gap-2"> <i class="fas fa-plus"></i> Nova Anotação </button> </div>
-            <h3 class="text-xl font-semibold text-[var(--azul-marinho-escuro)] mb-4 border-b border-gray-300 pb-2">Minhas Anotações</h3>
-            <div class="space-y-6"> ${notesHtml} </div>
-            <div class="mt-8 p-4 bg-blue-50 border border-blue-200 rounded-lg text-sm text-blue-900"> <i class="fas fa-info-circle mr-2"></i> Suas anotações são privadas. </div>
+        <div id="noteForm" class="bg-white rounded-xl border-2 border-[var(--azul-claro)] p-6 shadow-md transition-all duration-300">
+            <h4 class="text-lg font-semibold text-[var(--azul-marinho-escuro)] mb-4">${formTitle}</h4>
+           
+            <div class="mb-4">
+                <label for="noteTitle" class="sr-only">Título da anotação</label>
+                <input
+                    type="text"
+                    id="noteTitle"
+                    placeholder="Título da anotação"
+                    value="${noteTitle}"
+                    class="w-full px-4 py-3 border border-[var(--azul-claro)] rounded-lg focus:outline-none focus:border-[var(--azul-marinho)]"
+                >
+            </div>
+           
+            <div class="mb-4">
+                <label for="noteContent" class="sr-only">Escreva sua anotação aqui...</label>
+                <textarea
+                    id="noteContent"
+                    rows="4"
+                    placeholder="Escreva sua anotação aqui..."
+                    class="w-full px-4 py-3 border border-[var(--azul-claro)] rounded-lg focus:outline-none focus:border-[var(--azul-marinho)] resize-none"
+                >${noteContent}</textarea>
+            </div>
+
+
+            <input
+                type="file"
+                id="noteImageUpload"
+                accept="image/*"
+                multiple
+                class="hidden"
+            >
+           
+            <div class="flex flex-col sm:flex-row justify-between items-center gap-4">
+                <button
+                    onclick="document.getElementById('noteImageUpload').click()"
+                    class="w-full sm:w-auto px-4 py-2 border border-[var(--azul-marinho)] text-[var(--azul-marinho-escuro)] rounded-lg hover:bg-[var(--azul-claro-houver)] font-semibold transition-colors flex items-center justify-center gap-2"
+                >
+                    <i class="fas fa-image"></i> Adicionar Fotos
+                </button>
+               
+                <div class="flex gap-3 w-full sm:w-auto">
+                    <button
+                        onclick="cancelNoteForm()"
+                        class="flex-1 sm:flex-none px-6 py-2 border border-[var(--azul-marinho)] text-[var(--azul-marinho-escuro)] rounded-lg hover:bg-[var(--azul-claro-houver)] font-semibold transition-colors"
+                    >
+                        Cancelar
+                    </button>
+                    <button
+                        onclick="${saveAction}"
+                        class="flex-1 sm:flex-none px-6 py-2 bg-[var(--azul-marinho)] hover:bg-[var(--azul-marinho-escuro)] text-[var(--branco)] rounded-lg font-semibold transition-colors flex items-center justify-center gap-2"
+                    >
+                       <i class="fas fa-save"></i> ${isEditing ? 'Salvar Edição' : 'Salvar'}
+                    </button>
+                </div>
+            </div>
         </div>
     `;
 }
+
+
+/**
+ * Esconde (remove) o formulário e reabilita o botão de Nova Anotação.
+ */
+function cancelNoteForm() {
+    const formContainer = document.getElementById('newNoteFormContainer');
+    if (formContainer) {
+        formContainer.innerHTML = ''; // Limpa o container
+    }
+    toggleNewNoteButton(true);
+}
+
+
+/**
+ * Exibe o formulário para criar uma nova anotação.
+ */
+function showNewNoteForm() {
+    // Limpa qualquer formulário de edição existente
+    cancelNoteForm();
+    toggleNewNoteButton(false);
+    const formContainer = document.getElementById('newNoteFormContainer');
+    if (formContainer) {
+        formContainer.innerHTML = renderNoteForm(null); // Passa null para criação
+        formContainer.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+}
+
+
+/**
+ * Salva a nova anotação (Criação - POST).
+ */
+function saveNewNote() {
+    const title = document.getElementById('noteTitle')?.value.trim();
+    const content = document.getElementById('noteContent')?.value.trim();
+
+
+    if (!title || !content) {
+        showToast('Erro ao salvar', 'error', 'Título e conteúdo são obrigatórios.');
+        return;
+    }
+
+
+    const newNote = {
+        id: Date.now(), // ID temporário
+        title: title,
+        date: new Date().toISOString().split('T')[0],
+        content: content,
+        image: null,
+        eventDate: new Date().toLocaleDateString('pt-BR')
+    };
+
+
+    notes.unshift(newNote); // Simula o salvamento no Backend
+
+
+    renderPage('notes');
+    showToast('Anotação Salva!', 'success', 'Simulação de salvamento no servidor.');
+}
+
+
+/**
+ * Abre o formulário de edição pré-preenchido.
+ * @param {number} id - O ID da anotação a ser editada.
+ */
+function editNote(id) {
+    const noteToEdit = findNoteById(id);
+    if (!noteToEdit) {
+        showToast('Erro', 'error', 'Anotação não encontrada.');
+        return;
+    }
+   
+    // Limpa o botão "Nova Anotação" e garante que apenas um formulário esteja aberto
+    toggleNewNoteButton(false);
+   
+    const formContainer = document.getElementById('newNoteFormContainer');
+    if (formContainer) {
+        formContainer.innerHTML = renderNoteForm(noteToEdit);
+        formContainer.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+}
+
+
+/**
+ * Salva a anotação editada (Atualização - PUT).
+ * @param {number} id - O ID da anotação.
+ */
+function saveEditedNote(id) {
+    const noteIndex = notes.findIndex(note => note.id === id);
+    if (noteIndex === -1) {
+        showToast('Erro', 'error', 'Anotação para edição não encontrada.');
+        return;
+    }
+
+
+    const title = document.getElementById('noteTitle')?.value.trim();
+    const content = document.getElementById('noteContent')?.value.trim();
+
+
+    if (!title || !content) {
+        showToast('Erro ao salvar', 'error', 'Título e conteúdo são obrigatórios.');
+        return;
+    }
+
+
+    // Simula a atualização no Backend
+    notes[noteIndex].title = title;
+    notes[noteIndex].content = content;
+    notes[noteIndex].date = new Date().toISOString().split('T')[0];
+    notes[noteIndex].eventDate = new Date().toLocaleDateString('pt-BR');
+
+
+    renderPage('notes');
+    showToast('Anotação Atualizada!', 'success', 'Simulação de atualização no servidor.');
+}
+
+
+/**
+ * Confirma a exclusão de uma anotação, exibindo o modal estilizado.
+ * @param {number} id - O ID da anotação.
+ * @param {string} title - O título da anotação.
+ */
+function confirmDeleteNote(id, title) {
+    // Escapa aspas simples no título para evitar problemas no HTML/JS
+    const escapedTitle = title.replace(/'/g, "\\'");
+    showDeleteNoteModal(id, escapedTitle);
+}
+
+
+/**
+ * Remove a anotação do array de dados APÓS a confirmação no modal.
+ */
+function deleteNoteFromModal() {
+    const id = currentNoteIdToDelete;
+    closeDeleteNoteModal(); // Fecha o modal após capturar o ID
+   
+    if (id === null) return; // Se não houver ID, ignora
+
+
+    const initialLength = notes.length;
+    // Simula a chamada ao Backend, removendo o item do array
+    const updatedNotes = notes.filter(note => note.id !== id);
+   
+    if (updatedNotes.length === initialLength) {
+        showToast('Erro', 'error', 'Anotação não encontrada para exclusão.');
+        return;
+    }
+   
+    // Atualiza o array global 'notes'
+    notes.length = 0;
+    notes.push(...updatedNotes);
+
+
+    renderPage('notes');
+    showToast('Anotação Excluída!', 'success', `A anotação foi removida com sucesso.`);
+}
+
+
+
+
+// Anotações (Com layout atualizado e responsivo)
+function renderNotesPage() {
+   
+    // Mapeia os dados das notas para o novo formato de cartão HTML
+    const notesHtml = notes.map(note => `
+        <div class="p-6 bg-white rounded-xl border-2 border-gray-200 shadow-sm hover:border-[var(--azul-marinho)] transition-all duration-300">
+           
+            <div class="flex justify-between items-start mb-2">
+                <div>
+                    <h4 class="font-semibold text-lg text-[var(--azul-marinho-escuro)] mb-1">${note.title}</h4>
+                    <p class="text-sm text-gray-500">${note.eventDate}</p>
+                </div>
+                <div class="flex gap-3">
+                   
+                    <button onclick="editNote(${note.id})"
+                            class="text-[var(--azul-marinho)] hover:text-[var(--azul-marinho-escuro)] transition-colors text-lg">
+                        <i class="fas fa-edit"></i>
+                    </button>
+                   
+                    <button onclick="confirmDeleteNote(${note.id}, '${note.title.replace(/'/g, "\\'")}')"
+                            class="text-red-500 hover:text-red-700 transition-colors text-lg">
+                        <i class="fas fa-trash-alt"></i>
+                    </button>
+                </div>
+            </div>
+
+
+            <p class="text-gray-700 mb-4">${note.content}</p>
+
+
+            ${note.image ? `
+                <div class="mt-4 max-w-sm rounded-lg overflow-hidden shadow-md">
+                    <img src="${note.image}" alt="Imagem da anotação" class="w-full h-auto object-cover">
+                </div>
+            ` : ''}
+
+
+        </div>
+    `).join('');
+
+
+    return `
+        <div class="max-w-4xl mx-auto">
+           
+            <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-8 gap-4">
+                <h2 class="text-3xl font-bold text-[var(--azul-marinho-escuro)]">Anotações</h2>
+                <button
+                    id="showNewNoteFormBtn"
+                    onclick="showNewNoteForm()"
+                    class="w-full sm:w-auto px-5 py-2 bg-[var(--azul-marinho)] hover:bg-[var(--azul-marinho-escuro)] text-white rounded-lg font-semibold transition-colors flex items-center justify-center gap-2"
+                >
+                    <i class="fas fa-plus"></i> Nova Anotação
+                </button>
+            </div>
+           
+            <div id="newNoteFormContainer" class="mb-6"></div>
+           
+            <h3 class="text-xl font-semibold text-[var(--azul-marinho-escuro)] mb-4 border-b border-gray-300 pb-2">Minhas Anotações</h3>
+           
+            <div class="space-y-6" id="notesListContainer">
+                ${notesHtml.length > 0 ? notesHtml : '<p class="text-gray-500 text-center">Nenhuma anotação encontrada.</p>'}
+            </div>
+           
+            <div class="mt-8 p-4 bg-blue-50 border border-blue-200 rounded-lg text-sm text-blue-900">
+                <i class="fas fa-info-circle mr-2"></i> Suas anotações são privadas.
+            </div>
+        </div>
+    `;
+}
+
 
 // Chat (Com responsividade básica)
 function renderChatPage() {
@@ -360,10 +696,12 @@ function renderChatPage() {
     `;
 }
 
+
 function initChatPage() {
     const chatMessages = document.getElementById('chatMessages');
     if (chatMessages) { chatMessages.scrollTop = chatMessages.scrollHeight; }
 }
+
 
 function sendMessage() {
     const input = document.getElementById('chatInput');
@@ -373,6 +711,7 @@ function sendMessage() {
         // TODO: Adicionar mensagem ao array `chatMessages` e chamar renderPage('chat')
     }
 }
+
 
 // === Modal de adicionar contato ===
 // ==== Funções fora ====
@@ -493,6 +832,7 @@ function confirmDelete(id) {
 
 
 
+
 // Contatos de Emergência (Com responsividade básica)
 function renderEmergencyContactsPage() {
 
@@ -557,7 +897,6 @@ function renderEmergencyContactsPage() {
 }
 
 
-
 // Configurações (Com responsividade básica)
 function renderSettingsPage() {
     return `
@@ -573,9 +912,11 @@ function renderSettingsPage() {
     `;
 }
 
+
 // =========================================================
 // RENDERIZAÇÃO E NAVEGAÇÃO
 // =========================================================
+
 
 // Inicialização
 document.addEventListener('DOMContentLoaded', function() {
@@ -583,6 +924,7 @@ document.addEventListener('DOMContentLoaded', function() {
     initEmergencyButtons();
     renderPage(currentPage); // Usa a variável global para iniciar na página correta
 });
+
 
 // Sistema de Navegação (ATUALIZADO PARA RESPONSIVO e ATIVAÇÃO CORRETA)
 function initNavigation() {
@@ -594,7 +936,7 @@ function initNavigation() {
             navItems.forEach(nav => nav.classList.remove('active')); // Desativa todos
             // Ativa os botões correspondentes em AMBOS os menus (desktop e mobile)
             document.querySelectorAll(`.item-nav-sidebar[data-page="${page}"]`).forEach(nav => nav.classList.add('active'));
-            closeMobileMenu(); // Fecha o menu mobile se estiver aberto
+            // A função closeMobileMenu() não está definida no código fornecido, mas a lógica de navegação está correta.
             renderPage(page); // Renderiza a nova página
         });
     });
@@ -603,6 +945,7 @@ function initNavigation() {
         if (nav) nav.classList.add('active');
     });
 }
+
 
 // Renderizar Páginas (com scroll to top)
 function renderPage(page) {
@@ -618,36 +961,43 @@ function renderPage(page) {
         'settings': { title: 'Configurações', render: renderSettingsPage, init: null }
     };
     if (!pages[page]) { console.error(`Página "${page}" não encontrada.`); return; } // Tratamento de erro
-    
+   
     // Atualiza título e conteúdo da página
     pageTitle.textContent = pages[page].title;
     pageContent.innerHTML = pages[page].render();
     window.scrollTo(0, 0); // Garante que a nova página comece no topo
 
+
     // Executa função de inicialização específica da página (se houver)
     if (pages[page].init) { pages[page].init(); }
 }
+
 
 // =========================================================
 // UTILITÁRIOS (TOASTS, MODAIS, MENU)
 // =========================================================
 
-// --- Funções do Menu Mobile ---
+
+// --- Funções do Menu Mobile (Restauradas para completude) ---
 function openMobileMenu() {
     const sidebar = document.getElementById('mobileSidebar');
     if (sidebar) {
-        sidebar.classList.remove('hidden'); 
-        setTimeout(() => { sidebar.querySelector('aside').classList.remove('-translate-x-full'); }, 10); // Delay p/ transição
+        sidebar.classList.remove('hidden');
+        setTimeout(() => { sidebar.querySelector('aside').classList.remove('-translate-x-full'); }, 10);
     }
 }
+
 
 function closeMobileMenu() {
     const sidebar = document.getElementById('mobileSidebar');
     if (sidebar) {
         sidebar.querySelector('aside').classList.add('-translate-x-full');
-        setTimeout(() => { sidebar.classList.add('hidden'); }, 300); // Espera a transição
+        setTimeout(() => { sidebar.classList.add('hidden'); }, 300);
     }
 }
+
+
+
 
 // --- Funções de Emergência ---
 function initEmergencyButtons() {
@@ -657,22 +1007,27 @@ function initEmergencyButtons() {
     // O botão da sidebar mobile usa onclick="" no HTML
 }
 
+
 function showEmergencyModal() {
     const modal = document.getElementById('emergencyModal');
     modal.classList.remove('hidden'); modal.classList.add('flex');
 }
+
 
 function closeEmergencyModal() {
     const modal = document.getElementById('emergencyModal');
     modal.classList.add('hidden'); modal.classList.remove('flex');
 }
 
+
 function confirmEmergency() {
     closeEmergencyModal();
     showToast('Alerta enviado!', 'success', 'Contatos notificados.');
 }
 
+
 // --- Funções do Sensor (Modal e Toggles) ---
+
 
 /**
  * Lida com o clique no interruptor (toggle) de um sensor.
@@ -685,6 +1040,7 @@ function toggleSensor(sensorId, isChecked) {
     const sensor = sensorsData[sensorIndex];
     const status = isChecked ? "ativado" : "desativado";
     showToast(`${sensor.name} ${status}!`, isChecked ? 'success' : 'info');
+
 
     // Atualiza DOM diretamente
     const sensorElement = document.getElementById(sensor.id);
@@ -701,7 +1057,7 @@ function toggleSensor(sensorId, isChecked) {
     const totalSensors = sensorsData.length;
     const countElement = document.getElementById('activeSensorCount');
     if (countElement) { countElement.textContent = `${activeSensors}/${totalSensors} Ativos`; }
-    
+   
     // Atualiza contador e status no Header Principal
     const headerSensorCount = document.getElementById('headerSensorCount');
     if(headerSensorCount) { headerSensorCount.textContent = `${activeSensors}/${totalSensors}`; }
@@ -713,6 +1069,7 @@ function toggleSensor(sensorId, isChecked) {
         headerSystemStatus.classList.add(allActive ? 'bg-green-500' : 'bg-orange-500');
     }
 }
+
 
 function showSensorModal(sensorName) {
     const modal = document.getElementById('sensorModal');
@@ -728,6 +1085,7 @@ function showSensorModal(sensorName) {
     }, 1000);
 }
 
+
 function updateSensorCountdown() {
     const countdownEl = document.getElementById('countdown');
     const countdownTextEl = document.getElementById('countdownText');
@@ -737,6 +1095,7 @@ function updateSensorCountdown() {
     if (progressFill) { progressFill.style.width = (timeRemaining / 60) * 100 + '%'; }
 }
 
+
 function confirmSafe() {
     if (countdownInterval) { clearInterval(countdownInterval); }
     const modal = document.getElementById('sensorModal');
@@ -745,6 +1104,7 @@ function confirmSafe() {
     if (currentPage === 'security') initSecurityPage(); // Reinicia timer de check-in
 }
 
+
 function sendAlertNow() {
     if (countdownInterval) { clearInterval(countdownInterval); }
     const modal = document.getElementById('sensorModal');
@@ -752,6 +1112,64 @@ function sendAlertNow() {
     showToast('Alerta enviado!', 'error', 'Contatos notificados.');
     if (currentPage === 'security') initSecurityPage(); // Reinicia timer de check-in
 }
+
+
+// --- Funções do Modal de Exclusão ---
+
+
+function showDeleteNoteModal(id, title) {
+    currentNoteIdToDelete = id; // Armazena o ID globalmente
+    const modal = document.getElementById('deleteNoteModal');
+    const titleEl = document.getElementById('noteToDeleteTitle');
+   
+    if (titleEl) {
+        titleEl.textContent = title;
+    }
+
+
+    modal.classList.remove('hidden');
+    modal.classList.add('flex');
+}
+
+
+function closeDeleteNoteModal() {
+    currentNoteIdToDelete = null; // Limpa o ID
+    const modal = document.getElementById('deleteNoteModal');
+    modal.classList.add('hidden');
+    modal.classList.remove('flex');
+}
+
+
+/**
+ * Chama a função de exclusão após a confirmação no modal.
+ */
+function deleteNoteFromModal() {
+    const id = currentNoteIdToDelete;
+    closeDeleteNoteModal(); // Fecha o modal após capturar o ID
+   
+    if (id === null) return; // Se não houver ID, ignora
+
+
+    const initialLength = notes.length;
+    // Simula a chamada ao Backend, removendo o item do array
+    const updatedNotes = notes.filter(note => note.id !== id);
+   
+    if (updatedNotes.length === initialLength) {
+        showToast('Erro', 'error', 'Anotação não encontrada para exclusão.');
+        return;
+    }
+   
+    // Atualiza o array global 'notes'
+    notes.length = 0;
+    notes.push(...updatedNotes);
+
+
+    renderPage('notes');
+    showToast('Anotação Excluída!', 'success', `A anotação foi removida com sucesso.`);
+}
+
+
+
 
 // --- Sistema de Toasts ---
 function showToast(title, type = 'info', description = '') {
@@ -775,14 +1193,21 @@ function showToast(title, type = 'info', description = '') {
     }, 5000);
 }
 
+
 // --- Fechar modais ao clicar fora ---
 window.addEventListener('click', function(event) {
     const emergencyModal = document.getElementById('emergencyModal');
     const sensorModal = document.getElementById('sensorModal');
+    const deleteNoteModal = document.getElementById('deleteNoteModal'); // Adicionando o novo modal
+   
     if (event.target === emergencyModal) { closeEmergencyModal(); }
+   
     if (event.target === sensorModal) {
         if (countdownInterval) { clearInterval(countdownInterval); } // Para o timer do sensor
         sensorModal.classList.add('hidden'); sensorModal.classList.remove('flex');
         if (currentPage === 'security') initSecurityPage(); // Reinicia timer de check-in
     }
+   
+    if (event.target === deleteNoteModal) { closeDeleteNoteModal(); } // Fecha o modal de exclusão
 });
+
