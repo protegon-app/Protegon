@@ -32,7 +32,7 @@ Siga estes passos para configurar e rodar o projeto localmente.
 
 2.  **Crie um Ambiente Virtual** (Recomendado)
     ```bash
-    python3 -m venv venv
+    python -m venv venv
     source venv/bin/activate
     ```
 
