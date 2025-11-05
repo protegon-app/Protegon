@@ -32,13 +32,8 @@ Siga estes passos para configurar e rodar o projeto localmente.
 
 2.  **Crie um Ambiente Virtual** (Recomendado)
     ```bash
-    # No macOS/Linux
     python3 -m venv venv
     source venv/bin/activate
-    
-    # No Windows (PowerShell/CMD)
-    python -m venv venv
-    .\venv\Scripts\activate
     ```
 
 3.  **Instale as Dependências**
