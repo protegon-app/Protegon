@@ -1,0 +1,62 @@
+# docker-compose.yml
+# Versão do formato do Docker Compose. A 3.8 é a mais recente e estável para muitos usos.
+version: '3.8'
+
+# 1. Definição dos Serviços (Containers)
+services:
+
+  # 1.1. Serviço 'db' (Nosso MySQL Isolado)
+  db:
+    # Imagem oficial do MySQL 8.0 (Robusta e sempre atualizada)
+    image: mysql:8.0 
+    container_name: protegon_mysql
+    restart: always # Tenta reiniciar se cair. Essencial para alta disponibilidade.
+    
+    # Variáveis de Ambiente para Configuração do MySQL:
+    # CRÍTICO: Isola as credenciais e facilita a conexão do Back-end.
+    # O ${...} puxa o valor do arquivo .env (próximo passo)
+    environment:
+      MYSQL_ROOT_PASSWORD: ${DB_ROOT_PASSWORD} # Senha de gestão (ROOT)
+      MYSQL_DATABASE: protegon_db             # Nome do BD que a aplicação vai usar
+      MYSQL_USER: protegon_user               # Usuário para o Back-end
+      MYSQL_PASSWORD: ${DB_APP_PASSWORD}      # Senha para o Back-end
+      
+    # Portas para Acesso EXTERNO (Opcional, mas útil para o Workbench ou DBeaver)
+    # A porta 3307 do seu computador se conecta à porta 3306 interna do container
+    ports:
+      - "3307:3306" 
+      
+    # CRÍTICO: Persistência de Dados
+    volumes:
+      # Cria um volume gerenciado pelo Docker (db_data) para armazenar os dados do BD.
+      # Se o container for apagado, seus dados permanecem no volume!
+      - db_data:/var/lib/mysql
+      # Mapeia um diretório local para scripts de inicialização (como suas Migrations iniciais)
+      # O MySQL executa qualquer .sql aqui na primeira vez que é iniciado.
+      - ./db/init:/docker-entrypoint-initdb.d
+
+  # 1.2. Serviço 'app' (Nosso Back-end Python/PHP)
+  app:
+    # Diz ao Docker para construir a imagem usando o Dockerfile que está no diretório atual ('.')
+    build: . 
+    container_name: protegon_backend
+    restart: always
+    
+    # Variáveis de Ambiente que o CÓDIGO do Back-end precisa para se conectar ao BD
+    environment:
+      DB_HOST: db                             # O hostname é o nome do serviço (db) dentro da rede Docker!
+      DB_DATABASE: protegon_db
+      DB_USER: protegon_user
+      DB_PASSWORD: ${DB_APP_PASSWORD}
+      
+    ports:
+      - "8000:8000" # Exemplo: Porta do servidor (se for Python com Flask/Django ou PHP com um servidor embutido)
+      
+    # Dependência CRÍTICA
+    # Garante que o container 'db' esteja totalmente pronto (up) antes de tentar subir o 'app'.
+    depends_on:
+      - db 
+
+# 2. Definição dos Volumes Persistentes
+volumes:
+  db_data:
