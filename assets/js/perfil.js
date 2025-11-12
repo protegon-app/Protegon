@@ -8,7 +8,15 @@ let timeRemaining = 60; // Tempo restante para o timer do Sensor
 const CHECKIN_INTERVAL_SECONDS = 72 * 60 * 60; // 72 horas em segundos
 let checkInTimeLeft = 71 * 60 * 60; // 71 horas em segundos (para inicializar o timer)
 let editingContactId = null;
-let currentNoteIdToDelete = null; // VARIÁVEL DE ESTADO PARA EXCLUSÃO (CRÍTICO)
+let currentNoteIdToDelete = null; // VARIÁVEL DE ESTADO PARA EXCLUSÃO 
+let userSettings = {
+    modo_escuro: false,
+    idioma: 'pt-BR',
+    fuso_horario: 'America/Sao_Paulo',
+    notificacao_email: true,
+    notificacao_push: true,
+    notificacao_alertas_mensagens: true
+};
 
 
 
@@ -899,17 +907,222 @@ function renderEmergencyContactsPage() {
 
 // Configurações (Com responsividade básica)
 function renderSettingsPage() {
+    // O HTML agora lê diretamente do objeto 'userSettings'
+    // Isso garante que a UI reflita o estado (seja o padrão ou o vindo da API)
     return `
-        <div class="bg-white rounded-xl border-2 border-[var(--azul-claro)] p-4 sm:p-6">
-            <div class="flex items-center gap-3 mb-6"> <div class="bg-[var(--azul-claro)] p-3 rounded-full"> <i class="fas fa-cog text-[var(--azul-marinho)] text-xl"></i> </div> <h3 class="text-xl font-bold text-[var(--azul-marinho-escuro)]">Preferências do Sistema</h3> </div>
-            <div class="space-y-4">
-                <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center p-4 bg-gray-50 rounded-lg gap-3"> <div> <p class="text-sm font-semibold text-[var(--azul-marinho-escuro)] mb-1">Notificações Push</p> <p class="text-xs text-[var(--azul-marinho)]/60">Receber alertas no dispositivo</p> </div> <label class="relative inline-flex items-center cursor-pointer"> <input type="checkbox" checked class="sr-only peer" onchange="showToast('Notificações atualizadas', 'success')"> <div class="w-11 h-6 bg-gray-200 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-green-600"></div> </label> </div>
-                <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center p-4 bg-gray-50 rounded-lg gap-3"> <div> <p class="text-sm font-semibold text-[var(--azul-marinho-escuro)] mb-1">Compartilhamento de Localização</p> <p class="text-xs text-[var(--azul-marinho)]/60">Permitir acesso ao GPS</p> </div> <label class="relative inline-flex items-center cursor-pointer"> <input type="checkbox" checked class="sr-only peer" onchange="showToast('Localização atualizada', 'success')"> <div class="w-11 h-6 bg-gray-200 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-green-600"></div> </label> </div>
-                <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center p-4 bg-gray-50 rounded-lg gap-3"> <div> <p class="text-sm font-semibold text-[var(--azul-marinho-escuro)] mb-1">Gravação Automática de Áudio</p> <p class="text-xs text-[var(--azul-marinho)]/60">Gravar áudio ao acionar alerta</p> </div> <label class="relative inline-flex items-center cursor-pointer"> <input type="checkbox" class="sr-only peer" onchange="showToast('Gravação atualizada', 'success')"> <div class="w-11 h-6 bg-gray-200 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-green-600"></div> </label> </div>
-                <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center p-4 bg-gray-50 rounded-lg gap-3"> <div> <p class="text-sm font-semibold text-[var(--azul-marinho-escuro)] mb-1">Modo Escuro</p> <p class="text-xs text-[var(--azul-marinho)]/60">Tema escuro para a interface</p> </div> <label class="relative inline-flex items-center cursor-pointer"> <input type="checkbox" class="sr-only peer" onchange="showToast('Tema atualizado', 'success')"> <div class="w-11 h-6 bg-gray-200 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-green-600"></div> </label> </div>
+    
+        <div class="space-y-8 max-w-4xl mx-auto">
+
+            <div class="bg-white rounded-xl border-2 border-[var(--azul-claro)] p-4 sm:p-6">
+                <h3 class="text-xl font-bold text-[var(--azul-marinho-escuro)] mb-6 border-b border-gray-200 pb-4">
+                    <i class="fas fa-palette mr-2 text-[var(--azul-marinho)]"></i>
+                    Aparência
+                </h3>
+                <div class="space-y-4">
+                    <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center p-4 bg-gray-50 rounded-lg gap-3">
+                        <div>
+                            <p class="text-sm font-semibold text-[var(--azul-marinho-escuro)] mb-1">Modo Escuro</p>
+                            <p class="text-xs text-[var(--azul-marinho)]/60">Alterna a interface para o tema escuro.</p>
+                        </div>
+                        <label class="relative inline-flex items-center cursor-pointer">
+                            <input 
+                                type="checkbox" 
+                                id="setting-modo-escuro" 
+                                class="sr-only peer"
+                                ${userSettings.modo_escuro ? 'checked' : ''}
+                            >
+                            <div class="w-11 h-6 bg-gray-200 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-green-600"></div>
+                        </label>
+                    </div>
+                </div>
+            </div>
+
+            <div class="bg-white rounded-xl border-2 border-[var(--azul-claro)] p-4 sm:p-6">
+                <h3 class="text-xl font-bold text-[var(--azul-marinho-escuro)] mb-6 border-b border-gray-200 pb-4">
+                    <i class="fas fa-globe-americas mr-2 text-[var(--azul-marinho)]"></i>
+                    Idioma e Região
+                </h3>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div>
+                        <label for="setting-idioma" class="block text-sm font-medium text-[var(--azul-marinho-escuro)] mb-2">Idioma</label>
+                        <select id="setting-idioma" class="w-full px-4 py-3 border border-[var(--azul-claro)] rounded-lg focus:outline-none focus:border-[var(--azul-marinho)] bg-white">
+                            <option value="pt-BR" ${userSettings.idioma === 'pt-BR' ? 'selected' : ''}>Português (Brasil)</option>
+                            <option value="en-US" ${userSettings.idioma === 'en-US' ? 'selected' : ''}>English (US)</option>
+                            <option value="es-ES" ${userSettings.idioma === 'es-ES' ? 'selected' : ''}>Español (España)</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label for="setting-fuso-horario" class="block text-sm font-medium text-[var(--azul-marinho-escuro)] mb-2">Fuso Horário</label>
+                        <select id="setting-fuso-horario" class="w-full px-4 py-3 border border-[var(--azul-claro)] rounded-lg focus:outline-none focus:border-[var(--azul-marinho)] bg-white">
+                            <option value="America/Sao_Paulo" ${userSettings.fuso_horario === 'America/Sao_Paulo' ? 'selected' : ''}>(GMT-03:00) São Paulo</option>
+                            <option value="America/New_York" ${userSettings.fuso_horario === 'America/New_York' ? 'selected' : ''}>(GMT-05:00) New York</option>
+                            <option value="Europe/London" ${userSettings.fuso_horario === 'Europe/London' ? 'selected' : ''}>(GMT+00:00) London</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+
+            <div class="bg-white rounded-xl border-2 border-[var(--azul-claro)] p-4 sm:p-6">
+                <h3 class="text-xl font-bold text-[var(--azul-marinho-escuro)] mb-6 border-b border-gray-200 pb-4">
+                    <i class="fas fa-bell mr-2 text-[var(--azul-marinho)]"></i>
+                    Notificações
+                </h3>
+                <div class="space-y-4">
+                    <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center p-4 bg-gray-50 rounded-lg gap-3">
+                        <div>
+                            <p class="text-sm font-semibold text-[var(--azul-marinho-escuro)] mb-1">Notificações por Email</p>
+                            <p class="text-xs text-[var(--azul-marinho)]/60">Receber resumos e alertas no seu email.</p>
+                        </div>
+                        <label class="relative inline-flex items-center cursor-pointer">
+                            <input 
+                                type="checkbox" 
+                                id="setting-notificacao-email" 
+                                class="sr-only peer"
+                                ${userSettings.notificacao_email ? 'checked' : ''}
+                            >
+                            <div class="w-11 h-6 bg-gray-200 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-green-600"></div>
+                        </label>
+                    </div>
+                    <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center p-4 bg-gray-50 rounded-lg gap-3">
+                        <div>
+                            <p class="text-sm font-semibold text-[var(--azul-marinho-escuro)] mb-1">Notificações Push</p>
+                            <p class="text-xs text-[var(--azul-marinho)]/60">Receber alertas no seu dispositivo móvel.</p>
+                        </div>
+                        <label class="relative inline-flex items-center cursor-pointer">
+                            <input 
+                                type="checkbox" 
+                                id="setting-notificacao-push" 
+                                class="sr-only peer"
+                                ${userSettings.notificacao_push ? 'checked' : ''}
+                            >
+                            <div class="w-11 h-6 bg-gray-200 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-green-600"></div>
+                        </label>
+                    </div>
+                    <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center p-4 bg-gray-50 rounded-lg gap-3">
+                        <div>
+                            <p class="text-sm font-semibold text-[var(--azul-marinho-escuro)] mb-1">Alertas de Mensagens</p>
+                            <p class="text-xs text-[var(--azul-marinho)]/60">Notificar quando novas mensagens chegarem.</p>
+                        </div>
+                        <label class="relative inline-flex items-center cursor-pointer">
+                            <input 
+                                type="checkbox" 
+                                id="setting-notificacao-alertas" 
+                                class="sr-only peer"
+                                ${userSettings.notificacao_alertas_mensagens ? 'checked' : ''}
+                            >
+                            <div class="w-11 h-6 bg-gray-200 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-green-600"></div>
+                        </label>
+                    </div>
+                </div>
+            </div>
+
+            <div class="flex justify-end gap-3 pt-6 border-t border-gray-200">
+                <button 
+                    onclick="renderPage('settings')" 
+                    class="w-full sm:w-auto px-6 py-2 border border-[var(--azul-marinho)] text-[var(--azul-marinho-escuro)] rounded-lg hover:bg-[var(--azul-claro-houver)] font-semibold transition-colors">
+                    Cancelar
+                </button>
+                <button 
+                    id="saveSettingsBtn" 
+                    class="w-full sm:w-auto px-6 py-2 bg-[var(--azul-marinho)] hover:bg-[var(--azul-marinho-escuro)] text-[var(--branco)] rounded-lg font-semibold transition-colors">
+                    Salvar Alterações
+                </button>
             </div>
         </div>
     `;
+}
+/**
+ * NOVO: Função de inicialização da página de Configurações.
+ * Chamada pela renderPage.
+ */
+function initSettingsPage() {
+    // 1. Busca as configurações da API
+    fetchUserSettings(); 
+
+    // 2. Adiciona o listener no botão salvar
+    const saveBtn = document.getElementById('saveSettingsBtn');
+    if (saveBtn) {
+        saveBtn.addEventListener('click', saveSettings);
+    }
+}
+
+/**
+ * NOVO: Busca as configurações do usuário na API (GET)
+ */
+async function fetchUserSettings() {
+    try {
+        // ATENÇÃO: Se seu servidor rodar em outra porta (ex: 3000), use a URL completa:
+        // const response = await fetch('http://localhost:3000/api/configuracoes-basicas');
+        const response = await fetch('/api/configuracoes-basicas', {
+             method: 'GET',
+             headers: {
+                // Se você tiver autenticação, envie o token
+                // 'Authorization': `Bearer ${seu_token_jwt}`
+             }
+        });
+
+        if (!response.ok) {
+            throw new Error('Não foi possível carregar as configurações');
+        }
+        
+        const settings = await response.json();
+        userSettings = settings; // Atualiza o estado global
+
+        // Aplica o modo escuro imediatamente
+        document.body.classList.toggle('dark', userSettings.modo_escuro);
+
+        // Re-renderiza a página para mostrar os valores corretos
+        // NOTA: Em apps maiores (React, Vue) isso é automático. Aqui,
+        // renderizar novamente é a forma mais simples de atualizar a UI.
+        renderPage('settings'); 
+
+    } catch (error) {
+        console.error('Erro ao buscar configurações:', error);
+        showToast('Erro ao carregar', 'error', 'Não foi possível buscar suas configurações.');
+    }
+}
+
+/** Salva as configurações do usuário na API (PUT)
+ */
+async function saveSettings() {
+    // 1. Coleta os dados do formulário
+    const newSettings = {
+        modo_escuro: document.getElementById('setting-modo-escuro')?.checked,
+        idioma: document.getElementById('setting-idioma')?.value,
+        fuso_horario: document.getElementById('setting-fuso-horario')?.value,
+        notificacao_email: document.getElementById('setting-notificacao-email')?.checked,
+        notificacao_push: document.getElementById('setting-notificacao-push')?.checked,
+        notificacao_alertas_mensagens: document.getElementById('setting-notificacao-alertas')?.checked
+    };
+
+    try {
+        // ATENÇÃO: Use a URL completa se necessário (ex: http://localhost:3000)
+        const response = await fetch('/api/configuracoes-basicas', {
+            method: 'PUT',
+            headers: {
+                'Content-Type': 'application/json',
+                // 'Authorization': `Bearer ${seu_token_jwt}`
+            },
+            body: JSON.stringify(newSettings)
+        });
+
+        if (!response.ok) {
+            throw new Error('Servidor não conseguiu salvar.');
+        }
+
+        // 3. Atualiza o estado global
+        userSettings = newSettings;
+        
+        // 4. Aplica o modo escuro (a única configuração com efeito visual imediato)
+        document.body.classList.toggle('dark', userSettings.modo_escuro);
+        
+        // 5. Feedback
+        showToast('Configurações Salvas!', 'success', 'Suas preferências foram atualizadas.');
+
+    } catch (error) {
+        console.error('Erro ao salvar configurações:', error);
+        showToast('Erro ao Salvar', 'error', 'Não foi possível salvar suas preferências.');
+    }
 }
 
 
@@ -922,11 +1135,10 @@ function renderSettingsPage() {
 document.addEventListener('DOMContentLoaded', function() {
     initNavigation();
     initEmergencyButtons();
-    renderPage(currentPage); // Usa a variável global para iniciar na página correta
+    renderPage(currentPage);
 });
 
 
-// Sistema de Navegação (ATUALIZADO PARA RESPONSIVO e ATIVAÇÃO CORRETA)
 function initNavigation() {
     const navItems = document.querySelectorAll('.item-nav-sidebar');
     navItems.forEach(item => {
@@ -948,28 +1160,30 @@ function initNavigation() {
 
 
 // Renderizar Páginas (com scroll to top)
+f// MODIFICAR esta função
 function renderPage(page) {
-    currentPage = page; // Atualiza a página atual globalmente
-    const pageContent = document.getElementById('pageContent');
-    const pageTitle = document.getElementById('pageTitle');
-    const pages = { // Mapeamento de 'data-page' para funções e títulos
-        'security': { title: 'Central de Segurança', render: renderSecurityPage, init: initSecurityPage },
-        'profile': { title: 'Perfil do Usuário', render: renderProfilePage, init: null },
-        'notes': { title: '', render: renderNotesPage, init: null },
-        'chat': { title: 'Chat com o Psicólogo', render: renderChatPage, init: initChatPage },
-        'emergency': { title: 'Contatos de Emergência', render: renderEmergencyContactsPage, init: null },
-        'settings': { title: 'Configurações', render: renderSettingsPage, init: null }
-    };
-    if (!pages[page]) { console.error(`Página "${page}" não encontrada.`); return; } // Tratamento de erro
-   
-    // Atualiza título e conteúdo da página
-    pageTitle.textContent = pages[page].title;
-    pageContent.innerHTML = pages[page].render();
-    window.scrollTo(0, 0); // Garante que a nova página comece no topo
+    currentPage = page; 
+    const pageContent = document.getElementById('pageContent');
+    const pageTitle = document.getElementById('pageTitle');
+    const pages = { 
+        'security': { title: 'Central de Segurança', render: renderSecurityPage, init: initSecurityPage },
+        'profile': { title: 'Perfil do Usuário', render: renderProfilePage, init: null },
+        'notes': { title: '', render: renderNotesPage, init: null },
+        'chat': { title: 'Chat com o Psicólogo', render: renderChatPage, init: initChatPage },
+        'emergency': { title: 'Contatos de Emergência', render: renderEmergencyContactsPage, init: null },
+        
+        
+        'settings': { title: 'Configurações', render: renderSettingsPage, init: initSettingsPage } 
+    };
+    if (!pages[page]) { console.error(`Página "${page}" não encontrada.`); return; } 
+   
+    pageTitle.textContent = pages[page].title;
+    pageContent.innerHTML = pages[page].render();
+    window.scrollTo(0, 0); 
 
-
-    // Executa função de inicialização específica da página (se houver)
-    if (pages[page].init) { pages[page].init(); }
+    if (pages[page].init) { 
+        pages[page].init(); 
+    }
 }
 
 
