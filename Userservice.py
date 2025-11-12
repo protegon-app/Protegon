@@ -1,7 +1,6 @@
 # UserService.py
 
 import mysql.connector
-# Importamos a classe que criamos acima
 from .db_config import DatabaseConnector
 
 def email_ou_cpf_existe(self, email, cpf):
@@ -13,7 +12,6 @@ def email_ou_cpf_existe(self, email, cpf):
 # ... (imports de mysql.connector e DatabaseConnector) ...
 
 class UserService:
-    # ... (método __init__ e email_ou_cpf_existe) ...
 
     def _get_by_id(self, user_id, conn, cursor):
         """Método interno para buscar o usuário por ID."""
@@ -22,7 +20,6 @@ class UserService:
         result = cursor.fetchone()
         
         if result:
-            # Assumindo que você tem os nomes das colunas (ou use ORM)
             columns = ['id_usuario', 'nome_completo', 'cpf', 'data_nascimento', 'email', 'telefone', 'senha_hash', 'termos_aceitos', 'criado_em']
             return dict(zip(columns, result))
         return None
