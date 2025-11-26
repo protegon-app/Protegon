@@ -1,7 +1,7 @@
 # UserService.py
 
 import mysql.connector
-from .db_config import DatabaseConnector
+from Protegon.db.init.db_connector import DatabaseConnector
 
 def email_ou_cpf_existe(self, email, cpf):
    
