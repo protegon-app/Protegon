@@ -1,6 +1,6 @@
 from flask import Blueprint, request, jsonify
 from werkzeug.security import generate_password_hash
-from .user_service import UserService 
+from Protegon.user_service import UserService
 
 auth_bp = Blueprint('auth', __name__)
 user_service = UserService() 
