@@ -6,7 +6,7 @@ import sys
 
 
 sys.path.append(os.path.abspath('database'))
-from connection import get_db_connection 
+from Protegon.db.init.db_connector import get_db_connection 
 
 app = Flask(__name__)
 ph = PasswordHasher()

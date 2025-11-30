@@ -1,13 +1,32 @@
 # Protegon/__init__.py
+
+# Protegon/__init__.py
+
 from flask import Flask
+from Protegon.controllers.auth_controller import cadastrar_usuario 
+import os
+from dotenv import load_dotenv
 
-from Protegon.controllers.auth_controller import auth_bp
+# Carregar variáveis de ambiente do arquivo .env (para o servidor)
+load_dotenv() 
 
-def create_app():
+# ====================================================================
+# 1. APPLICATION FACTORY (Cria o objeto 'app')
+# ====================================================================
+
+def CreateApp():
+    """
+    Função de fábrica que cria e configura a instância do aplicativo Flask.
+    """
     app = Flask(__name__)
     
-    app.register_blueprint(auth_bp, url_prefix='/api')
+    # Configuração de Segurança e Debug
+    app.config['SECRET_KEY'] = os.getenv('SECRET_KEY', 'default-secret-key-insecure')
+    app.config['DEBUG'] = os.getenv('FLASK_DEBUG', 'True') == 'True'
+
+    # Registro da Rota (Roteamento Final Corrigido)
+    # Rota: POST /usuarios/cadastrar
+    app.add_url_rule('/usuarios/cadastrar', view_func=cadastrar_usuario, methods=['POST']) 
     
     return app
 
-app = create_app()
