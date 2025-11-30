@@ -685,30 +685,200 @@ function renderNotesPage() {
 }
 
 
-// Chat (Com responsividade básica)
+// Chat (Com layout profissional e UX aprimorada)
 function renderChatPage() {
     return `
-        <div class="bg-white rounded-xl border-2 border-[var(--azul-claro)] flex flex-col" style="height: 70vh;">
-            <div class="flex items-center gap-3 p-4 sm:p-6 border-b border-[var(--azul-claro)]"> <div class="bg-[var(--azul-claro)] p-3 rounded-full"> <i class="fas fa-comment-dots text-[var(--azul-marinho)] text-xl"></i> </div> <h3 class="text-xl font-bold text-[var(--azul-marinho-escuro)]">Chat com Dr. João Souza</h3> </div>
-            <div class="flex-1 overflow-y-auto p-4 sm:p-6 bg-gray-50" id="chatMessages"> ${chatMessages.map(msg => `<div class="flex ${msg.sender === 'user' ? 'justify-end' : 'justify-start'} mb-4"> <div class="max-w-[80%] sm:max-w-md px-4 py-3 rounded-lg ${msg.sender === 'user' ? 'bg-[var(--azul-marinho)] text-white' : 'bg-white border border-[var(--azul-claro)] text-[var(--azul-marinho-escuro)]'}"> <p class="mb-1">${msg.text}</p> <p class="text-xs opacity-70 text-right">${msg.time}</p> </div> </div>`).join('')} </div>
-            <div class="p-4 border-t border-[var(--azul-claro)] flex gap-3"> <input type="text" placeholder="Digite sua mensagem..." id="chatInput" class="flex-1 px-4 py-2 border border-[var(--azul-claro)] rounded-lg focus:outline-none focus:border-[var(--azul-marinho)]" onkeypress="if(event.key==='Enter') sendMessage()"> <button onclick="sendMessage()" class="px-6 py-2 bg-[var(--azul-marinho)] hover:bg-[var(--azul-marinho-escuro)] text-white rounded-lg font-semibold transition-colors"> <i class="fas fa-paper-plane"></i> </button> </div>
+        <div class="bg-white rounded-xl border-2 border-[var(--azul-claro)] flex flex-col h-[calc(100vh-220px)] overflow-hidden shadow-sm">
+            
+            <div class="p-4 border-b border-gray-100 bg-gray-50 flex items-center gap-3">
+                <div class="relative">
+                    <div class="w-10 h-10 rounded-full bg-gray-200 flex items-center justify-center overflow-hidden border border-gray-300">
+                         <i class="fas fa-user-md text-gray-500 text-xl"></i>
+                    </div>
+                    <span class="absolute bottom-0 right-0 w-3 h-3 bg-green-500 border-2 border-white rounded-full"></span>
+                </div>
+                <div>
+                    <h3 class="font-bold text-[var(--azul-marinho-escuro)]">Dr. João Souza</h3>
+                    <p class="text-xs text-green-600 font-semibold">Online agora</p>
+                </div>
+            </div>
+
+            <div id="chatMessages" class="flex-1 overflow-y-auto p-4 space-y-4 bg-gray-50/50 scroll-smooth">
+                ${chatMessages.map(msg => `
+                    <div class="flex ${msg.sender === 'user' ? 'justify-end' : 'justify-start'} animate-fade-in">
+                        <div class="${msg.sender === 'user' ? 'bg-[var(--azul-marinho)] text-white rounded-tl-2xl rounded-tr-2xl rounded-bl-2xl' : 'bg-white border border-gray-200 text-gray-800 rounded-tr-2xl rounded-br-2xl rounded-bl-2xl'} px-4 py-3 shadow-sm max-w-[85%] sm:max-w-[70%]">
+                            <p class="text-sm leading-relaxed">${msg.text}</p>
+                            <span class="text-[10px] ${msg.sender === 'user' ? 'text-blue-200' : 'text-gray-400'} mt-1 block text-right">${msg.time}</span>
+                        </div>
+                    </div>
+                `).join('')}
+            </div>
+
+            <div class="p-4 bg-white border-t border-gray-100">
+                <div class="flex items-center gap-2">
+                    <input type="text" 
+                           id="chatInput" 
+                           placeholder="Digite sua mensagem..." 
+                           class="flex-1 bg-gray-100 text-gray-800 placeholder-gray-500 border-0 rounded-full px-6 py-3 focus:ring-2 focus:ring-[var(--azul-claro)] focus:bg-white transition-all outline-none">
+                    
+                    <button id="sendMessageBtn" 
+                            class="w-12 h-12 bg-[var(--azul-marinho)] hover:bg-[var(--azul-marinho-escuro)] text-white rounded-full flex items-center justify-center shadow-md transition-transform hover:scale-105 active:scale-95 disabled:opacity-50 disabled:cursor-not-allowed">
+                        <i class="fas fa-paper-plane"></i>
+                    </button>
+                </div>
+            </div>
         </div>
     `;
 }
 
 
 function initChatPage() {
-    const chatMessages = document.getElementById('chatMessages');
-    if (chatMessages) { chatMessages.scrollTop = chatMessages.scrollHeight; }
-}
+    const chatInput = document.getElementById('chatInput');
+    const sendBtn = document.getElementById('sendMessageBtn');
+    const messagesContainer = document.getElementById('chatMessages');
 
+    // 1. Scroll Automático ao abrir (Issue Requirement)
+    if (messagesContainer) {
+        messagesContainer.scrollTop = messagesContainer.scrollHeight;
+    }
+
+    // Função auxiliar para criar o HTML da mensagem e adicionar na tela
+    function addMessageToScreen(text, sender) {
+        const div = document.createElement('div');
+        div.className = `flex ${sender === 'user' ? 'justify-end' : 'justify-start'} animate-fade-in`;
+        
+        // Estilização diferente para usuário vs psicólogo (UX Requirement)
+        const bubbleClass = sender === 'user' 
+            ? 'bg-[var(--azul-marinho)] text-white rounded-tl-2xl rounded-tr-2xl rounded-bl-2xl' 
+            : 'bg-white border border-gray-200 text-gray-800 rounded-tr-2xl rounded-br-2xl rounded-bl-2xl';
+
+        const time = new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+
+        div.innerHTML = `
+            <div class="${bubbleClass} px-4 py-3 shadow-sm max-w-[85%] sm:max-w-[70%]">
+                <p class="text-sm leading-relaxed">${text}</p>
+                <span class="text-[10px] ${sender === 'user' ? 'text-blue-200' : 'text-gray-400'} mt-1 block text-right">${time}</span>
+            </div>
+        `;
+
+        messagesContainer.appendChild(div);
+        
+        // Scroll para a nova mensagem
+        messagesContainer.scrollTop = messagesContainer.scrollHeight;
+    }
+
+    // Lógica de Enviar Mensagem
+    function handleSend() {
+        const text = chatInput.value.trim();
+        if (!text) return; // Não envia se estiver vazio
+
+        // 1. Adiciona mensagem do usuário na tela
+        addMessageToScreen(text, 'user');
+        
+        // 2. Adiciona ao array de histórico (opcional, para manter se mudar de aba)
+        chatMessages.push({ 
+            sender: 'user', 
+            text: text, 
+            time: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }) 
+        });
+
+        // 3. Limpa o campo e mantem o foco (UX Requirement)
+        chatInput.value = '';
+        chatInput.focus();
+
+        // 4. Simula resposta da Psicóloga (Bot)
+        // Mostra "Digitando..." (Simulado pelo delay)
+        setTimeout(() => {
+            const respostasAutomaticas = [
+                "Entendo. Você quer me contar mais sobre isso?",
+                "Estou aqui para te ouvir. Respire fundo.",
+                "Isso parece importante. Como você se sente a respeito?",
+                "Estou anotando isso para nossa próxima sessão."
+            ];
+            const respostaAleatoria = respostasAutomaticas[Math.floor(Math.random() * respostasAutomaticas.length)];
+            
+            addMessageToScreen(respostaAleatoria, 'psychologist');
+            
+            // Salva resposta no histórico também
+            chatMessages.push({ 
+                sender: 'psychologist', 
+                text: respostaAleatoria, 
+                time: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }) 
+            });
+
+        }, 1500); // Delay de 1.5 segundos
+    }
+
+    // Event Listeners (Interatividade)
+    if (sendBtn && chatInput) {
+        // Clique no botão
+        sendBtn.addEventListener('click', handleSend);
+
+        // Pressionar Enter (UX Requirement)
+        chatInput.addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') {
+                handleSend();
+            }
+        });
+    }
+}
 
 function sendMessage() {
     const input = document.getElementById('chatInput');
-    if (input && input.value.trim()) {
-        showToast('Mensagem enviada!', 'success');
-        input.value = '';
-        // TODO: Adicionar mensagem ao array `chatMessages` e chamar renderPage('chat')
+    const text = input.value.trim(); 
+
+    if (!text) {
+        return; 
+    }
+
+    const newMessage = {
+        sender: 'user',
+        text: text,
+        time: new Date().toLocaleTimeString('pt-BR', { 
+            hour: '2-digit', 
+            minute: '2-digit' 
+        })
+    };
+
+    chatMessages.push(newMessage);
+    input.value = '';
+    renderPage('chat');
+    setTimeout(simularRespostaPsicologo, 2000);
+}
+/**
+ * Simula uma resposta do psicólogo após um atraso.
+ */
+function simularRespostaPsicologo() {
+    // Lista de respostas automáticas para variar
+    const respostasPossiveis = [
+        "Entendo. Por favor, continue.",
+        "Obrigado por partilhar. Como isso fez você se sentir?",
+        "Isso é um ponto importante. Fale-me mais sobre isso.",
+        "Anotado. E o que aconteceu depois?",
+        "Continue, estou a ouvir."
+    ];
+
+    // Escolhe uma resposta aleatória
+    const textoResposta = respostasPossiveis[Math.floor(Math.random() * respostasPossiveis.length)];
+
+    // 1. Cria o objeto da mensagem de resposta
+    const mensagemResposta = {
+        sender: 'psychologist',
+        text: textoResposta,
+        time: new Date().toLocaleTimeString('pt-BR', { 
+            hour: '2-digit', 
+            minute: '2-digit' 
+        })
+    };
+
+    // 2. Adiciona a resposta ao array global
+    chatMessages.push(mensagemResposta);
+
+    // 3. Re-renderiza a página, MAS SÓ SE O UTILIZADOR AINDA ESTIVER NO CHAT
+    // Isto é importante para não "puxar" o utilizador de volta para o chat
+    // caso ele tenha navegado para outra página.
+    if (currentPage === 'chat') {
+        renderPage('chat');
     }
 }
 
