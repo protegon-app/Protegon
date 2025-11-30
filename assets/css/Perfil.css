@@ -1,38 +1,29 @@
-/* Define a fonte padrão para o corpo do documento */
-body { 
-    font-family: 'Inter', sans-serif; 
+.item-nav-sidebar{
+color: var(--branco);
+background-color: transparent;
+transition: color 0.3s, background-color 0.3s;
 }
 
-/* Estilo padrão para os cards/widgets principais */
-.widget-card {
-    background-color: white;
-    padding: 1.5rem; 
-    border-radius: 1rem;
-    box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1); 
+.item-nav-sidebar:hover {
+    /* Fundo: Azul Claro com 20% de opacidade */
+    background-color: rgba(211, 227, 255, 0.5); 
+    
+    /* Texto: Azul Marinho Escuro */
+    color: var(--branco); 
 }
 
-/* Estilo para os campos de dados cadastrais */
-.data-field {
-    background-color: #f3f4f6; 
-    padding: 0.75rem; 
-    border-radius: 0.5rem; 
-    border: 1px solid #e5e7eb; 
-    color: #374151; 
+/* Estado ATIVO/SELECIONADO */
+.item-nav-sidebar.active{
+    /* Fundo: Azul Claro Sólido */
+    background-color: var(--azul-claro); 
+    
+    /* Texto: Azul Marinho Escuro */
+    color: var(--azul-marinho-escuro); 
 }
 
-/* Estilo para os ícones da barra de navegação lateral */
-.nav-icon {
-    width: 4rem; 
-    height: 4rem; 
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    border-radius: 1rem; 
-    cursor: pointer;
-    transition: background-color 0.2s, color 0.2s;
-}
-
-.nav-icon:hover {
-    background-color: #eff6ff; 
-    color: #2563eb;
+/* Garante que os ícones e spans aninhados herdem a cor e a transição */
+.item-nav-sidebar  i, 
+.item-nav-sidebar  span {
+    transition: color 0.3s;
+    color: inherit; /* Herda a cor do elemento pai (.sidebar-button) */
 }

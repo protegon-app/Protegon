@@ -1,0 +1,23 @@
+# Framework principal da API
+fastapi
+
+# Servidor ASGI para rodar o FastAPI
+uvicorn[standard]
+
+# Para os "schemas" (validação de dados)
+pydantic
+
+# Para criptografar e verificar senhas
+bcrypt
+
+# Para criar e validar Tokens JWT (login)
+python-jose[cryptography]
+
+# Para carregar o arquivo de senhas .env
+python-dotenv
+
+# Para o "Tradutor" de Python para SQL (ORM)
+SQLAlchemy
+
+# Conexão com o banco PostgreSQL
+mysql-connector-python
