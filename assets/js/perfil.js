@@ -823,13 +823,62 @@ function initChatPage() {
     }
 }
 
-
 function sendMessage() {
     const input = document.getElementById('chatInput');
-    if (input && input.value.trim()) {
-        showToast('Mensagem enviada!', 'success');
-        input.value = '';
-        // TODO: Adicionar mensagem ao array `chatMessages` e chamar renderPage('chat')
+    const text = input.value.trim(); 
+
+    if (!text) {
+        return; 
+    }
+
+    const newMessage = {
+        sender: 'user',
+        text: text,
+        time: new Date().toLocaleTimeString('pt-BR', { 
+            hour: '2-digit', 
+            minute: '2-digit' 
+        })
+    };
+
+    chatMessages.push(newMessage);
+    input.value = '';
+    renderPage('chat');
+    setTimeout(simularRespostaPsicologo, 2000);
+}
+/**
+ * Simula uma resposta do psicólogo após um atraso.
+ */
+function simularRespostaPsicologo() {
+    // Lista de respostas automáticas para variar
+    const respostasPossiveis = [
+        "Entendo. Por favor, continue.",
+        "Obrigado por partilhar. Como isso fez você se sentir?",
+        "Isso é um ponto importante. Fale-me mais sobre isso.",
+        "Anotado. E o que aconteceu depois?",
+        "Continue, estou a ouvir."
+    ];
+
+    // Escolhe uma resposta aleatória
+    const textoResposta = respostasPossiveis[Math.floor(Math.random() * respostasPossiveis.length)];
+
+    // 1. Cria o objeto da mensagem de resposta
+    const mensagemResposta = {
+        sender: 'psychologist',
+        text: textoResposta,
+        time: new Date().toLocaleTimeString('pt-BR', { 
+            hour: '2-digit', 
+            minute: '2-digit' 
+        })
+    };
+
+    // 2. Adiciona a resposta ao array global
+    chatMessages.push(mensagemResposta);
+
+    // 3. Re-renderiza a página, MAS SÓ SE O UTILIZADOR AINDA ESTIVER NO CHAT
+    // Isto é importante para não "puxar" o utilizador de volta para o chat
+    // caso ele tenha navegado para outra página.
+    if (currentPage === 'chat') {
+        renderPage('chat');
     }
 }
 
