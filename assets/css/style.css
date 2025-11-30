@@ -5,6 +5,7 @@
     --azul-claro: #d3e3ff;
     --azul-claro-houver: #93ADD9;
     --branco: #ffffff;
+    --texto-cinza: #5f5f5f;
 }
 
 body {
@@ -60,6 +61,10 @@ body {
     padding-bottom: 2px;
 }
 
+.link-animado:hover{
+    color: var(--azul-marinho);
+}
+
 .link-animado::after {
     content: '';
     position: absolute;
@@ -67,7 +72,7 @@ body {
     bottom: 0;
     width: 0;
     height: 2px;
-    background-color: var(--azul-marinho);
+    background-color: var(--azul-claro-houver);
     transition: width 0.3s ease-in-out;
 }
 
@@ -102,4 +107,47 @@ body {
 .card-pilar p {
     color: var(--azul-marinho-escuro);
     line-height: 1.6;
+}
+
+
+
+#hero {
+    position: relative;
+    overflow: hidden;
+    background-color: var(--branco);
+}
+
+.luz-lateral {
+    position: absolute;
+    border-radius: 50%; /* Bola */
+    background-color: var(--azul-claro);
+    filter: blur(140px); /* Desfoque muito alto para parecer nuvem */
+    opacity: 0.7;        /* Opacidade ajustada para a cor aparecer bem */
+    z-index: 0;
+    pointer-events: none;
+}
+
+.luz-esquerda {
+    width: 700px;
+    height: 700px;
+    left: -350px; /* Metade para fora da tela */
+    top: 20%;     /* Posicionada mais ao centro/baixo */
+}
+
+.luz-direita {
+    width: 600px;
+    height: 600px;
+    right: -250px; /* Metade para fora */
+    top: -250px;   /* Bem no topo, quase saindo */
+}
+
+
+#hero .container {
+    position: relative;
+    z-index: 10;
+}
+
+#hero .container {
+    position: relative;
+    z-index: 10;
 }
