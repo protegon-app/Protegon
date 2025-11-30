@@ -1,20 +1,28 @@
 // =========================================================
 // ESTADO DA APLICAÇÃO
 // =========================================================
+
 let currentPage = 'security';
 let countdownInterval = null; // Usado para o timer do Sensor OU o timer de Check-in
 let timeRemaining = 60; // Tempo restante para o timer do Sensor
 const CHECKIN_INTERVAL_SECONDS = 72 * 60 * 60; // 72 horas em segundos
 let checkInTimeLeft = 71 * 60 * 60; // 71 horas em segundos (para inicializar o timer)
+let editingContactId = null;
+let currentNoteIdToDelete = null; // VARIÁVEL DE ESTADO PARA EXCLUSÃO (CRÍTICO)
+
+
 
 // =========================================================
 // DADOS MOCK
 // =========================================================
-const emergencyContacts = [
-    { name: 'Maria Silva', phone: '+55 11 98765-4321', relationship: 'Mãe' },
-    { name: 'Ana Santos', phone: '+55 11 98765-1234', relationship: 'Amiga' },
-    { name: 'Dr. João Souza', phone: '+55 11 98765-5678', relationship: 'Psicólogo' }
+
+
+let emergencyContacts = [
+{ id: 'c1', name: 'Maria Silva', phone: '+5511987654321', relationship: 'Mãe' },
+{ id: 'c2', name: 'Ana Santos', phone: '+5511987651234', relationship: 'Amiga' },
+{ id: 'c3', name: 'Dr. João Souza', phone: '+5511987655678', relationship: 'Psicólogo' }
 ];
+
 
 const notes = [
     {
@@ -43,12 +51,14 @@ const notes = [
     }
 ];
 
+
 const chatMessages = [
     { sender: 'psychologist', text: 'Olá! Como você está se sentindo hoje?', time: '10:30' },
     { sender: 'user', text: 'Estou me sentindo melhor, obrigada.', time: '10:32' },
     { sender: 'psychologist', text: 'Que bom! Gostaria de conversar sobre algo específico?', time: '10:33' },
     { sender: 'user', text: 'Gostaria de falar sobre como lidar com momentos difíceis.', time: '10:35' }
 ];
+
 
 // ARRAY DE DADOS DOS SENSORES (com estado isActive)
 const sensorsData = [
@@ -59,9 +69,12 @@ const sensorsData = [
 ];
 
 
+
+
 // =========================================================
 // FUNÇÕES DE TEMPO E ESTILO (Check-in)
 // =========================================================
+
 
 /**
  * Formata o tempo restante (em segundos) em uma string no formato "2d 23h" ou "03h 15m".
@@ -73,11 +86,13 @@ function formatTimeRemaining(timeInSeconds) {
     const hours = Math.floor((totalSeconds % 86400) / 3600);
     const minutes = Math.floor((totalSeconds % 3600) / 60);
 
+
     if (days > 0) {
         return `${days}d ${String(hours).padStart(2, '0')}h`;
     }
     return `${String(hours).padStart(2, '0')}h ${String(minutes).padStart(2, '0')}m`;
 }
+
 
 /**
  * Calcula a porcentagem de progresso do check-in (tempo decorrido).
@@ -89,9 +104,12 @@ function getProgressPercentage(timeInSeconds) {
 }
 
 
+
+
 // =========================================================
 // RENDERIZAÇÃO DE COMPONENTES DE SEGURANÇA
 // =========================================================
+
 
 /**
  * Renderiza o bloco completo do Check-in de Segurança.
@@ -130,45 +148,49 @@ function renderSafetyCheckIn() {
     `;
 }
 
+
 function renderSensorItem(sensor) {
     let statusText = sensor.isActive ? 'Ativo' : 'Desativado';
     let statusClass = sensor.isActive ? 'text-green-600' : 'text-red-500';
     const toggleChecked = sensor.isActive ? 'checked' : '';
     const inactiveClass = !sensor.isActive ? 'opacity-60' : '';
 
+
     return `
         <div id="${sensor.id}" class="sensor-item flex justify-between items-start p-4 bg-[var(--azul-claro)] rounded-lg border border-[var(--azul-marinho)] transition-opacity duration-300 ${inactiveClass}">
-           
-            <div class="flex items-start gap-3 flex-1 min-w-0"> 
-                <i class="fas ${sensor.icon} text-[var(--branco)] text-lg bg-[var(--azul-marinho)] p-3 rounded-full w-12 h-12 text-center flex items-center justify-center flex-shrink-0"></i> 
+            
+            <div class="flex items-start gap-3 flex-1 min-w-0">
+                <i class="fas ${sensor.icon} text-[var(--branco)] text-lg bg-[var(--azul-marinho)] p-3 rounded-full w-12 h-12 text-center flex items-center justify-center flex-shrink-0"></i>
                 
             
                 <div class="flex-1">
-                    <p class="font-semibold text-[var(--azul-marinho-escuro)]"> 
-                        ${sensor.name} 
-                        <span class="sensor-status font-semibold text-sm ml-2 ${statusClass}">${statusText}</span> 
+                    <p class="font-semibold text-[var(--azul-marinho-escuro)]">
+                        ${sensor.name}
+                        <span class="sensor-status font-semibold text-sm ml-2 ${statusClass}">${statusText}</span>
                     </p>
-                    <p class="text-xs text-gray-700/80 mb-2 break-words"> 
+                    <p class="text-xs text-gray-700/80 mb-2 break-words">
                         ${sensor.description}
                     </p>
                     
-                    <div class="flex items-center justify-between text-xs mb-1 max-w-[200px]"> 
-                        <span class="text-gray-600">Sensibilidade</span> 
-                        <span>${sensor.sensitivity}%</span> 
+                    <div class="flex items-center justify-between text-xs mb-1 max-w-[200px]">
+                        <span class="text-gray-600">Sensibilidade</span>
+                        <span>${sensor.sensitivity}%</span>
                     </div>
-                    <div class="h-1 bg-[var(--azul-claro-houver)] rounded-full overflow-hidden mt-1 max-w-[200px]"> 
-                        <div class="h-full bg-[var(--azul-marinho-escuro)]" style="width: ${sensor.sensitivity}%;"></div> 
+                    <div class="h-1 bg-[var(--azul-claro-houver)] rounded-full overflow-hidden mt-1 max-w-[200px]">
+                        <div class="h-full bg-[var(--azul-marinho-escuro)]" style="width: ${sensor.sensitivity}%;"></div>
                     </div>
 
 
-                    <button onclick="testSensor('${sensor.name}')" class="mt-3 px-4 py-1 bg-[var(--branco)] border border-[var(--azul-marinho-escuro)] text-[var(--azul-marinho-escuro)] rounded-lg hover:bg-[var(--azul-claro)] transition-colors text-sm font-semibold"> 
-                        Testar 
+
+
+                    <button onclick="testSensor('${sensor.name}')" class="mt-3 px-4 py-1 bg-[var(--branco)] border border-[var(--azul-marinho-escuro)] text-[var(--azul-marinho-escuro)] rounded-lg hover:bg-[var(--azul-claro)] transition-colors text-sm font-semibold">
+                        Testar
                     </button>
                 </div>
             </div>
             
         
-            <div class="ml-4 flex-shrink-0"> 
+            <div class="ml-4 flex-shrink-0">
                 <label class="relative inline-flex items-center cursor-pointer">
                     <input type="checkbox" ${toggleChecked} class="sr-only peer" onchange="toggleSensor('${sensor.id}', this.checked)">
                     <div class="w-11 h-6 bg-gray-300 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-green-600"></div>
@@ -177,6 +199,7 @@ function renderSensorItem(sensor) {
         </div>
     `;
 }
+
 
 /**
  * Renderiza o bloco completo da Detecção Automática (com contador dinâmico).
@@ -198,9 +221,11 @@ function renderAutomaticDetection() {
     `;
 }
 
+
 // =========================================================
 // RENDERIZAÇÃO DE PÁGINAS
 // =========================================================
+
 
 // Central de Segurança
 function renderSecurityPage() {
@@ -246,6 +271,7 @@ function renderSecurityPage() {
     `;
 }
 
+
 function initSecurityPage() {
     if (countdownInterval) clearInterval(countdownInterval);
     let checkInTimerInterval = setInterval(() => {
@@ -265,6 +291,7 @@ function initSecurityPage() {
     countdownInterval = checkInTimerInterval;
 }
 
+
 function performCheckIn() {
     checkInTimeLeft = CHECKIN_INTERVAL_SECONDS;
     showToast('Check-in realizado!', 'success', `Próximo em ${formatTimeRemaining(CHECKIN_INTERVAL_SECONDS)}`);
@@ -275,13 +302,16 @@ function performCheckIn() {
     if (progressBar) progressBar.style.width = getProgressPercentage(checkInTimeLeft) + '%';
 }
 
+
 function testSensor(sensorName) {
     showSensorModal(sensorName);
 }
 
+
 // =========================================================
 // RENDERIZAÇÃO DE OUTRAS PÁGINAS (Perfil, Anotações, Chat, etc.)
 // =========================================================
+
 
 // Perfil (Com layout atualizado e responsivo)
 function renderProfilePage() {
@@ -320,50 +350,479 @@ function renderProfilePage() {
     `;
 }
 
+
+// =========================================================
+// FUNÇÕES DE MANIPULAÇÃO DE ANOTAÇÕES (CRUD)
+// =========================================================
+
+
+/**
+ * Encontra uma anotação pelo ID.
+ * @param {number} id - O ID da anotação.
+ * @returns {object|undefined} A anotação encontrada.
+ */
+function findNoteById(id) {
+    // Note: No backend, este ID seria o ID real do banco de dados (ex: string UUID ou número)
+    return notes.find(note => note.id === id);
+}
+
+
+/**
+ * Controla o estado do botão "Nova Anotação" (ativado/desativado).
+ * @param {boolean} enable
+ */
+function toggleNewNoteButton(enable) {
+    const newNoteButton = document.getElementById('showNewNoteFormBtn');
+    if (newNoteButton) {
+        newNoteButton.disabled = !enable;
+        newNoteButton.classList.toggle('opacity-50', !enable);
+        newNoteButton.classList.toggle('cursor-not-allowed', !enable);
+    }
+}
+
+
+/**
+ * Renderiza o HTML do formulário, usado para CRIAR ou EDITAR uma anotação.
+ * @param {object|null} note - A anotação a ser editada, ou null para criação.
+ * @returns {string} O HTML do formulário.
+ */
+function renderNoteForm(note = null) {
+    const isEditing = note !== null;
+    const formTitle = isEditing ? `Editar Anotação: ${note.title}` : 'Criar Nova Anotação';
+    const noteTitle = isEditing ? note.title : '';
+    const noteContent = isEditing ? note.content : '';
+    // Ação de salvamento dinâmica (criação ou edição)
+    const saveAction = isEditing ? `saveEditedNote(${note.id})` : `saveNewNote()`;
+    
+    return `
+        <div id="noteForm" class="bg-white rounded-xl border-2 border-[var(--azul-claro)] p-6 shadow-md transition-all duration-300">
+            <h4 class="text-lg font-semibold text-[var(--azul-marinho-escuro)] mb-4">${formTitle}</h4>
+            
+            <div class="mb-4">
+                <label for="noteTitle" class="sr-only">Título da anotação</label>
+                <input
+                    type="text"
+                    id="noteTitle"
+                    placeholder="Título da anotação"
+                    value="${noteTitle}"
+                    class="w-full px-4 py-3 border border-[var(--azul-claro)] rounded-lg focus:outline-none focus:border-[var(--azul-marinho)]"
+                >
+            </div>
+            
+            <div class="mb-4">
+                <label for="noteContent" class="sr-only">Escreva sua anotação aqui...</label>
+                <textarea
+                    id="noteContent"
+                    rows="4"
+                    placeholder="Escreva sua anotação aqui..."
+                    class="w-full px-4 py-3 border border-[var(--azul-claro)] rounded-lg focus:outline-none focus:border-[var(--azul-marinho)] resize-none"
+                >${noteContent}</textarea>
+            </div>
+
+
+            <input
+                type="file"
+                id="noteImageUpload"
+                accept="image/*"
+                multiple
+                class="hidden"
+            >
+            
+            <div class="flex flex-col sm:flex-row justify-between items-center gap-4">
+                <button
+                    onclick="document.getElementById('noteImageUpload').click()"
+                    class="w-full sm:w-auto px-4 py-2 border border-[var(--azul-marinho)] text-[var(--azul-marinho-escuro)] rounded-lg hover:bg-[var(--azul-claro-houver)] font-semibold transition-colors flex items-center justify-center gap-2"
+                >
+                    <i class="fas fa-image"></i> Adicionar Fotos
+                </button>
+                
+                <div class="flex gap-3 w-full sm:w-auto">
+                    <button
+                        onclick="cancelNoteForm()"
+                        class="flex-1 sm:flex-none px-6 py-2 border border-[var(--azul-marinho)] text-[var(--azul-marinho-escuro)] rounded-lg hover:bg-[var(--azul-claro-houver)] font-semibold transition-colors"
+                    >
+                        Cancelar
+                    </button>
+                    <button
+                        onclick="${saveAction}"
+                        class="flex-1 sm:flex-none px-6 py-2 bg-[var(--azul-marinho)] hover:bg-[var(--azul-marinho-escuro)] text-[var(--branco)] rounded-lg font-semibold transition-colors flex items-center justify-center gap-2"
+                    >
+                       <i class="fas fa-save"></i> ${isEditing ? 'Salvar Edição' : 'Salvar'}
+                    </button>
+                </div>
+            </div>
+        </div>
+    `;
+}
+
+
+/**
+ * Esconde (remove) o formulário e reabilita o botão de Nova Anotação.
+ */
+function cancelNoteForm() {
+    const formContainer = document.getElementById('newNoteFormContainer');
+    if (formContainer) {
+        formContainer.innerHTML = ''; // Limpa o container
+    }
+    toggleNewNoteButton(true);
+}
+
+
+/**
+ * Exibe o formulário para criar uma nova anotação.
+ */
+function showNewNoteForm() {
+    // Limpa qualquer formulário de edição existente
+    cancelNoteForm();
+    toggleNewNoteButton(false);
+    const formContainer = document.getElementById('newNoteFormContainer');
+    if (formContainer) {
+        formContainer.innerHTML = renderNoteForm(null); // Passa null para criação
+        formContainer.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+}
+
+
+/**
+ * Salva a nova anotação (Criação - POST).
+ */
+function saveNewNote() {
+    const title = document.getElementById('noteTitle')?.value.trim();
+    const content = document.getElementById('noteContent')?.value.trim();
+
+
+    if (!title || !content) {
+        showToast('Erro ao salvar', 'error', 'Título e conteúdo são obrigatórios.');
+        return;
+    }
+
+
+    const newNote = {
+        id: Date.now(), // ID temporário
+        title: title,
+        date: new Date().toISOString().split('T')[0],
+        content: content,
+        image: null,
+        eventDate: new Date().toLocaleDateString('pt-BR')
+    };
+
+
+    notes.unshift(newNote); // Simula o salvamento no Backend
+
+
+    renderPage('notes');
+    showToast('Anotação Salva!', 'success', 'Simulação de salvamento no servidor.');
+}
+
+
+/**
+ * Abre o formulário de edição pré-preenchido.
+ * @param {number} id - O ID da anotação a ser editada.
+ */
+function editNote(id) {
+    const noteToEdit = findNoteById(id);
+    if (!noteToEdit) {
+        showToast('Erro', 'error', 'Anotação não encontrada.');
+        return;
+    }
+    
+    // Limpa o botão "Nova Anotação" e garante que apenas um formulário esteja aberto
+    toggleNewNoteButton(false);
+    
+    const formContainer = document.getElementById('newNoteFormContainer');
+    if (formContainer) {
+        formContainer.innerHTML = renderNoteForm(noteToEdit);
+        formContainer.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+}
+
+
+/**
+ * Salva a anotação editada (Atualização - PUT).
+ * @param {number} id - O ID da anotação.
+ */
+function saveEditedNote(id) {
+    const noteIndex = notes.findIndex(note => note.id === id);
+    if (noteIndex === -1) {
+        showToast('Erro', 'error', 'Anotação para edição não encontrada.');
+        return;
+    }
+
+
+    const title = document.getElementById('noteTitle')?.value.trim();
+    const content = document.getElementById('noteContent')?.value.trim();
+
+
+    if (!title || !content) {
+        showToast('Erro ao salvar', 'error', 'Título e conteúdo são obrigatórios.');
+        return;
+    }
+
+
+    // Simula a atualização no Backend
+    notes[noteIndex].title = title;
+    notes[noteIndex].content = content;
+    notes[noteIndex].date = new Date().toISOString().split('T')[0];
+    notes[noteIndex].eventDate = new Date().toLocaleDateString('pt-BR');
+
+
+    renderPage('notes');
+    showToast('Anotação Atualizada!', 'success', 'Simulação de atualização no servidor.');
+}
+
+
+/**
+ * Confirma a exclusão de uma anotação, exibindo o modal estilizado.
+ * @param {number} id - O ID da anotação.
+ * @param {string} title - O título da anotação.
+ */
+function confirmDeleteNote(id, title) {
+    // Escapa aspas simples no título para evitar problemas no HTML/JS
+    const escapedTitle = title.replace(/'/g, "\\'");
+    showDeleteNoteModal(id, escapedTitle);
+}
+
+
+/**
+ * Remove a anotação do array de dados APÓS a confirmação no modal.
+ */
+function deleteNoteFromModal() {
+    const id = currentNoteIdToDelete;
+    closeDeleteNoteModal(); // Fecha o modal após capturar o ID
+    
+    if (id === null) return; // Se não houver ID, ignora
+
+
+    const initialLength = notes.length;
+    // Simula a chamada ao Backend, removendo o item do array
+    const updatedNotes = notes.filter(note => note.id !== id);
+    
+    if (updatedNotes.length === initialLength) {
+        showToast('Erro', 'error', 'Anotação não encontrada para exclusão.');
+        return;
+    }
+    
+    // Atualiza o array global 'notes'
+    notes.length = 0;
+    notes.push(...updatedNotes);
+
+
+    renderPage('notes');
+    showToast('Anotação Excluída!', 'success', `A anotação foi removida com sucesso.`);
+}
+
+
+
+
 // Anotações (Com layout atualizado e responsivo)
 function renderNotesPage() {
+    
+    // Mapeia os dados das notas para o novo formato de cartão HTML
     const notesHtml = notes.map(note => `
         <div class="p-6 bg-white rounded-xl border-2 border-gray-200 shadow-sm hover:border-[var(--azul-marinho)] transition-all duration-300">
+            
             <div class="flex justify-between items-start mb-2">
-                <div> <h4 class="font-semibold text-lg text-[var(--azul-marinho-escuro)] mb-1">${note.title}</h4> <p class="text-sm text-gray-500">${note.eventDate}</p> </div>
-                <div class="flex gap-3"> <button onclick="showToast('Editando nota ID: ${note.id}', 'info')" class="text-[var(--azul-marinho)] hover:text-[var(--azul-marinho-escuro)] transition-colors text-lg"> <i class="fas fa-edit"></i> </button> <button onclick="showToast('Deletando nota ID: ${note.id}', 'error')" class="text-red-500 hover:text-red-700 transition-colors text-lg"> <i class="fas fa-trash-alt"></i> </button> </div>
+                <div>
+                    <h4 class="font-semibold text-lg text-[var(--azul-marinho-escuro)] mb-1">${note.title}</h4>
+                    <p class="text-sm text-gray-500">${note.eventDate}</p>
+                </div>
+                <div class="flex gap-3">
+                    
+                    <button onclick="editNote(${note.id})"
+                            class="text-[var(--azul-marinho)] hover:text-[var(--azul-marinho-escuro)] transition-colors text-lg">
+                        <i class="fas fa-edit"></i>
+                    </button>
+                    
+                    <button onclick="confirmDeleteNote(${note.id}, '${note.title.replace(/'/g, "\\'")}')"
+                            class="text-red-500 hover:text-red-700 transition-colors text-lg">
+                        <i class="fas fa-trash-alt"></i>
+                    </button>
+                </div>
             </div>
+
+
             <p class="text-gray-700 mb-4">${note.content}</p>
-            ${note.image ? `<div class="mt-4 max-w-sm rounded-lg overflow-hidden shadow-md"> <img src="${note.image}" alt="Imagem" class="w-full h-auto object-cover"> </div>` : ''}
+
+
+            ${note.image ? `
+                <div class="mt-4 max-w-sm rounded-lg overflow-hidden shadow-md">
+                    <img src="${note.image}" alt="Imagem da anotação" class="w-full h-auto object-cover">
+                </div>
+            ` : ''}
+
+
         </div>
     `).join('');
+
+
     return `
         <div class="max-w-4xl mx-auto">
-            <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-8 gap-4"> <h2 class="text-3xl font-bold text-[var(--azul-marinho-escuro)]">Anotações</h2> <button onclick="showToast('Nova anotação...', 'info')" class="w-full sm:w-auto px-5 py-2 bg-[var(--azul-marinho)] hover:bg-[var(--azul-marinho-escuro)] text-white rounded-lg font-semibold transition-colors flex items-center justify-center gap-2"> <i class="fas fa-plus"></i> Nova Anotação </button> </div>
+            
+            <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-8 gap-4">
+                <h2 class="text-3xl font-bold text-[var(--azul-marinho-escuro)]">Anotações</h2>
+                <button
+                    id="showNewNoteFormBtn"
+                    onclick="showNewNoteForm()"
+                    class="w-full sm:w-auto px-5 py-2 bg-[var(--azul-marinho)] hover:bg-[var(--azul-marinho-escuro)] text-white rounded-lg font-semibold transition-colors flex items-center justify-center gap-2"
+                >
+                    <i class="fas fa-plus"></i> Nova Anotação
+                </button>
+            </div>
+            
+            <div id="newNoteFormContainer" class="mb-6"></div>
+            
             <h3 class="text-xl font-semibold text-[var(--azul-marinho-escuro)] mb-4 border-b border-gray-300 pb-2">Minhas Anotações</h3>
-            <div class="space-y-6"> ${notesHtml} </div>
-            <div class="mt-8 p-4 bg-blue-50 border border-blue-200 rounded-lg text-sm text-blue-900"> <i class="fas fa-info-circle mr-2"></i> Suas anotações são privadas. </div>
+            
+            <div class="space-y-6" id="notesListContainer">
+                ${notesHtml.length > 0 ? notesHtml : '<p class="text-gray-500 text-center">Nenhuma anotação encontrada.</p>'}
+            </div>
+            
+            <div class="mt-8 p-4 bg-blue-50 border border-blue-200 rounded-lg text-sm text-blue-900">
+                <i class="fas fa-info-circle mr-2"></i> Suas anotações são privadas.
+            </div>
         </div>
     `;
 }
 
-// Chat (Com responsividade básica)
+
+// Chat (Com layout profissional e UX aprimorada)
 function renderChatPage() {
     return `
-        <div class="bg-white rounded-xl border-2 border-[var(--azul-claro)] flex flex-col" style="height: 70vh;">
-            <div class="flex items-center gap-3 p-4 sm:p-6 border-b border-[var(--azul-claro)]"> <div class="bg-[var(--azul-claro)] p-3 rounded-full"> <i class="fas fa-comment-dots text-[var(--azul-marinho)] text-xl"></i> </div> <h3 class="text-xl font-bold text-[var(--azul-marinho-escuro)]">Chat com Dr. João Souza</h3> </div>
-            <div class="flex-1 overflow-y-auto p-4 sm:p-6 bg-gray-50" id="chatMessages"> ${chatMessages.map(msg => `<div class="flex ${msg.sender === 'user' ? 'justify-end' : 'justify-start'} mb-4"> <div class="max-w-[80%] sm:max-w-md px-4 py-3 rounded-lg ${msg.sender === 'user' ? 'bg-[var(--azul-marinho)] text-white' : 'bg-white border border-[var(--azul-claro)] text-[var(--azul-marinho-escuro)]'}"> <p class="mb-1">${msg.text}</p> <p class="text-xs opacity-70 text-right">${msg.time}</p> </div> </div>`).join('')} </div>
-            <div class="p-4 border-t border-[var(--azul-claro)] flex gap-3"> <input type="text" placeholder="Digite sua mensagem..." id="chatInput" class="flex-1 px-4 py-2 border border-[var(--azul-claro)] rounded-lg focus:outline-none focus:border-[var(--azul-marinho)]" onkeypress="if(event.key==='Enter') sendMessage()"> <button onclick="sendMessage()" class="px-6 py-2 bg-[var(--azul-marinho)] hover:bg-[var(--azul-marinho-escuro)] text-white rounded-lg font-semibold transition-colors"> <i class="fas fa-paper-plane"></i> </button> </div>
+        <div class="bg-white rounded-xl border-2 border-[var(--azul-claro)] flex flex-col h-[calc(100vh-220px)] overflow-hidden shadow-sm">
+            
+            <div class="p-4 border-b border-gray-100 bg-gray-50 flex items-center gap-3">
+                <div class="relative">
+                    <div class="w-10 h-10 rounded-full bg-gray-200 flex items-center justify-center overflow-hidden border border-gray-300">
+                         <i class="fas fa-user-md text-gray-500 text-xl"></i>
+                    </div>
+                    <span class="absolute bottom-0 right-0 w-3 h-3 bg-green-500 border-2 border-white rounded-full"></span>
+                </div>
+                <div>
+                    <h3 class="font-bold text-[var(--azul-marinho-escuro)]">Dr. João Souza</h3>
+                    <p class="text-xs text-green-600 font-semibold">Online agora</p>
+                </div>
+            </div>
+
+            <div id="chatMessages" class="flex-1 overflow-y-auto p-4 space-y-4 bg-gray-50/50 scroll-smooth">
+                ${chatMessages.map(msg => `
+                    <div class="flex ${msg.sender === 'user' ? 'justify-end' : 'justify-start'} animate-fade-in">
+                        <div class="${msg.sender === 'user' ? 'bg-[var(--azul-marinho)] text-white rounded-tl-2xl rounded-tr-2xl rounded-bl-2xl' : 'bg-white border border-gray-200 text-gray-800 rounded-tr-2xl rounded-br-2xl rounded-bl-2xl'} px-4 py-3 shadow-sm max-w-[85%] sm:max-w-[70%]">
+                            <p class="text-sm leading-relaxed">${msg.text}</p>
+                            <span class="text-[10px] ${msg.sender === 'user' ? 'text-blue-200' : 'text-gray-400'} mt-1 block text-right">${msg.time}</span>
+                        </div>
+                    </div>
+                `).join('')}
+            </div>
+
+            <div class="p-4 bg-white border-t border-gray-100">
+                <div class="flex items-center gap-2">
+                    <input type="text" 
+                           id="chatInput" 
+                           placeholder="Digite sua mensagem..." 
+                           class="flex-1 bg-gray-100 text-gray-800 placeholder-gray-500 border-0 rounded-full px-6 py-3 focus:ring-2 focus:ring-[var(--azul-claro)] focus:bg-white transition-all outline-none">
+                    
+                    <button id="sendMessageBtn" 
+                            class="w-12 h-12 bg-[var(--azul-marinho)] hover:bg-[var(--azul-marinho-escuro)] text-white rounded-full flex items-center justify-center shadow-md transition-transform hover:scale-105 active:scale-95 disabled:opacity-50 disabled:cursor-not-allowed">
+                        <i class="fas fa-paper-plane"></i>
+                    </button>
+                </div>
+            </div>
         </div>
     `;
 }
 
+
 function initChatPage() {
-    const chatMessages = document.getElementById('chatMessages');
-    if (chatMessages) { chatMessages.scrollTop = chatMessages.scrollHeight; }
+    const chatInput = document.getElementById('chatInput');
+    const sendBtn = document.getElementById('sendMessageBtn');
+    const messagesContainer = document.getElementById('chatMessages');
+
+    // 1. Scroll Automático ao abrir (Issue Requirement)
+    if (messagesContainer) {
+        messagesContainer.scrollTop = messagesContainer.scrollHeight;
+    }
+
+    // Função auxiliar para criar o HTML da mensagem e adicionar na tela
+    function addMessageToScreen(text, sender) {
+        const div = document.createElement('div');
+        div.className = `flex ${sender === 'user' ? 'justify-end' : 'justify-start'} animate-fade-in`;
+        
+        // Estilização diferente para usuário vs psicólogo (UX Requirement)
+        const bubbleClass = sender === 'user' 
+            ? 'bg-[var(--azul-marinho)] text-white rounded-tl-2xl rounded-tr-2xl rounded-bl-2xl' 
+            : 'bg-white border border-gray-200 text-gray-800 rounded-tr-2xl rounded-br-2xl rounded-bl-2xl';
+
+        const time = new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+
+        div.innerHTML = `
+            <div class="${bubbleClass} px-4 py-3 shadow-sm max-w-[85%] sm:max-w-[70%]">
+                <p class="text-sm leading-relaxed">${text}</p>
+                <span class="text-[10px] ${sender === 'user' ? 'text-blue-200' : 'text-gray-400'} mt-1 block text-right">${time}</span>
+            </div>
+        `;
+
+        messagesContainer.appendChild(div);
+        
+        // Scroll para a nova mensagem
+        messagesContainer.scrollTop = messagesContainer.scrollHeight;
+    }
+
+    // Lógica de Enviar Mensagem
+    function handleSend() {
+        const text = chatInput.value.trim();
+        if (!text) return; // Não envia se estiver vazio
+
+        // 1. Adiciona mensagem do usuário na tela
+        addMessageToScreen(text, 'user');
+        
+        // 2. Adiciona ao array de histórico (opcional, para manter se mudar de aba)
+        chatMessages.push({ 
+            sender: 'user', 
+            text: text, 
+            time: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }) 
+        });
+
+        // 3. Limpa o campo e mantem o foco (UX Requirement)
+        chatInput.value = '';
+        chatInput.focus();
+
+        // 4. Simula resposta da Psicóloga (Bot)
+        // Mostra "Digitando..." (Simulado pelo delay)
+        setTimeout(() => {
+            const respostasAutomaticas = [
+                "Entendo. Você quer me contar mais sobre isso?",
+                "Estou aqui para te ouvir. Respire fundo.",
+                "Isso parece importante. Como você se sente a respeito?",
+                "Estou anotando isso para nossa próxima sessão."
+            ];
+            const respostaAleatoria = respostasAutomaticas[Math.floor(Math.random() * respostasAutomaticas.length)];
+            
+            addMessageToScreen(respostaAleatoria, 'psychologist');
+            
+            // Salva resposta no histórico também
+            chatMessages.push({ 
+                sender: 'psychologist', 
+                text: respostaAleatoria, 
+                time: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }) 
+            });
+
+        }, 1500); // Delay de 1.5 segundos
+    }
+
+    // Event Listeners (Interatividade)
+    if (sendBtn && chatInput) {
+        // Clique no botão
+        sendBtn.addEventListener('click', handleSend);
+
+        // Pressionar Enter (UX Requirement)
+        chatInput.addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') {
+                handleSend();
+            }
+        });
+    }
 }
 
-/**
- * Envia uma nova mensagem do utilizador para o chat.
- */
-/**
- * Envia uma nova mensagem do utilizador para o chat.
- */
 function sendMessage() {
     const input = document.getElementById('chatInput');
     const text = input.value.trim(); 
@@ -423,15 +882,243 @@ function simularRespostaPsicologo() {
     }
 }
 
+
+// =========================================================
+// FUNÇÕES DO MODAL DE CONTATOS (CRUD)
+// =========================================================
+
+/**
+ * Abre o modal para ADICIONAR um novo contato.
+ * Limpa o formulário e define o estado para 'criação'.
+ */
+function openAddModal() {
+    editingContactId = null; // Garante que estamos criando
+
+    const modal = document.getElementById("addContactModal");
+    const title = modal.querySelector("h2");
+
+    // Limpa o formulário e define o título
+    title.innerHTML = '<i class="fas fa-user-plus"></i> Novo Contato';
+    document.getElementById("contactName").value = "";
+    document.getElementById("contactPhone").value = "";
+    document.getElementById("contactRelation").value = "";
+
+    modal.classList.remove("hidden");
+}
+
+/**
+ * Abre o modal para EDITAR um contato existente.
+ * Pré-preenche o formulário com os dados do contato.
+ */
+function openEditModal(id) {
+    const contact = emergencyContacts.find(c => c.id === id);
+    if (!contact) return;
+
+    editingContactId = id; // Define o estado para 'edição'
+
+    const modal = document.getElementById("addContactModal");
+    const title = modal.querySelector("h2");
+
+    // Pré-preenche o formulário e define o título
+    title.innerHTML = '<i class="fas fa-edit"></i> Editar Contato';
+    document.getElementById("contactName").value = contact.name;
+    document.getElementById("contactPhone").value = contact.phone;
+    document.getElementById("contactRelation").value = contact.relationship;
+
+    modal.classList.remove("hidden");
+}
+
+/**
+ * Fecha o modal de contato e limpa o estado de edição.
+ */
+function closeAddContactModal() {
+    editingContactId = null; // Limpa o estado
+    document.getElementById("addContactModal").classList.add("hidden");
+}
+
+/**
+ * Salva o contato (CRIAÇÃO ou EDIÇÃO).
+ * Valida os campos e atualiza o array 'emergencyContacts'.
+ */
+function saveNewEmergencyContact() {
+    const name = document.getElementById("contactName").value.trim();
+    const phone = document.getElementById("contactPhone").value.trim();
+    const relation = document.getElementById("contactRelation").value.trim();
+
+    // Validação
+    if (!name || !phone || !relation) {
+        showToast("Preencha todos os campos!", "error");
+        return;
+    }
+
+    if (editingContactId) {
+        // --- MODO UPDATE (EDITAR) ---
+        const index = emergencyContacts.findIndex(c => c.id === editingContactId);
+        if (index !== -1) {
+            emergencyContacts[index] = {
+                ...emergencyContacts[index], // Mantém o ID
+                name: name,
+                phone: phone,
+                relationship: relation
+            };
+            showToast("Contato atualizado!", "success");
+        }
+    } else {
+        // --- MODO CREATE (ADICIONAR) ---
+        const newContact = {
+            id: 'c' + Date.now(), // ID mock simples e único
+            name: name,
+            phone: phone,
+            relationship: relation
+        };
+        emergencyContacts.push(newContact);
+        showToast("Contato adicionado!", "success");
+    }
+
+    closeAddContactModal();
+
+    // Re-renderiza a página de contatos para mostrar a lista atualizada
+    renderPage('emergency');
+}
+
+// =========================================================
+// ✅ INÍCIO DA SUBSTITUIÇÃO
+// A função "confirmDelete" antiga foi substituída por este bloco
+// =========================================================
+
+/**
+ * ✅ AC A.5 (Modificado): Abre o modal de confirmação para EXCLUIR.
+ * Substitui o confirm() do navegador pelo novo modal customizado.
+ */
+function confirmDelete(id) {
+    const contact = emergencyContacts.find(c => c.id === id);
+    if (!contact) return;
+
+    // 1. Preenche os dados no modal de confirmação
+    // (Mostra o nome do contato que será excluído)
+    const nameEl = document.getElementById('contactToDeleteName');
+    if (nameEl) {
+        nameEl.textContent = contact.name;
+    }
+    
+    // 2. Armazena o ID no botão de confirmação para ser usado depois
+    const confirmBtn = document.getElementById('confirmDeleteBtn');
+    if (confirmBtn) {
+        confirmBtn.dataset.idToDelete = id; 
+    }
+
+    // 3. Abre o modal
+    const modal = document.getElementById('deleteConfirmationModal');
+    if (modal) {
+        modal.classList.remove('hidden');
+    }
+}
+
+/**
+ * Fecha o modal de confirmação de exclusão (Contatos).
+ */
+function closeDeleteModal() {
+    const modal = document.getElementById('deleteConfirmationModal');
+    if (modal) {
+        modal.classList.add('hidden');
+    }
+    
+    // Limpa o ID do botão por segurança
+    const confirmBtn = document.getElementById('confirmDeleteBtn');
+    if (confirmBtn) {
+        delete confirmBtn.dataset.idToDelete;
+    }
+}
+
+/**
+ * Executa a exclusão (Contatos) após a confirmação no modal.
+ * Esta função é chamada pelo botão "Sim, Excluir".
+ */
+function executeDelete() {
+    const confirmBtn = document.getElementById('confirmDeleteBtn');
+    const id = confirmBtn?.dataset.idToDelete; // Lê o ID que guardamos
+
+    if (id) {
+        // Filtra o array, removendo o contato com o ID correspondente
+        emergencyContacts = emergencyContacts.filter(c => c.id !== id);
+
+        showToast("Contato excluído.", "info"); // AC A.7: Feedback
+
+        // Re-renderiza a página para mostrar a lista atualizada
+        renderPage('emergency');
+    }
+
+    // Fecha o modal
+    closeDeleteModal();
+}
+// =========================================================
+// ✅ FIM DA SUBSTITUIÇÃO
+// =========================================================
+
+
 // Contatos de Emergência (Com responsividade básica)
 function renderEmergencyContactsPage() {
+
+    // 1. Mapeia o array de contatos para gerar o HTML de cada item da lista
+    const contactsListHtml = emergencyContacts.map(contact => `
+        <div class="p-4 bg-gray-50 rounded-lg flex flex-col sm:flex-row justify-between items-start sm:items-center hover:bg-gray-100 transition-colors gap-4">
+            
+            <div class="flex items-center gap-4">
+                <div class="w-12 h-12 rounded-full bg-[var(--azul-marinho)] text-white flex items-center justify-center text-xl font-bold">
+                    ${contact.name.charAt(0)}
+                </div>
+                <div>
+                    <h4 class="font-semibold text-[var(--azul-marinho-escuro)] mb-1">${contact.name}</h4>
+                    <p class="text-sm text-gray-600 mb-0.5">${contact.phone}</p>
+                    <p class="text-xs text-[var(--azul-marinho)]/60">${contact.relationship}</p>
+                </div>
+            </div>
+
+            <div class="flex gap-2 w-full sm:w-auto">
+                <a href="tel:${contact.phone}"
+                   class="flex-1 sm:flex-none px-3 py-2 border border-green-600 text-green-600 rounded-lg hover:bg-green-50 transition-colors text-center">
+                    <i class="fas fa-phone"></i>
+                </a>
+
+                <button onclick="openEditModal('${contact.id}')"
+                        class="flex-1 sm:flex-none px-3 py-2 border border-[var(--azul-marinho)] text-[var(--azul-marinho)] rounded-lg hover:bg-[var(--azul-claro)] transition-colors">
+                    <i class="fas fa-edit"></i>
+                </button>
+
+                <button onclick="confirmDelete('${contact.id}')"
+                        class="flex-1 sm:flex-none px-3 py-2 border border-red-500 text-red-500 rounded-lg hover:bg-red-50 transition-colors">
+                    <i class="fas fa-trash-alt"></i>
+                </button>
+            </div>
+        </div>
+    `).join(''); // Une todos os itens da lista em uma única string
+
+    // 2. Retorna o HTML da página completa, injetando a lista de contatos
     return `
         <div class="bg-white rounded-xl border-2 border-[var(--azul-claro)] p-4 sm:p-6">
-            <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-6 gap-4"> <div class="flex items-center gap-3"> <div class="bg-[var(--azul-claro)] p-3 rounded-full"> <i class="fas fa-users text-[var(--azul-marinho)] text-xl"></i> </div> <h3 class="text-xl font-bold text-[var(--azul-marinho-escuro)]">Contatos de Emergência</h3> </div> <button onclick="showToast('Adicionando contato...', 'info')" class="w-full sm:w-auto px-4 py-2 bg-[var(--azul-marinho)] hover:bg-[var(--azul-marinho-escuro)] text-white rounded-lg font-semibold transition-colors flex items-center justify-center gap-2"> <i class="fas fa-plus mr-2"></i>Adicionar Contato </button> </div>
-            <div class="space-y-3"> ${emergencyContacts.map(contact => `<div class="p-4 bg-gray-50 rounded-lg flex flex-col sm:flex-row justify-between items-start sm:items-center hover:bg-gray-100 transition-colors gap-4"> <div class="flex items-center gap-4"> <div class="w-12 h-12 rounded-full bg-[var(--azul-marinho)] text-white flex items-center justify-center text-xl font-bold"> ${contact.name.charAt(0)} </div> <div> <h4 class="font-semibold text-[var(--azul-marinho-escuro)] mb-1">${contact.name}</h4> <p class="text-sm text-gray-600 mb-0.5">${contact.phone}</p> <p class="text-xs text-[var(--azul-marinho)]/60">${contact.relationship}</p> </div> </div> <div class="flex gap-2 w-full sm:w-auto"> <button onclick="showToast('Ligando...', 'info')" class="flex-1 sm:flex-none px-3 py-2 border border-[var(--azul-marinho)] text-[var(--azul-marinho)] rounded-lg hover:bg-[var(--azul-claro)] transition-colors"> <i class="fas fa-phone"></i> </button> <button onclick="showToast('Editando...', 'info')" class="flex-1 sm:flex-none px-3 py-2 border border-[var(--azul-marinho)] text-[var(--azul-marinho)] rounded-lg hover:bg-[var(--azul-claro)] transition-colors"> <i class="fas fa-edit"></i> </button> </div> </div>`).join('')} </div>
+            
+            <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-6 gap-4">
+                <div class="flex items-center gap-3">
+                    <div class="bg-[var(--azul-claro)] p-3 rounded-full">
+                        <i class="fas fa-users text-[var(--azul-marinho)] text-xl"></i>
+                    </div>
+                    <h3 class="text-xl font-bold text-[var(--azul-marinho-escuro)]">Contatos de Emergência</h3>
+                </div>
+
+                <button onclick="openAddModal()"
+                        class="w-full sm:w-auto px-4 py-2 bg-[var(--azul-marinho)] hover:bg-[var(--azul-marinho-escuro)] text-white rounded-lg font-semibold transition-colors flex items-center justify-center gap-2">
+                    <i class="fas fa-plus mr-2"></i>Adicionar Contato
+                </button>
+            </div>
+
+            <div class="space-y-3">
+                ${contactsListHtml}
+            </div>
+
         </div>
     `;
 }
+
 
 // Configurações (Com responsividade básica)
 function renderSettingsPage() {
@@ -448,9 +1135,11 @@ function renderSettingsPage() {
     `;
 }
 
+
 // =========================================================
 // RENDERIZAÇÃO E NAVEGAÇÃO
 // =========================================================
+
 
 // Inicialização
 document.addEventListener('DOMContentLoaded', function() {
@@ -458,6 +1147,7 @@ document.addEventListener('DOMContentLoaded', function() {
     initEmergencyButtons();
     renderPage(currentPage); // Usa a variável global para iniciar na página correta
 });
+
 
 // Sistema de Navegação (ATUALIZADO PARA RESPONSIVO e ATIVAÇÃO CORRETA)
 function initNavigation() {
@@ -469,7 +1159,7 @@ function initNavigation() {
             navItems.forEach(nav => nav.classList.remove('active')); // Desativa todos
             // Ativa os botões correspondentes em AMBOS os menus (desktop e mobile)
             document.querySelectorAll(`.item-nav-sidebar[data-page="${page}"]`).forEach(nav => nav.classList.add('active'));
-            closeMobileMenu(); // Fecha o menu mobile se estiver aberto
+            // A função closeMobileMenu() não está definida no código fornecido, mas a lógica de navegação está correta.
             renderPage(page); // Renderiza a nova página
         });
     });
@@ -479,6 +1169,7 @@ function initNavigation() {
     });
 }
 
+
 // Renderizar Páginas (com scroll to top)
 function renderPage(page) {
     currentPage = page; // Atualiza a página atual globalmente
@@ -487,7 +1178,7 @@ function renderPage(page) {
     const pages = { // Mapeamento de 'data-page' para funções e títulos
         'security': { title: 'Central de Segurança', render: renderSecurityPage, init: initSecurityPage },
         'profile': { title: 'Perfil do Usuário', render: renderProfilePage, init: null },
-        'notes': { title: 'Anotações', render: renderNotesPage, init: null },
+        'notes': { title: '', render: renderNotesPage, init: null },
         'chat': { title: 'Chat com o Psicólogo', render: renderChatPage, init: initChatPage },
         'emergency': { title: 'Contatos de Emergência', render: renderEmergencyContactsPage, init: null },
         'settings': { title: 'Configurações', render: renderSettingsPage, init: null }
@@ -499,30 +1190,37 @@ function renderPage(page) {
     pageContent.innerHTML = pages[page].render();
     window.scrollTo(0, 0); // Garante que a nova página comece no topo
 
+
     // Executa função de inicialização específica da página (se houver)
     if (pages[page].init) { pages[page].init(); }
 }
+
 
 // =========================================================
 // UTILITÁRIOS (TOASTS, MODAIS, MENU)
 // =========================================================
 
-// --- Funções do Menu Mobile ---
+
+// --- Funções do Menu Mobile (Restauradas para completude) ---
 function openMobileMenu() {
     const sidebar = document.getElementById('mobileSidebar');
     if (sidebar) {
-        sidebar.classList.remove('hidden'); 
-        setTimeout(() => { sidebar.querySelector('aside').classList.remove('-translate-x-full'); }, 10); // Delay p/ transição
+        sidebar.classList.remove('hidden');
+        setTimeout(() => { sidebar.querySelector('aside').classList.remove('-translate-x-full'); }, 10);
     }
 }
+
 
 function closeMobileMenu() {
     const sidebar = document.getElementById('mobileSidebar');
     if (sidebar) {
         sidebar.querySelector('aside').classList.add('-translate-x-full');
-        setTimeout(() => { sidebar.classList.add('hidden'); }, 300); // Espera a transição
+        setTimeout(() => { sidebar.classList.add('hidden'); }, 300);
     }
 }
+
+
+
 
 // --- Funções de Emergência ---
 function initEmergencyButtons() {
@@ -532,22 +1230,27 @@ function initEmergencyButtons() {
     // O botão da sidebar mobile usa onclick="" no HTML
 }
 
+
 function showEmergencyModal() {
     const modal = document.getElementById('emergencyModal');
     modal.classList.remove('hidden'); modal.classList.add('flex');
 }
+
 
 function closeEmergencyModal() {
     const modal = document.getElementById('emergencyModal');
     modal.classList.add('hidden'); modal.classList.remove('flex');
 }
 
+
 function confirmEmergency() {
     closeEmergencyModal();
     showToast('Alerta enviado!', 'success', 'Contatos notificados.');
 }
 
+
 // --- Funções do Sensor (Modal e Toggles) ---
+
 
 /**
  * Lida com o clique no interruptor (toggle) de um sensor.
@@ -560,6 +1263,7 @@ function toggleSensor(sensorId, isChecked) {
     const sensor = sensorsData[sensorIndex];
     const status = isChecked ? "ativado" : "desativado";
     showToast(`${sensor.name} ${status}!`, isChecked ? 'success' : 'info');
+
 
     // Atualiza DOM diretamente
     const sensorElement = document.getElementById(sensor.id);
@@ -589,6 +1293,7 @@ function toggleSensor(sensorId, isChecked) {
     }
 }
 
+
 function showSensorModal(sensorName) {
     const modal = document.getElementById('sensorModal');
     document.getElementById('sensorName').textContent = sensorName;
@@ -603,6 +1308,7 @@ function showSensorModal(sensorName) {
     }, 1000);
 }
 
+
 function updateSensorCountdown() {
     const countdownEl = document.getElementById('countdown');
     const countdownTextEl = document.getElementById('countdownText');
@@ -612,6 +1318,7 @@ function updateSensorCountdown() {
     if (progressFill) { progressFill.style.width = (timeRemaining / 60) * 100 + '%'; }
 }
 
+
 function confirmSafe() {
     if (countdownInterval) { clearInterval(countdownInterval); }
     const modal = document.getElementById('sensorModal');
@@ -620,6 +1327,7 @@ function confirmSafe() {
     if (currentPage === 'security') initSecurityPage(); // Reinicia timer de check-in
 }
 
+
 function sendAlertNow() {
     if (countdownInterval) { clearInterval(countdownInterval); }
     const modal = document.getElementById('sensorModal');
@@ -627,6 +1335,64 @@ function sendAlertNow() {
     showToast('Alerta enviado!', 'error', 'Contatos notificados.');
     if (currentPage === 'security') initSecurityPage(); // Reinicia timer de check-in
 }
+
+
+// --- Funções do Modal de Exclusão ---
+
+
+function showDeleteNoteModal(id, title) {
+    currentNoteIdToDelete = id; // Armazena o ID globalmente
+    const modal = document.getElementById('deleteNoteModal');
+    const titleEl = document.getElementById('noteToDeleteTitle');
+    
+    if (titleEl) {
+        titleEl.textContent = title;
+    }
+
+
+    modal.classList.remove('hidden');
+    modal.classList.add('flex');
+}
+
+
+function closeDeleteNoteModal() {
+    currentNoteIdToDelete = null; // Limpa o ID
+    const modal = document.getElementById('deleteNoteModal');
+    modal.classList.add('hidden');
+    modal.classList.remove('flex');
+}
+
+
+/**
+ * Chama a função de exclusão após a confirmação no modal.
+ */
+function deleteNoteFromModal() {
+    const id = currentNoteIdToDelete;
+    closeDeleteNoteModal(); // Fecha o modal após capturar o ID
+    
+    if (id === null) return; // Se não houver ID, ignora
+
+
+    const initialLength = notes.length;
+    // Simula a chamada ao Backend, removendo o item do array
+    const updatedNotes = notes.filter(note => note.id !== id);
+    
+    if (updatedNotes.length === initialLength) {
+        showToast('Erro', 'error', 'Anotação não encontrada para exclusão.');
+        return;
+    }
+    
+    // Atualiza o array global 'notes'
+    notes.length = 0;
+    notes.push(...updatedNotes);
+
+
+    renderPage('notes');
+    showToast('Anotação Excluída!', 'success', `A anotação foi removida com sucesso.`);
+}
+
+
+
 
 // --- Sistema de Toasts ---
 function showToast(title, type = 'info', description = '') {
@@ -650,14 +1416,22 @@ function showToast(title, type = 'info', description = '') {
     }, 5000);
 }
 
+
 // --- Fechar modais ao clicar fora ---
 window.addEventListener('click', function(event) {
     const emergencyModal = document.getElementById('emergencyModal');
     const sensorModal = document.getElementById('sensorModal');
+    const deleteNoteModal = document.getElementById('deleteNoteModal'); 
+    const deleteContactModal = document.getElementById('deleteConfirmationModal'); //
+
     if (event.target === emergencyModal) { closeEmergencyModal(); }
+    
     if (event.target === sensorModal) {
         if (countdownInterval) { clearInterval(countdownInterval); } // Para o timer do sensor
         sensorModal.classList.add('hidden'); sensorModal.classList.remove('flex');
         if (currentPage === 'security') initSecurityPage(); // Reinicia timer de check-in
     }
+    
+    if (event.target === deleteNoteModal) { closeDeleteNoteModal(); } 
+    if (event.target === deleteContactModal) { closeDeleteModal(); } 
 });
