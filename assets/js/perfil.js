@@ -923,6 +923,7 @@ function renderSettingsPage() {
                         <div>
                             <p class="text-sm font-semibold text-[var(--azul-marinho-escuro)] mb-1">Modo Escuro</p>
                             <p class="text-xs text-[var(--azul-marinho)]/60">Alterna a interface para o tema escuro.</p>
+                            <span class = "text-sm text-gray-500">(Funcionalidade em desenvolvimento)</span>
                         </div>
                         <label class="relative inline-flex items-center cursor-pointer">
                             <input 
