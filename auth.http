@@ -1,0 +1,12 @@
+### Teste 1: Cadastro de Novo Usuário (POST /)
+POST http://127.0.0.1:5000/usuarios/cadastrar
+Content-Type: application/json
+
+{
+    "nome_completo": "Vinicius Teste Final",
+    "cpf": "99988877766",  
+    "email": "teste.final.ok@protegon.com", 
+    "telefone": "62999998888",
+    "senha": "SenhaForteSegura123$",
+    "termos_aceitos": true
+}
