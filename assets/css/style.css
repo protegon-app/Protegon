@@ -5,77 +5,108 @@
     --azul-claro: #d3e3ff;
     --azul-claro-houver: #93ADD9;
     --branco: #ffffff;
-  
-
-    /* Mapeamento de variáveis Tailwind/Global para suas cores (essencial para o funcionamento) */
-    --background: #f5f7fa;
-    --foreground: #827ce0;
-    --primary: var(--azul-marinho);
-    --primary-foreground: var(--branco);
-    --input-background: #f3f3f5;
-    --border: rgba(0, 0, 0, 0.1);
-    --ring: rgba(0, 0, 0, 0.5); /* Valor genérico */
+    --texto-cinza: #5f5f5f;
 }
 
-/* Estilos de base */
 body {
-    font-family: 'Inter', sans-serif; /* Garante que a fonte seja aplicada */
+    font-family: 'Montserrat', sans-serif;
 }
 
-/**
- * Componente de Botão Primário
- */
+/* --- Botões --- */
+
+/* Botão Primário */
 .btn-primario {
-    /* Base for Button */
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    gap: 0.5rem; /* gap-2 */
-    line-height: 1.5; /* text-base */
-    white-space: nowrap;
-    
-    /* User's styles */
-    padding: 0.5rem 1.5rem;
+    padding: 0.75rem 1.5rem;
     font-size: 1rem;
     font-weight: 600;
     color: var(--branco);
-    background-color: var(--azul-marinho); 
-    border-radius: 6px;
-    text-align: center;
-    transition: all 0.3s;
-    border: none;
-    cursor: pointer;
+    background-color: var(--azul-marinho);
+    border-radius: 8px;
+    transition: all 0.3s ease;
 }
 
 .btn-primario:hover {
     background-color: var(--azul-marinho-escuro);
-    transform: scale(1.05);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(0, 53, 108, 0.3);
 }
 
-/* Componente de Card */
-.card-pilar {
+/* Botão Secundário (Branco) */
+.btn-secundario {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0.75rem 1.5rem;
+    font-size: 1rem;
+    font-weight: 600;
+    color: var(--azul-marinho-escuro);
+    background-color: var(--branco);
+    border-radius: 8px;
+    transition: all 0.3s ease;
+}
+
+.btn-secundario:hover {
     background-color: var(--azul-claro);
-    /* Manter a flexibilidade do padding com Tailwind no HTML */
-    padding: 0;
-    border-radius: 0.75rem;
-    box-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
-    transition: box-shadow 0.3s, transform 0.3s;
-    border: 2px solid var(--azul-claro);
+    transform: translateY(-2px);
 }
 
-.card-pilar:hover {
-    box-shadow: 0 20px 25px -5px rgb(0 0 0 / 0.1), 0 8px 10px -6px rgb(0 0 0 / 0.1);
-    transform: translateY(-0.5rem);
+/* --- Elementos de Navegação --- */
+
+/* Links do Menu com efeito de sublinhado */
+.link-animado {
+    position: relative;
+    padding-bottom: 2px;
 }
 
-/* Títulos dentro dos cards */
-.card-pilar h2, .card-pilar h3, .card-pilar h4 {
+.link-animado:hover{
     color: var(--azul-marinho);
 }
 
-/* Textos e parágrafos dentro dos cards */
-.card-pilar p, .card-pilar label, .card-pilar strong {
+.link-animado::after {
+    content: '';
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    width: 0;
+    height: 2px;
+    background-color: var(--azul-claro-houver);
+    transition: width 0.3s ease-in-out;
+}
+
+.link-animado:hover::after {
+    width: 100%;
+}
+
+/* --- Cards --- */
+
+/* Cards da seção de Pilares */
+.card-pilar {
+    background-color: var(--azul-claro);
+    padding: 2rem;
+    border-radius: 1rem;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+    transition: all 0.3s ease;
+    text-align: left;
+}
+
+.card-pilar:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+}
+
+.card-pilar h3 {
+    color: var(--azul-marinho);
+    font-size: 1.25rem;
+    font-weight: 700;
+    margin-bottom: 1rem;
+}
+
+.card-pilar p {
     color: var(--azul-marinho-escuro);
+    line-height: 1.6;
 }
 
 /* NOVO: Estilo para os campos de dados para melhor legibilidade */
