@@ -1,0 +1,40 @@
+
+
+services:
+
+  db:
+    image: mysql:8.0 
+    container_name: protegon_mysql
+    restart: always 
+    
+    environment:
+      MYSQL_ROOT_PASSWORD: ${DB_ROOT_PASSWORD} 
+      MYSQL_DATABASE: protegon_db             
+      MYSQL_USER: protegon_user               
+      MYSQL_PASSWORD: ${DB_APP_PASSWORD}    
+    ports:
+      - "3307:3306" 
+      
+    volumes:
+      - db_data:/var/lib/mysql
+      
+      - ./db/init:/docker-entrypoint-initdb.d
+
+  app:
+    build: . 
+    container_name: protegon_backend
+    restart: always
+    
+    environment:
+      DB_HOST: db                          
+      DB_DATABASE: protegon_db
+      DB_USER: protegon_user
+      DB_PASSWORD: ${DB_APP_PASSWORD}
+      
+    ports:
+      - "8000:8000" 
+    depends_on:
+      - db 
+
+volumes:
+  db_data:

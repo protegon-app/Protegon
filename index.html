@@ -7,217 +7,427 @@
     <title>Protegon - Tecnologia que protege. Cuidado que acolhe.</title>
 
     <script src="https://cdn.tailwindcss.com"></script>
-
-    <link href="./assets/css/style.css" rel="stylesheet">
-
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
+
+    <link href="./assets/css/style.css" rel="stylesheet">
 </head>
 
-<body class="font-sans text-gray-700">
-    <!--Menu de navegação-->
-    <header class="absolute top-0 left-0 w-full z-50 bg-[var(--branco)] border-radius">
-        <nav class="container mx-auto px-4 sm:px-6 lg:px-8 flex items-center justify-between h-24">
+<body class="font-sans text-gray-700 bg-gray-50">
 
-            <div class="flex items-center space-x-8">
-                <a href="#hero" class="flex-shrink-0">
-                    <img src="./assets/img/logo3.png" alt="Logo protegon" class="h-10">
-                </a>
-                <div class="hidden md:flex items-center space-x-8">
-                    <a href="#hero" class="link-animado text-[var(--azul-marinho)] hover:text-[var(--azul-marinho-escuro)] transition-colors duration-300 font-medium hover:font-semibold">Início</a>
-                    <a href="#pilares" class="link-animado text-[var(--azul-marinho)] hover:text-[var(--azul-marinho-escuro)] transition-colors duration-300 font-medium hover:font-semibold">Pilares</a>
-                    <a href="#funcionalidades" class="link-animado text-[var(--azul-marinho)] hover:text-[var(--azul-marinho-escuro)] transition-colors duration-300 font-medium hover:font-semibold">Funcionalidades</a>
-                </div>
+    <header class="fixed top-0 left-0 w-full z-50 bg-white/95 backdrop-blur-md shadow-sm">
+        <nav class="container mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between">
+            <a href="#hero" class="flex items-center gap-2">
+                <img src="./assets/img/protegon-branca.png" alt="logo protegon" class="h-10 w-auto">
+
+            </a>
+
+            <div class="hidden md:flex items-center space-x-8">
+                <a href="#hero" class="link-animado text-[var(--texto-cinza)] font-medium">Início</a>
+                <a href="#pilares" class="link-animado text-[var(--texto-cinza)] font-medium">Compromisso</a>
+                <a href="#funcionalidades" class="link-animado text-[var(--texto-cinza)] font-medium">Como funciona</a>
             </div>
-            <!--Botões de login e cadastro-->
+
             <div class="hidden md:flex items-center space-x-4">
-                <a href="./login.htm" class="btn-primario">Entrar</a>
-                <a href="./CriarConta.html" class="btn-primario">Registrar</a>
+                <a href="./login.htm" class="text-[var(--azul-marinho)] font-semibold hover:underline">Entrar</a>
+                <a href="./CriarConta.html" class="btn-primario">Começar agora</a>
             </div>
 
-            <button class="md:hidden p-2 rounded-md text-gray-300 hover:bg-gray-800">
-                <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <button id="mobile-menu-btn" class="md:hidden text-[var(--azul-marinho)] focus:outline-none">
+                <svg class="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-8 6h8" />
                 </svg>
             </button>
         </nav>
-    </header>
 
-    <main>
-        <!--Hero-->
-        <section id="hero" class="  relative min-h-screen flex items-center justify-center bg-cover bg-center" style="background-image: url('./assets/img/background.png');">
-
-            <!-- Conteudo -->
-            <div class="relative z-10 text-center text-white p-8 max-w-4xl mx-auto">
-                <h1 class="text-5xl md:text-7xl font-bold leading-tight drop-shadow-lg">
-                    Tecnologia que protege. <br> Cuidado que acolhe.
-                </h1>
-                <p class="mt-6 text-lg md:text-xl max-w-3xl mx-auto drop-shadow-md">
-                    O aplicativo de segurança pessoal que une inteligência artificial e uma rede de apoio para proteger mulheres e crianças em situações de risco.
-                </p>
-                <a href="#cta-final" class="inline-block px-8 py-4 rounded-[4px] text-center font-semibold shadow-xl transition-all duration-300 bg-[var(--azul-marinho)] text-white text-lg hover:bg-[var(--azul-marinho-escuro)] mt-10 transform hover:scale-105">
-                    Venha fazer parte
-                </a>
+        <div id="mobile-menu" class="hidden md:hidden bg-white border-t border-gray-100 absolute w-full left-0 shadow-lg">
+            <div class="px-4 py-4 space-y-3 flex flex-col">
+                <a href="#hero" class="text-[var(--azul-marinho)] font-medium p-2">Início</a>
+                <a href="#pilares" class="text-[var(--azul-marinho)] font-medium p-2">Compromisso</a>
+                <a href="#funcionalidades" class="text-[var(--azul-marinho)] font-medium p-2">Como funciona</a>
+                <hr class="border-gray-200">
+                <a href="./login.htm" class="text-[var(--azul-marinho)] font-semibold p-2">Entrar</a>
+                <a href="./CriarConta.html" class="btn-primario text-center w-full mt-2">Começar agora</a>
             </div>
-        </section>
-        <!--Nosso compromisso-->
+        </div>
+    </header>
+<section id="hero" class="relative py-20 lg:py-32 flex items-center justify-center bg-white overflow-hidden">
+    
+    <div class="luz-lateral luz-esquerda"></div>
+    <div class="luz-lateral luz-direita"></div>
+ 
+
+    <div class="container mx-auto px-4 sm:px-6 lg:px-8 text-center relative z-10">
+        <div class="inline-flex items-center gap-2 px-5 py-2 rounded-full border border-blue-200 bg-blue-50/50 backdrop-blur-sm text-[var(--azul-marinho-escuro)] text-sm font-medium mb-8 shadow-sm">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
+            </svg>
+            Proteção Inteligente e Discreta
+        </div>
+
+        <h1 class="text-5xl md:text-6xl lg:text-7xl font-bold text-[var(--azul-marinho-escuro)] leading-[1.1] mb-8 tracking-tight">
+            Tecnologia que protege. <br>
+            <span class="text-[var(--azul-marinho)]">Cuidado que acolhe.</span>
+        </h1>
+        
+        <p class="text-lg md:text-xl text-slate-600 max-w-2xl mx-auto mb-10 leading-relaxed font-medium">
+            Sabemos que a sua segurança e a de quem você ama são prioridades.
+            Em momentos difíceis, ter uma ajuda discreta e ágil faz toda a diferença.
+            <br class="hidden md:block mt-2">
+            Por isso, criamos o Protegon.
+        </p>
+        
+        <div class="flex flex-col sm:flex-row justify-center items-center gap-4 mb-16">
+            <a href="./CriarConta.html" class="bg-[var(--azul-marinho-escuro)] text-white px-8 py-4 rounded-lg font-bold hover:bg-opacity-90 transition-all shadow-lg hover:shadow-blue-900/20 transform hover:-translate-y-1 text-base">
+                Junte-se a nós. Sinta-se mais segura hoje.
+            </a>
+
+            <a href="#funcionalidades" class="bg-white border-2 border-[var(--azul-marinho-escuro)] text-[var(--azul-marinho-escuro)] px-8 py-3.5 rounded-lg font-bold hover:bg-blue-50 transition-all text-base">
+                Saiba mais
+            </a>
+        </div>
+        
+         <div class="flex flex-wrap justify-center gap-6 md:gap-12 text-slate-500 text-sm md:text-base font-medium">
+            <div class="flex items-center gap-2">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-[var(--azul-marinho)]" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
+                </svg>
+                <span>100% Seguro</span>
+            </div>
+            <div class="flex items-center gap-2">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-[var(--azul-marinho)]" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
+                </svg>
+                <span>Proteção 24/7</span>
+            </div>
+            <div class="flex items-center gap-2">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-[var(--azul-marinho)]" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" />
+                </svg>
+                <span>Cuidado Humanizado</span>
+            </div>
+        </div>
+
+    </div>
+</section>
+
         <section id="pilares" class="py-20 bg-[var(--azul-marinho-escuro)]">
-            <div class="container mx-auto px-4 sm:px-6 lg:px-8 text-center">
-                <h2 class="text-4xl md:text-5xl font-bold text-white mb-16">
+            <div class="container mx-auto px-4 sm:px-6 lg:px-8">
+                <h2 class="text-3xl md:text-5xl font-bold text-white text-center mb-16">
                     Nosso Compromisso com Você
                 </h2>
-                <!--CARD 1-->
-                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-10">
+
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
                     <div class="card-pilar">
-                        <h3 class="card-pilar_titulo">Acolhimento e Empatia</h3>
-                        <p class="card-pilar_texto">
-                            Oferecemos um suporte humano e livre de julgamentos. Acreditamos que a verdadeira proteção começa com o acolhimento, agindo como um apoio silencioso e eficaz.
-                        </p>
+                        <div class="w-12 h-12 bg-[var(--azul-marinho-escuro)] rounded-full flex items-center justify-center mb-4 text-white">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" />
+                            </svg>
+                        </div>
+                        <h3>Acolhimento e Empatia</h3>
+                        <p>Oferecemos um suporte humano e livre de julgamentos. A verdadeira proteção começa com o acolhimento.</p>
                     </div>
-                    <!--card 2-->
+
                     <div class="card-pilar">
-                        <h3 class="card-pilar_titulo">Tecnologia e Inovação</h3>
-                        <p class="card-pilar_texto">
-                            Desenvolvemos ferramentas de segurança inteligentes com um objetivo claro: proteger e salvar vidas. A tecnologia é o nosso meio para garantir sua segurança.
-                        </p>
+                        <div class="w-12 h-12 bg-[var(--azul-marinho-escuro)] rounded-full flex items-center justify-center mb-4 text-white">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z" />
+                            </svg>
+                        </div>
+                        <h3>Tecnologia e Inovação</h3>
+                        <p>Ferramentas inteligentes com um objetivo claro: salvar vidas. A tecnologia é o nosso meio de proteção.</p>
                     </div>
-                    <!--Card 3-->
+
                     <div class="card-pilar">
-                        <h3 class="card-pilar_titulo">Segurança e Privacidade</h3>
-                        <p class="card-pilar_texto">
-                            Sua confiança é inegociável. Garantimos um compromisso absoluto com a proteção dos seus dados, para que você se sinta segura em todos os aspectos, a todo momento.
-                        </p>
-                        <!--card 4-->
+                        <div class="w-12 h-12 bg-[var(--azul-marinho-escuro)] rounded-full flex items-center justify-center mb-4 text-white">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
+                            </svg>
+                        </div>
+                        <h3>Segurança e Privacidade</h3>
+                        <p>Compromisso absoluto com a proteção dos seus dados. Você segura em todos os aspectos.</p>
                     </div>
+
                     <div class="card-pilar">
-                        <h3 class="card-pilar_titulo">Impacto Social</h3>
-                        <p class="card-pilar_texto">
-                            Nosso propósito vai além do aplicativo. Trabalhamos para ser uma referência em proteção e promover uma mudança real na sociedade, por um mundo com mais segurança e respeito.
-                        </p>
+                        <div class="w-12 h-12 bg-[var(--azul-marinho-escuro)] rounded-full flex items-center justify-center mb-4 text-white">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3.055 11H5a2 2 0 012 2v1a2 2 0 002 2 2 2 0 012 2v2.945M8 3.935V5.5A2.5 2.5 0 0010.5 8h.5a2 2 0 012 2 2 2 0 104 0 2 2 0 012-2h1.064M15 20.488V18a2 2 0 012-2h3.064M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                            </svg>
+                        </div>
+                        <h3>Impacto Social</h3>
+                        <p>Nosso propósito vai além do app. Trabalhamos por um mundo com mais segurança e respeito.</p>
                     </div>
                 </div>
             </div>
         </section>
-        <!--Como o protegon cuida de você-->
-        <section id="funcionalidades" class="py-20 bg-[var(--azul-claro)]">
-            <div class="container mx-auto px-4 sm:px-6 lg:px-8 text-center">
-                <h2 class="text-4xl md:text-5xl font-bold text-[var(--azul-marinho-escuro)] mb-16">
-                    Como o Protegon Cuida de Você
-                </h2>
-                <div class="grid grid-cols-1 md:grid-cols-3 gap-10 max-w-5xl mx-auto">
-                    <!--Botão segurança-->
-                    <div class="bg-white p-8 rounded-xl shadow-lg hover:shadow-xl transition-shadow duration-300 transform hover:-translate-y-2">
-                        <h3 class="text-2xl font-semibold text-[var(--azul-marinho-escuro)] mb-3">Botão de Segurança Inteligente</h3>
-                        <p class="text-[var(--azul-marinho)] leading-relaxed">
-                            Ative alertas silenciosos para sua rede de emergência. Com inteligência artificial, o Protegon também envia avisos automáticos precisos ao detectar ameaças em áudio ou movimento.
+
+        <section id="funcionalidades" class="py-20 bg-gradient-to-b from-white via-blue-50/50 to-white">
+            <div class="container mx-auto px-4 sm:px-6 lg:px-8">
+
+                <div class="text-center mb-16 max-w-3xl mx-auto">
+                    <span class="inline-block py-1 px-3 rounded-full bg-blue-100 text-[var(--azul-marinho)] text-sm font-bold mb-4">
+                        Recursos
+                    </span>
+                    <h2 class="text-3xl md:text-5xl font-bold text-[var(--azul-marinho-escuro)] mb-4">
+                        Tudo o que você precisa para se sentir segura
+                    </h2>
+                    <p class="text-slate-600 text-lg">
+                        Conheça as tecnologias que fazem do Protegon a escolha certa para sua proteção e bem-estar.
+                    </p>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+
+                    <div class="bg-white p-8 rounded-2xl border border-blue-100 hover:border-blue-300 hover:shadow-lg transition-all duration-300 group">
+                        <div class="w-12 h-12 rounded-xl flex items-center justify-center text-white mb-6 group-hover:scale-120 transition-transform bg-gradient-to-br from-[var(--azul-marinho-escuro)] to-[var(--azul-marinho)] shadow-md">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z" />
+                            </svg>
+                        </div>
+                        <h3 class="text-xl font-bold text-[var(--azul-marinho-escuro)] mb-3">Inteligência Artificial</h3>
+                        <p class="text-slate-600 leading-relaxed text-sm">
+                            Tecnologia inteligente que aprende a identificar sinais de perigo, como movimentos bruscos ou sons de ameaça.
                         </p>
-                        <!--Rede de confiança -->
                     </div>
-                    <div class="bg-white p-8 rounded-xl shadow-lg hover:shadow-xl transition-shadow duration-300 transform hover:-translate-y-2">
-                        <h3 class="text-2xl font-semibold text-[var(--azul-marinho-escuro)] mb-3">Sua Rede de Confiança Ativada</h3>
-                        <p class="text-[var(--azul-marinho)] leading-relaxed">
-                            Cadastre pessoas que importam e elas serão alertadas automaticamente em perigo. Receberão sua localização e a gravidade do ocorrido, garantindo uma resposta rápida e efetiva.
+
+                    <div class="bg-white p-8 rounded-2xl border border-blue-100 hover:border-blue-300 hover:shadow-lg transition-all duration-300 group">
+                        <div class="w-12 h-12 rounded-xl flex items-center justify-center text-white mb-6 group-hover:scale-110 transition-transform bg-gradient-to-br from-[var(--azul-marinho)] to-[var(--azul-marinho-escuro)] shadow-md">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" />
+                            </svg>
+                        </div>
+                        <h3 class="text-xl font-bold text-[var(--azul-marinho-escuro)] mb-3">Rede de Confiança</h3>
+                        <p class="text-slate-600 leading-relaxed text-sm">
+                            Aciona automaticamente sua rede de confiança de forma silenciosa quando necessário.
                         </p>
-                        <!--Apoio psicológico-->
                     </div>
-                    <div class="bg-white p-8 rounded-xl shadow-lg hover:shadow-xl transition-shadow duration-300 transform hover:-translate-y-2">
-                        <h3 class="text-2xl font-semibold text-[var(--azul-marinho-escuro)] mb-3">Apoio Psicológico Contínuo</h3>
-                        <p class="text-[var(--azul-marinho)] leading-relaxed">
-                            Tenha acesso a psicólogos parceiros que acompanham seu bem-estar. Registre suas sensações para um cuidado eficaz e contínuo, fortalecendo você em todos os momentos.
+
+                    <div class="bg-white p-8 rounded-2xl border border-blue-100 hover:border-blue-300 hover:shadow-lg transition-all duration-300 group">
+                        <div class="w-12 h-12 rounded-xl flex items-center justify-center text-white mb-6 group-hover:scale-110 transition-transform bg-gradient-to-br from-[var(--azul-marinho)] to-[var(--azul-marinho-escuro)] shadow-md">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
+                            </svg>
+                        </div>
+                        <h3 class="text-xl font-bold text-[var(--azul-marinho-escuro)] mb-3">Proteção Discreta</h3>
+                        <p class="text-slate-600 leading-relaxed text-sm">
+                            Cada detalhe foi pensado para ser simples, intuitivo e, acima de tudo, seguro para você.
                         </p>
+                    </div>
+
+                    <div class="bg-white p-8 rounded-2xl border border-blue-100 hover:border-blue-300 hover:shadow-lg transition-all duration-300 group">
+                        <div class="w-12 h-12 rounded-xl flex items-center justify-center text-white mb-6 group-hover:scale-110 transition-transform bg-gradient-to-br from-[var(--azul-marinho)] to-[var(--azul-marinho-escuro)] shadow-md">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9" />
+                            </svg>
+                        </div>
+                        <h3 class="text-xl font-bold text-[var(--azul-marinho-escuro)] mb-3">Alertas Automáticos</h3>
+                        <p class="text-slate-600 leading-relaxed text-sm">
+                            Sistema inteligente que detecta situações de risco e envia alertas automaticamente.
+                        </p>
+                    </div>
+
+                    <div class="bg-white p-8 rounded-2xl border border-blue-100 hover:border-blue-300 hover:shadow-lg transition-all duration-300 group">
+                        <div class="w-12 h-12 rounded-xl flex items-center justify-center text-white mb-6 group-hover:scale-110 transition-transform bg-gradient-to-br from-[var(--azul-marinho)] to-[var(--azul-marinho-escuro)] shadow-md">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z" />
+                            </svg>
+                        </div>
+                        <h3 class="text-xl font-bold text-[var(--azul-marinho-escuro)] mb-3">Resposta Rápida</h3>
+                        <p class="text-slate-600 leading-relaxed text-sm">
+                            Garantimos que a ajuda chegue o mais rápido possível quando você mais precisa.
+                        </p>
+                    </div>
+
+                    <div class="bg-white p-8 rounded-2xl border border-blue-100 hover:border-blue-300 hover:shadow-lg transition-all duration-300 group">
+                        <div class="w-12 h-12 rounded-xl flex items-center justify-center text-white mb-6 group-hover:scale-110 transition-transform bg-gradient-to-br from-[var(--azul-marinho)] to-[var(--azul-marinho-escuro)] shadow-md">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 3v4M3 5h4M6 17v4m-2-2h4m5-16l2.286 6.857L21 12l-5.714 2.143L13 21l-2.286-6.857L5 12l5.714-2.143L13 3z" />
+                            </svg>
+                        </div>
+                        <h3 class="text-xl font-bold text-[var(--azul-marinho-escuro)] mb-3">Fácil de Usar</h3>
+                        <p class="text-slate-600 leading-relaxed text-sm">
+                            Interface simples e intuitiva, desenvolvida pensando no seu conforto e segurança.
+                        </p>
+                    </div>
+
+                </div>
+            </div>
+        </section>
+
+        <section id="impacto" class="py-20 bg-white">
+            <div class="container mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="bg-[var(--azul-marinho-escuro)] rounded-3xl p-10 md:p-16 text-center text-white shadow-2xl relative overflow-hidden max-w-5xl mx-auto">
+
+                    <div class="flex justify-center gap-4 mb-8">
+                        <div class="w-10 h-10 border border-white/30 rounded-lg flex items-center justify-center">
+                            <svg class="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"></path>
+                            </svg>
+                        </div>
+                        <div class="w-10 h-10 border border-white/30 rounded-lg flex items-center justify-center">
+                            <svg class="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"></path>
+                            </svg>
+                        </div>
+                        <div class="w-10 h-10 border border-white/30 rounded-lg flex items-center justify-center">
+                            <svg class="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z"></path>
+                            </svg>
+                        </div>
+                    </div>
+
+                    <h2 class="text-3xl md:text-5xl font-bold mb-6">
+                        Sua segurança é nossa prioridade
+                    </h2>
+                    <p class="text-lg md:text-xl text-blue-100 mb-10 max-w-3xl mx-auto">
+                        Milhares de mulheres e famílias já confiam no Protegon para estar ao seu lado quando mais precisam. Você não está sozinha.
+                    </p>
+
+                    <div class="flex flex-col sm:flex-row justify-center gap-4 mb-16">
+                        <a href="./CriarConta.html" class="bg-white text-[var(--azul-marinho-escuro)] px-8 py-4 rounded-lg font-bold hover:bg-gray-100 transition-colors flex items-center justify-center gap-2">
+                            ✨ Junte-se a nós. Sinta-se mais segura hoje.
+                        </a>
+                        <a href="#pilares" class="bg-transparent border border-white text-white px-8 py-4 rounded-lg font-bold hover:bg-white/10 transition-colors">
+                            Saiba mais
+                        </a>
+                    </div>
+
+                    <hr class="border-white/20 mb-10">
+
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                        <div>
+                            <p class="text-4xl font-bold mb-2">10k+</p>
+                            <p class="text-sm uppercase tracking-wide opacity-80">Usuárias ativas</p>
+                        </div>
+                        <div>
+                            <p class="text-4xl font-bold mb-2">99.9%</p>
+                            <p class="text-sm uppercase tracking-wide opacity-80">Taxa de resposta</p>
+                        </div>
+                        <div>
+                            <p class="text-4xl font-bold mb-2">24/7</p>
+                            <p class="text-sm uppercase tracking-wide opacity-80">Proteção ativa</p>
+                        </div>
                     </div>
                 </div>
             </div>
         </section>
-        <!--Encontre mais ajuda-->
-        <section id="recursos" class="py-20 bg-[var(--branco)] text-[var(--azul-marinho-escuro)]">
-            <div class="container mx-auto px-4 sm:px-6 lg:px-8 text-center max-w-4xl">
-                <h2 class="text-4xl md:text-5xl font-bold mb-8">
+
+        <section id="recursos" class="py-20 bg-white">
+            <div class="container mx-auto px-4 sm:px-6 lg:px-8 max-w-4xl text-center">
+
+                <h2 class="text-3xl md:text-4xl font-bold text-[var(--azul-marinho-escuro)] mb-4">
                     Encontre Mais Ajuda
                 </h2>
-                <p class="text-lg mb-12 max-w-2xl mx-auto">
-                    Além da nossa tecnologia, acreditamos na força dos serviços especializados. Se você ou alguém que você conhece precisa de ajuda imediata, estes são canais de apoio essenciais no Brasil:
+
+                <p class="mb-12 text-slate-600 max-w-2xl mx-auto leading-relaxed">
+                    Além da nossa tecnologia, acreditamos na força dos serviços especializados. Se você ou alguém que você conhece precisa de ajuda imediata, estas são canais de apoio essenciais no Brasil.
                 </p>
-                <div class="space-y-6 text-left text-[var(--azul-marinho-escuro)]">
-                    <div class="bg-[var(--azul-claro)] p-6 rounded-lg transition-all duration-300 hover:bg-[var(--azul-claro-hover)] transform hover:scale-105 shadow-lg hover:shadow-2xl  ">
-                        <h3 class="text-xl font-semibold mb-1">Ligue 180 - Central de Atendimento à Mulher</h3>
-                        <p class="text-[var(--azul-marinho-escuro)]">Serviço gratuito para denúncias, orientação e acolhimento. Funciona 24 horas por dia.</p>
+
+                <div class="space-y-6">
+
+                    <div class="bg-blue-100 p-6 md:p-8 rounded-2xl shadow-sm hover:shadow-md transition-shadow flex flex-col md:flex-row items-center gap-6 text-left">
+                        <div class="bg-[var(--azul-marinho-escuro)] p-4 rounded-xl text-white shrink-0">
+                            <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"></path>
+                            </svg>
+                        </div>
+                        <div class="flex-1">
+                            <h3 class="font-bold text-xl text-[var(--azul-marinho-escuro)] mb-1">Ligue 180 - Central de Atendimento à Mulher</h3>
+                            <p class="text-sm md:text-base text-[var(--azul-marinho-escuro)] leading-relaxed opacity-90">
+                                Serviço gratuito para denúncias, orientação e acolhimento. Funciona 24 horas por dia.
+                            </p>
+                        </div>
+                        <div class="bg-[var(--azul-marinho-escuro)] text-white font-bold text-2xl py-3 px-6 rounded-xl shrink-0">
+                            180
+                        </div>
                     </div>
-                    <div class="bg-[var(--azul-claro)] p-6 rounded-lg transition-all duration-300 hover:bg-[var(--azul-claro-hover)] transform hover:scale-105 shadow-lg hover:shadow-2xl">
-                        <h3 class="text-xl font-semibold mb-1">Disque 100 - Direitos Humanos</h3>
-                        <p class="text-[var(--azul-marinho-escuro)]">
-                            Canal para denunciar violações de direitos humanos de forma geral.
-                        </p>
+
+                    <div class="bg-blue-100 p-6 md:p-8 rounded-2xl shadow-sm hover:shadow-md transition-shadow flex flex-col md:flex-row items-center gap-6 text-left">
+                        <div class="bg-[var(--azul-marinho-escuro)] p-4 rounded-xl text-white shrink-0">
+                            <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"></path>
+                            </svg>
+                        </div>
+                        <div class="flex-1">
+                            <h3 class="font-bold text-xl text-[var(--azul-marinho-escuro)] mb-1">Disque 100 - Direitos Humanos</h3>
+                            <p class="text-sm md:text-base text-[var(--azul-marinho-escuro)] leading-relaxed opacity-90">
+                                Canal para denunciar violações de direitos humanos de forma geral.
+                            </p>
+                        </div>
+                        <div class="bg-[var(--azul-marinho-escuro)] text-white font-bold text-2xl py-3 px-6 rounded-xl shrink-0">
+                            100
+                        </div>
                     </div>
-                    <div class="bg-[var(--azul-claro)] p-6 rounded-lg transition-all duration-300 hover:bg-[var(--azul-claro-hover)] transform hover:scale-105 shadow-lg hover:shadow-2xl">
-                        <h3 class="text-xl font-semibold mb-1">Ligue 190 - Polícia Militar</h3>
-                        <p class="text-[var(--azul-marinho-escuro)]">
-                            Em caso de emergência imediata e perigo real, não hesite em acionar a polícia.
-                        </p>
+
+                    <div class="bg-blue-100 p-6 md:p-8 rounded-2xl shadow-sm hover:shadow-md transition-shadow flex flex-col md:flex-row items-center gap-6 text-left">
+                        <div class="bg-[var(--azul-marinho-escuro)] p-4 rounded-xl text-white shrink-0">
+                            <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                            </svg>
+                        </div>
+                        <div class="flex-1">
+                            <h3 class="font-bold text-xl text-[var(--azul-marinho-escuro)] mb-1">Ligue 190 - Polícia Militar</h3>
+                            <p class="text-sm md:text-base text-[var(--azul-marinho-escuro)] leading-relaxed opacity-90">
+                                Em caso de emergência imediata e perigo real, não hesite em acionar a polícia.
+                            </p>
+                        </div>
+                        <div class="bg-[var(--azul-marinho-escuro)] text-white font-bold text-2xl py-3 px-6 rounded-xl shrink-0">
+                            190
+                        </div>
                     </div>
                 </div>
+
+                <div class="mt-10 bg-blue-50 p-6 rounded-xl text-[var(--azul-marinho-escuro)] text-sm md:text-base leading-relaxed">
+                    <span class="font-bold">Lembre-se:</span> Você não está sozinha. Buscar ajuda é um ato de coragem e o primeiro passo para retomar o controle da sua vida.
+                </div>
+
             </div>
         </section>
-        <!--Cta final antes do rodape-->
-        <section id="cta-final" class="py-24 bg-[var(--azul-marinho)] text-white text-center">
-            <div class="container mx-auto px-4 sm:px-6 lg:px-8 max-w-3xl">
-                <h2 class="text-4xl md:text-5xl font-bold leading-tight mb-6">
-                    Pronta para se sentir mais segura e conectada?
-                </h2>
-                <p class="text-lg md:text-xl mb-10 leading-relaxed">
-                    Junte-se a milhares de mulheres que escolheram ter o Protegon como seu aliado de segurança pessoal. O cadastro é rápido, fácil e o primeiro passo para uma vida com mais tranquilidade.
-                </p>
-                <a href="./CriarConta.html" class="inline-block px-10 py-5 rounded-[10px] text-center font-bold text-xl shadow-xl transition-all duration-300 bg-[var(--azul-claro)] text-[var(--azul-marinho-escuro)] hover:bg-[var(--azul-claro-hover)] transform hover:scale-105">
-                    Venha fazer parte
-                </a>
-            </div>
-        </section>
+
     </main>
-    <!--Rodape-->
-    <footer class="bg-[var(--azul-marinho-escuro)] text-white">
-    <div class="container mx-auto px-4 sm:px-6 lg:px-8 py-12">
-        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 text-center md:text-left">
-            
-            <div class="col-span-full lg:col-span-1 mb-8 md:mb-0">
-                <a href="#hero" class="text-2xl font-bold text-white flex items-center justify-center md:justify-start">
-                    <img src="./assets/img/logo3.png" alt="Logo Protegon" class="h-10 inline-block mr-2">
-                    Protegon
-                </a>
-                <p class="mt-4 text-sm max-w-xs mx-auto md:mx-0">
-                    Tecnologia que protege. Cuidado que acolhe.
-                </p>
-            </div>
-            
-            <div>
-                <h4 class="text-base font-semibold text-white tracking-wider uppercase mb-4">Navegação</h4>
-                <ul class="space-y-3">
-                    <li><a href="#hero" class="hover:text-white transition-colors duration-300">Início</a></li>
-                    <li><a href="#pilares" class="hover:text-white transition-colors duration-300">Nosso Compromisso</a></li>
-                    <li><a href="#funcionalidades" class="hover:text-white transition-colors duration-300">Como Cuidamos</a></li>
-                    <li><a href="#recursos" class="hover:text-white transition-colors duration-300">Recursos de Ajuda</a></li>
-                </ul>
-            </div>
-            
-            <div>
-                <h4 class="text-base font-semibold text-white tracking-wider uppercase mb-4">Siga-nos</h4>
-                <div class="flex justify-center md:justify-start space-x-5">
-                    <a href="#" class="text-gray-400 hover:text-white transform hover:scale-110 transition-transform duration-300">
-                        <svg class="h-6 w-6" fill="currentColor" viewBox="0 0 24 24">...</svg>
-                    </a>
-                    <a href="#" class="text-gray-400 hover:text-white transform hover:scale-110 transition-transform duration-300">
-                        <svg class="h-6 w-6" fill="currentColor" viewBox="0 0 24 24">...</svg>
-                    </a>
+
+    <footer class="bg-[var(--azul-marinho-escuro)] text-white pt-16 pb-8">
+        <div class="container mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-8 mb-12">
+                <div class="col-span-1 md:col-span-1">
+                    <span class="text-2xl font-bold flex items-center gap-2 mb-4">
+                        <img src="./assets/img/protegon-azul.png" alt="logo protegon" class="h-10 w-auto ">
+                    </span>
+                    <p class="text-blue-200 text-sm">Tecnologia que protege. Cuidado que acolhe.</p>
+                </div>
+                <div>
+                    <h4 class="font-bold mb-4">Sobre o Protegon</h4>
+                    <ul class="space-y-2 text-blue-200 text-sm">
+                        <li><a href="#" class="hover:text-white">Como funciona</a></li>
+                        <li><a href="#" class="hover:text-white">Nossa missão</a></li>
+                        <li><a href="#" class="hover:text-white">Blog</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h4 class="font-bold mb-4">Suporte</h4>
+                    <ul class="space-y-2 text-blue-200 text-sm">
+                        <li><a href="#" class="hover:text-white">Central de ajuda</a></li>
+                        <li><a href="#" class="hover:text-white">Privacidade</a></li>
+                        <li><a href="#" class="hover:text-white">Termos de uso</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h4 class="font-bold mb-4">Contato</h4>
+                    <ul class="space-y-2 text-blue-200 text-sm">
+                        <li>contato@protegon.com</li>
+                        <li>0800 123 4567</li>
+                        <li>Goiânia, Brasil</li>
+                    </ul>
                 </div>
             </div>
+            <div class="border-t border-blue-900 pt-8 text-center text-sm text-blue-300">
+                &copy; 2025 Protegon. Todos os direitos reservados.
+            </div>
         </div>
+    </footer>
 
-        <div class="mt-12 border-t border-gray-700 pt-8 text-center text-sm">
-            <p>&copy; 2025 PROTEGON - Todos os direitos reservados.</p>
-        </div>
-    </div>
-</footer>
-
+    <script src="./assets/js/index .js"></script>
 </body>
 
 </html>
