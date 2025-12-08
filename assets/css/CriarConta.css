@@ -27,13 +27,20 @@
 }
 
 .btn-secundario {
-  background-color: var(--azul-marinho); 
-  color: var(--branco); 
+  /* Adicionado para garantir o fluxo correto e ser consistente com o primário */
+  display: inline-block;
+  text-align: center;
+  border: 2px solid var(--azul-marinho); /* Adiciona uma borda para distinção visual, se for usado como botão de "Voltar" */
+  
+  background-color: var(--branco); /* Fundo branco ou transparente */
+  color: var(--azul-marinho); /* Cor do texto é a cor primária */
+  
   font-weight: 700;
   padding: 0.5rem 1.5rem;
   border-radius: 0.5rem;
-  transition: background-color 0.3s;
+  transition: all 0.3s;
 }
 .btn-secundario:hover {
-  background-color: var(--azul-marinho-escuro); 
+  background-color: var(--azul-claro); /* Fundo claro no hover */
+  transform: scale(1.05);
 }

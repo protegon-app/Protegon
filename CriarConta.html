@@ -4,156 +4,365 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <script src="https://cdn.tailwindcss.com"></script>
-    <link rel="stylesheet" href="./assets/css/style.css">
-    <link rel="stylesheet" href="./assets/css/CriarConta.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
     <title>Criar Conta - Protegon</title>
+
+    <style>
+        body {
+            font-family: 'Montserrat', sans-serif;
+        }
+        
+        /* Cores Personalizadas */
+        :root {
+            --azul-marinho: #001C39;
+            --azul-claro: #00356C;
+            --azul-foco: #d3e3ff;
+        }
+
+        /* Animações de transição */
+        .step-content {
+            animation: fadeIn 0.5s ease-in-out;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Animação do Modal */
+        .modal-content {
+            animation: scaleUp 0.3s ease-out;
+        }
+
+        @keyframes scaleUp {
+            from { opacity: 0; transform: scale(0.95); }
+            to { opacity: 1; transform: scale(1); }
+        }
+
+        /* Estilos dos Botões */
+        .btn-primario {
+            background-color: var(--azul-claro);
+            color: white;
+            padding: 0.75rem 1.5rem;
+            border-radius: 0.5rem;
+            font-weight: 600;
+            transition: background-color 0.3s, transform 0.2s;
+            cursor: pointer;
+        }
+        
+        .btn-primario:hover {
+            background-color: #002a55;
+            transform: translateY(-1px);
+        }
+
+        .btn-primario:disabled {
+            background-color: #9ca3af;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .btn-secundario {
+            background-color: transparent;
+            color: #4b5563;
+            padding: 0.75rem 1.5rem;
+            border-radius: 0.5rem;
+            font-weight: 600;
+            border: 1px solid transparent;
+            transition: color 0.3s;
+            cursor: pointer;
+        }
+
+        .btn-secundario:hover {
+            color: var(--azul-claro);
+            background-color: #f3f4f6;
+        }
+
+        /* Indicadores de Passo */
+        .step {
+            width: 2.5rem;
+            height: 2.5rem;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            color: #9ca3af;
+            background-color: #e5e7eb;
+            transition: all 0.3s ease;
+        }
+
+        .step.active {
+            background-color: var(--azul-claro);
+            color: white;
+            box-shadow: 0 0 0 4px var(--azul-foco);
+        }
+
+        .step.completed {
+            background-color: #10b981; /* Verde */
+            color: white;
+        }
+
+        /* Inputs com erro */
+        input.error, select.error {
+            border-color: #ef4444;
+            background-color: #fef2f2;
+        }
+        
+        /* Spinner de Loading */
+        .loader {
+            border: 4px solid #f3f3f3;
+            border-top: 4px solid var(--azul-claro);
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            animation: spin 1s linear infinite;
+            margin: 20px auto;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+    </style>
 </head>
 <body class="bg-gray-100 font-sans">
 
     <main class="min-h-screen flex flex-col md:flex-row">
-        <!-- PAINEL ESQUERDO -->
-        <section class="md:w-2/5 bg-[#001C39] text-white p-8 md:p-12 flex flex-col min-h-[50vh] md:min-h-screen order-2 md:order-1">
-            <div class="flex-grow">
+        <!-- Lado Esquerdo (Banner) -->
+        <section class="md:w-2/5 bg-[#001C39] text-white p-8 md:p-12 flex flex-col min-h-[40vh] md:min-h-screen order-2 md:order-1 relative overflow-hidden">
+            <!-- Efeito decorativo de fundo -->
+            <div class="absolute top-0 left-0 w-full h-full opacity-10 pointer-events-none">
+                <svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
+                    <path fill="#FFFFFF" d="M44.7,-76.4C58.9,-69.2,71.8,-59.1,79.6,-46.9C87.4,-34.7,90.1,-20.4,85.8,-7.1C81.5,6.2,70.2,18.5,60.6,29.3C51,40.1,43.1,49.4,33.5,56.8C23.9,64.2,12.6,69.7,0.6,68.7C-11.4,67.7,-23.7,60.2,-34.8,53.3C-45.9,46.4,-55.8,40.1,-63.9,31.4C-72,22.7,-78.3,11.6,-77.8,0.3C-77.3,-11,-70,-22.5,-61.6,-32.1C-53.2,-41.7,-43.7,-49.4,-33.2,-58.5C-22.7,-67.6,-11.4,-78.1,1.8,-81.2C15,-84.3,30.5,-83.6,44.7,-76.4Z" transform="translate(100 100)" />
+                </svg>
+            </div>
+
+            <div class="flex-grow z-10">
                 <h1 class="text-3xl md:text-4xl font-semibold tracking-widest uppercase">Protegon</h1>
                 <div class="mt-8 md:mt-12">
-                    <h2 class="text-2xl md:text-3xl font-bold">Bem-vindo</h2>
-                    <p class="mt-4 text-gray-300 leading-relaxed">Sua rede de proteção inteligente. Aqui, cada passo seu importa. Estamos prontos para cuidar de você, mesmo quando as palavras faltarem. Juntos, somos mais fortes.</p>
+                    <h2 class="text-2xl md:text-3xl font-bold text-white">Bem-vindo</h2>
+                    <p class="mt-4 text-gray-300 leading-relaxed text-sm md:text-base">Sua rede de proteção inteligente. Aqui, cada passo seu importa. Estamos prontos para cuidar de você, mesmo quando as palavras faltarem. Juntos, somos mais fortes.</p>
                 </div>
             </div>
-            <div class="mt-8 text-sm text-gray-400">
+            <div class="mt-8 text-sm text-gray-500 z-10">
                 <p>Segurança Inteligente para Vidas em Risco</p>
-                <p>v3.1</p>
+                <p>v3.1 Beta</p>
             </div>
         </section>
         
-        <!-- PAINEL DIREITO (FORMULÁRIO) -->
-        <section class="w-full md:w-3/5 bg-gray-100 flex items-center justify-center p-6 md:p-10 order-1 md:order-2">
-            <div class="w-full max-w-lg bg-white p-8 rounded-xl shadow-lg">
-                <h3 class="text-xl font-bold text-center text-[#00356C] tracking-wider mb-8">CADASTRE-SE AQUI</h3>
+        <!-- Lado Direito (Formulário) -->
+        <section class="w-full md:w-3/5 bg-gray-50 flex items-center justify-center p-6 md:p-10 order-1 md:order-2">
+            <div class="w-full max-w-lg bg-white p-8 rounded-xl shadow-2xl relative">
+                
+                <!-- Conteúdo do Formulário -->
+                <div id="form-container">
+                    <h3 class="text-xl font-bold text-center text-[#00356C] tracking-wider mb-8">CADASTRE-SE AQUI</h3>
 
-                <!-- Indicador de Etapas -->
-                <div class="flex items-center w-full max-w-xs mx-auto mb-10">
-                    <div id="step-indicator-1" class="step"><span>1</span><svg class="w-6 h-6 hidden" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M5 13l4 4L19 7"></path></svg></div>
-                    <div class="flex-grow h-0.5 bg-gray-200 mx-2"></div>
-                    <div id="step-indicator-2" class="step"><span>2</span><svg class="w-6 h-6 hidden" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M5 13l4 4L19 7"></path></svg></div>
-                    <div class="flex-grow h-0.5 bg-gray-200 mx-2"></div>
-                    <div id="step-indicator-3" class="step"><span>3</span><svg class="w-6 h-6 hidden" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M5 13l4 4L19 7"></path></svg></div>
+                    <!-- Barra de Progresso -->
+                    <div class="flex items-center w-full max-w-xs mx-auto mb-10 select-none">
+                        <div id="indicator-1" class="step active">1</div>
+                        <div class="flex-grow h-1 bg-gray-200 mx-2 rounded-full overflow-hidden">
+                            <div id="line-1" class="h-full bg-green-500 w-0 transition-all duration-300"></div>
+                        </div>
+                        <div id="indicator-2" class="step">2</div>
+                        <div class="flex-grow h-1 bg-gray-200 mx-2 rounded-full overflow-hidden">
+                            <div id="line-2" class="h-full bg-green-500 w-0 transition-all duration-300"></div>
+                        </div>
+                        <div id="indicator-3" class="step">3</div>
+                    </div>
+
+                    <form id="cadastroForm" action="#" method="POST" autocomplete="off">
+                        
+                        <!-- PASSO 1: Dados Pessoais -->
+                        <div id="step-1" class="step-content space-y-5">
+                            <div>
+                                <label for="name" class="flex items-center text-sm font-semibold text-[#00356c]/90 mb-1">
+                                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-5 h-5 mr-2"><path stroke-linecap="round" stroke-linejoin="round" d="M15.75 6a3.75 3.75 0 1 1-7.5 0 3.75 3.75 0 0 1 7.5 0ZM4.501 20.118a7.5 7.5 0 0 1 14.998 0A17.933 17.933 0 0 1 12 21.75c-2.676 0-5.216-.584-7.499-1.632Z" /></svg>
+                                    Nome completo
+                                </label>
+                                <input type="text" id="name" name="fullName" placeholder="Ex: João Silva" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#d3e3ff] transition-colors" required>
+                                <div id="name-error" class="text-red-500 text-xs mt-1 hidden">Por favor, insira seu nome completo.</div>
+                            </div>
+                            <div>
+                                <label for="cpf" class="text-sm font-semibold text-[#00356c]/90 mb-1 block">CPF</label>
+                                <input type="text" id="cpf" name="cpf" placeholder="000.000.000-00" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#d3e3ff] transition-colors" maxlength="14" required>
+                                <div id="cpf-error" class="text-red-500 text-xs mt-1 hidden">CPF inválido.</div>
+                            </div>
+                            <div>
+                                <label class="text-sm font-semibold text-gray-600 mb-1 block">Data de nascimento</label>
+                                <div class="grid grid-cols-3 gap-3">
+                                    <input type="number" id="day" placeholder="Dia" min="1" max="31" class="w-full px-4 py-3 text-center border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#d3e3ff]" required />
+                                    <select id="month" class="w-full px-2 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#d3e3ff] bg-white" required>
+                                        <option value="" selected disabled>Mês</option>
+                                        <option value="1">Jan</option><option value="2">Fev</option><option value="3">Mar</option><option value="4">Abr</option><option value="5">Mai</option><option value="6">Jun</option><option value="7">Jul</option><option value="8">Ago</option><option value="9">Set</option><option value="10">Out</option><option value="11">Nov</option><option value="12">Dez</option>
+                                    </select>
+                                    <input type="number" id="year" placeholder="Ano" min="1930" max="2025" class="w-full px-4 py-3 text-center border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#d3e3ff]" required />
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- PASSO 2: Contato -->
+                        <div id="step-2" class="step-content hidden space-y-5">
+                            <div>
+                                <label for="email" class="flex items-center text-sm font-semibold text-[#00356c]/90 mb-1">
+                                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-5 h-5 mr-2"><path stroke-linecap="round" stroke-linejoin="round" d="M21.75 6.75v10.5a2.25 2.25 0 0 1-2.25 2.25h-15a2.25 2.25 0 0 1-2.25-2.25V6.75m19.5 0A2.25 2.25 0 0 0 19.5 4.5h-15a2.25 2.25 0 0 0-2.25 2.25m19.5 0v.243a2.25 2.25 0 0 1-1.07 1.916l-7.5 4.615a2.25 2.25 0 0 1-2.36 0L3.32 8.91a2.25 2.25 0 0 1-1.07-1.916V6.75" /></svg>
+                                    E-mail
+                                </label>
+                                <input type="email" id="email" name="email" placeholder="seuemail@exemplo.com" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#d3e3ff]" required>
+                                <div id="email-error" class="text-red-500 text-xs mt-1 hidden">E-mail inválido.</div>
+                            </div>
+                            <div>
+                                <label for="telefone" class="flex items-center text-sm font-semibold text-[#00356c]/90 mb-1">
+                                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-5 h-5 mr-2 text-[#00356c]/90">
+                                    <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M18.427 14.768 17.2 13.542a1.733 1.733 0 0 0-2.45 0l-.613.613a1.732 1.732 0 0 1-2.45 0l-1.838-1.84a1.735 1.735 0 0 1 0-2.452l.612-.613a1.735 1.735 0 0 0 0-2.452L9.237 5.572a1.6 1.6 0 0 0-2.45 0c-3.223 3.2-1.702 6.896 1.519 10.117 3.22 3.221 6.914 4.745 10.12 1.535a1.601 1.601 0 0 0 0-2.456Z" />
+                                    </svg>
+                                    Celular / WhatsApp
+                                </label>
+                                <input type="tel" id="telefone" name="telefone" placeholder="(00) 00000-0000" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#d3e3ff]" maxlength="15" required>
+                                <div id="telefone-error" class="text-red-500 text-xs mt-1 hidden">Telefone inválido.</div>
+                            </div>
+                        </div>
+
+                        <!-- PASSO 3: Segurança -->
+                        <div id="step-3" class="step-content hidden space-y-5">
+                            <div>
+                                <label for="password" class="flex items-center text-sm font-semibold text-gray-600 mb-1">
+                                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-5 h-5 mr-2"><path stroke-linecap="round" stroke-linejoin="round" d="M16.5 10.5V6.75a4.5 4.5 0 1 0-9 0v3.75m-.75 11.25h10.5a2.25 2.25 0 0 0 2.25-2.25v-6.75a2.25 2.25 0 0 0-2.25-2.25H6.75a2.25 2.25 0 0 0-2.25 2.25v6.75a2.25 2.25 0 0 0 2.25 2.25Z" /></svg>
+                                    Crie uma Senha
+                                </label>
+                                <div class="relative">
+                                    <input type="password" id="password" name="password" placeholder="Mínimo de 8 caracteres" class="w-full px-4 py-3 pr-12 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#d3e3ff]" required minlength="8">
+                                    <button type="button" class="absolute inset-y-0 right-0 px-3 flex items-center text-gray-400 hover:text-[#00356C] transition-colors focus:outline-none" onclick="togglePasswordVisibility('password', this)">
+                                        <!-- Ícone Olho (Mostrar) -->
+                                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-5 h-5">
+                                            <path stroke-linecap="round" stroke-linejoin="round" d="M2.036 12.322a1.012 1.012 0 0 1 0-.639C3.423 7.51 7.36 4.5 12 4.5c4.638 0 8.573 3.007 9.963 7.178.07.207.07.431 0 .639C20.577 16.49 16.64 19.5 12 19.5c-4.638 0-8.573-3.007-9.963-7.178Z" />
+                                            <path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z" />
+                                        </svg>
+                                    </button>
+                                </div>
+                            </div>
+                            <div>
+                                <label for="password_confirmation" class="flex items-center text-sm font-semibold text-gray-600 mb-1">
+                                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-5 h-5 mr-2"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75 11.25 15 15 9.75M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" /></svg>
+                                    Confirmar Senha
+                                </label>
+                                <div class="relative">
+                                    <input type="password" id="password_confirmation" name="password_confirmation" placeholder="Repita a senha" class="w-full px-4 py-3 pr-12 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#d3e3ff]" required>
+                                    <button type="button" class="absolute inset-y-0 right-0 px-3 flex items-center text-gray-400 hover:text-[#00356C] transition-colors focus:outline-none" onclick="togglePasswordVisibility('password_confirmation', this)">
+                                        <!-- Ícone Olho (Mostrar) -->
+                                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-5 h-5">
+                                            <path stroke-linecap="round" stroke-linejoin="round" d="M2.036 12.322a1.012 1.012 0 0 1 0-.639C3.423 7.51 7.36 4.5 12 4.5c4.638 0 8.573 3.007 9.963 7.178.07.207.07.431 0 .639C20.577 16.49 16.64 19.5 12 19.5c-4.638 0-8.573-3.007-9.963-7.178Z" />
+                                            <path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z" />
+                                        </svg>
+                                    </button>
+                                </div>
+                                <div id="password-error" class="text-red-500 text-xs mt-1 hidden">As senhas não coincidem ou são muito curtas.</div>
+                            </div>
+                            <div class="flex items-start text-sm bg-blue-50 p-3 rounded-lg border border-blue-100">
+                                <input type="checkbox" id="terms" name="terms" class="mt-1 h-4 w-4 text-blue-600 border-gray-300 rounded focus:ring-[#d3e3ff]" required>
+                                <label for="terms" class="ml-3 text-gray-600 leading-tight">
+                                    Concordo com os <a href="#" onclick="openModal('termsModal'); return false;" class="text-[#00356C] font-semibold hover:underline">Termos de Uso</a> e <a href="#" onclick="openModal('privacyModal'); return false;" class="text-[#00356C] font-semibold hover:underline">Política de Privacidade</a>.
+                                </label>
+                            </div>
+                            <div id="terms-error" class="text-red-500 text-xs hidden text-center">Você precisa aceitar os termos.</div>
+                        </div>
+                        
+                        <!-- Botões de Navegação -->
+                        <div class="mt-10 flex items-center justify-between">
+                            <button type="button" id="prev-btn" class="btn-secundario opacity-0 pointer-events-none" onclick="changeStep(-1)">Voltar</button>
+
+                            <div class="ml-auto flex items-center">
+                                <button type="button" id="next-btn" class="btn-primario shadow-lg shadow-blue-200" onclick="changeStep(1)">
+                                    Próximo <span class="ml-1">→</span>
+                                </button>
+                                
+                                <button type="submit" id="submit-btn" class="btn-primario ml-3 hidden shadow-lg shadow-blue-200">
+                                    Finalizar Cadastro
+                                </button>
+                            </div>
+                        </div>
+
+                        <div class="mt-8 text-center text-sm border-t pt-6">
+                            <span class="text-gray-500">Já tem uma conta?</span>
+                            <a href="./login.htm" class="font-semibold text-[var(--azul-claro)] hover:underline ml-1">Faça login</a>
+                        </div>
+                    </form>
                 </div>
 
-                <form id="cadastroForm" action="#" method="POST" novalidate autocomplete="off">
+                <!-- TELA DE SUCESSO (Oculta Inicialmente) -->
+                <div id="success-screen" class="hidden text-center py-10">
+                    <div class="w-20 h-20 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-6">
+                        <svg class="w-10 h-10 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>
+                    </div>
+                    <h3 class="text-2xl font-bold text-[#00356C] mb-2">Conta Criada!</h3>
+                    <p class="text-gray-600 mb-8">Bem-vindo(a) ao Protegon, <span id="user-name-display" class="font-bold"></span>.<br>Sua segurança é nossa prioridade.</p>
                     
-                    <!-- ETAPA 1: Informações Pessoais -->
-                    <div id="step-1" class="step-content space-y-5">
-                        <!-- Campo: Nome Completo -->
-                        <div>
-                            <label for="name" class="flex items-center text-sm font-semibold text-[#00356c]/90 mb-1">
-                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-5 h-5 mr-2"><path stroke-linecap="round" stroke-linejoin="round" d="M15.75 6a3.75 3.75 0 1 1-7.5 0 3.75 3.75 0 0 1 7.5 0ZM4.501 20.118a7.5 7.5 0 0 1 14.998 0A17.933 17.933 0 0 1 12 21.75c-2.676 0-5.216-.584-7.499-1.632Z" /></svg>
-                                Nome completo
-                            </label>
-                            <input type="text" id="name" name="fullName" placeholder="Digite seu nome completo" class="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-[#d3e3ff]" required>
-                            <div id="name-error" class="text-red-500 text-xs mt-1"></div>
-                        </div>
-                        <!-- Campo: CPF -->
-                        <div>
-                            <label for="cpf" class="text-sm font-semibold text-[#00356c]/90 mb-1 block">CPF</label>
-                            <input type="text" id="cpf" name="cpf" placeholder="Apenas os 11 dígitos" class="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-[#d3e3ff]" required pattern="[0-9]{11}">
-                            <div id="cpf-error" class="text-red-500 text-xs mt-1"></div>
-                        </div>
-                        <!-- Campo: Data de Nascimento -->
-                        <div>
-                            <label class="text-sm font-semibold text-gray-600 mb-1 block">Data de nascimento</label>
-                            <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
-                                <input type="number" name="birthDay" placeholder="Dia" min="1" max="31" class="w-full px-4 py-2 text-center border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-[#d3e3ff]" required />
-                                <select name="birthMonth" class="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-[#d3e3ff]" required>
-                                    <option value="" selected disabled>Mês</option>
-                                    <option value="1">Janeiro</option><option value="2">Fevereiro</option><option value="3">Março</option><option value="4">Abril</option><option value="5">Maio</option><option value="6">Junho</option><option value="7">Julho</option><option value="8">Agosto</option><option value="9">Setembro</option><option value="10">Outubro</option><option value="11">Novembro</option><option value="12">Dezembro</option>
-                                </select>
-                                <input type="number" name="birthYear" placeholder="Ano" min="1930" max="2025" class="w-full px-4 py-2 text-center border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-[#d3e3ff]" required />
-                            </div>
-                        </div>
-                        <!-- Campo: Gênero -->
-                        <div>
-                            <label class="text-sm font-semibold text-[#001C39] mb-2 block">Gênero</label>
-                            <div class="flex flex-wrap items-center gap-x-6 gap-y-2">
-                                <label class="flex items-center"><input type="radio" name="gender" value="feminino" class="text-blue-600 focus:ring-blue-500"><span class="ml-2 text-gray-700">Feminino</span></label>
-                                <label class="flex items-center"><input type="radio" name="gender" value="masculino" class="text-blue-600 focus:ring-blue-500"><span class="ml-2 text-gray-700">Masculino</span></label>
-                                <label class="flex items-center"><input type="radio" name="gender" value="outro" class="text-blue-600 focus:ring-blue-500"><span class="ml-2 text-gray-700">Outro</span></label>
-                            </div>
-                        </div>
-                    </div>
+                    <!-- AQUI: Mude o href para a página de destino (ex: perfil.html ou dashboard.html) -->
+                    <a href="./Perfil.html" class="btn-primario inline-block">Acessar Painel</a>
+                </div>
 
-                    <!-- ETAPA 2: Informações de Contato -->
-                    <div id="step-2" class="step-content hidden space-y-5">
-                        <!-- Campo: E-mail -->
-                        <div>
-                            <label for="email" class="flex items-center text-sm font-semibold text-[#00356c]/90 mb-1">
-                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-5 h-5 mr-2"><path stroke-linecap="round" stroke-linejoin="round" d="M21.75 6.75v10.5a2.25 2.25 0 0 1-2.25 2.25h-15a2.25 2.25 0 0 1-2.25-2.25V6.75m19.5 0A2.25 2.25 0 0 0 19.5 4.5h-15a2.25 2.25 0 0 0-2.25 2.25m19.5 0v.243a2.25 2.25 0 0 1-1.07 1.916l-7.5 4.615a2.25 2.25 0 0 1-2.36 0L3.32 8.91a2.25 2.25 0 0 1-1.07-1.916V6.75" /></svg>
-                                E-mail
-                            </label>
-                            <input type="email" id="email" name="email" placeholder="Digite seu e-mail" class="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-[#d3e3ff]" required>
-                            <div id="email-error" class="text-red-500 text-xs mt-1"></div>
-                        </div>
-                        <!-- Campo: Telefone -->
-                        <div>
-                            <label for="telefone" class="flex items-center text-sm font-semibold text-[#00356c]/90 mb-1">
-                                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-5 h-5 mr-2 text-[#00356c]/90">
-                                <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M18.427 14.768 17.2 13.542a1.733 1.733 0 0 0-2.45 0l-.613.613a1.732 1.732 0 0 1-2.45 0l-1.838-1.84a1.735 1.735 0 0 1 0-2.452l.612-.613a1.735 1.735 0 0 0 0-2.452L9.237 5.572a1.6 1.6 0 0 0-2.45 0c-3.223 3.2-1.702 6.896 1.519 10.117 3.22 3.221 6.914 4.745 10.12 1.535a1.601 1.601 0 0 0 0-2.456Z" />
-                            </svg>
-                                Telefone
-                            </label>
-                            <input type="tel" id="telefone" name="telefone" placeholder="(00) 00000-0000" class="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-[#d3e3ff]" required>
-                            <div id="telefone-error" class="text-red-500 text-xs mt-1"></div>
-                        </div>
-                    </div>
+                <!-- TELA DE LOADING (Oculta Inicialmente) -->
+                <div id="loading-screen" class="hidden text-center py-20">
+                    <div class="loader"></div>
+                    <p class="text-gray-500 mt-4 font-medium animate-pulse">Configurando sua conta segura...</p>
+                </div>
 
-                    <!-- ETAPA 3: Segurança da Conta -->
-                    <div id="step-3" class="step-content hidden space-y-5">
-                        <!-- Campo: Senha -->
-                        <div>
-                            <label for="password" class="flex items-center text-sm font-semibold text-gray-600 mb-1">
-                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-5 h-5 mr-2"><path stroke-linecap="round" stroke-linejoin="round" d="M16.5 10.5V6.75a4.5 4.5 0 1 0-9 0v3.75m-.75 11.25h10.5a2.25 2.25 0 0 0 2.25-2.25v-6.75a2.25 2.25 0 0 0-2.25-2.25H6.75a2.25 2.25 0 0 0-2.25 2.25v6.75a2.25 2.25 0 0 0 2.25 2.25Z" /></svg>
-                                Senha
-                            </label>
-                            <input type="password" id="password" name="password" placeholder="Mínimo de 8 caracteres" class="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-[#d3e3ff]" required minlength="8">
-                            <div id="password-error" class="text-red-500 text-xs mt-1"></div>
-                        </div>
-                        <!-- Campo: Confirmar Senha -->
-                        <div>
-                            <label for="password_confirmation" class="flex items-center text-sm font-semibold text-gray-600 mb-1">
-                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-5 h-5 mr-2"><path stroke-linecap="round" stroke-linejoin="round" d="M16.5 10.5V6.75a4.5 4.5 0 1 0-9 0v3.75m-.75 11.25h10.5a2.25 2.25 0 0 0 2.25-2.25v-6.75a2.25 2.25 0 0 0-2.25-2.25H6.75a2.25 2.25 0 0 0-2.25 2.25v6.75a2.25 2.25 0 0 0 2.25 2.25Z" /></svg>
-                                Confirmar Senha
-                            </label>
-                            <input type="password" id="password_confirmation" name="password_confirmation" placeholder="Digite a senha novamente" class="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-[#d3e3ff]" required>
-                            <div id="password_confirmation-error" class="text-red-500 text-xs mt-1"></div>
-                        </div>
-                        <!-- Campo: Termos -->
-                        <div class="flex items-start text-sm">
-                            <input type="checkbox" id="terms" name="terms" class="mt-1 h-4 w-4 text-blue-600 border-gray-300 rounded focus:ring-[#d3e3ff]" required>
-                            <label for="terms" class="ml-3 text-gray-600">
-                                Ao clicar em Cadastrar-se, você concorda com nossos <a href="#" class="text-blue-600 hover:underline">Termos</a>, <a href="#" class="text-blue-600 hover:underline">Política de Privacidade</a> e <a href="#" class="text-blue-600 hover:underline">Política de Cookies</a>.
-                            </label>
-                        </div>
-                    </div>
-                    
-                    <!-- Botões de Navegação -->
-                    <div class="mt-10 flex items-center justify-between">
-                        <button type="button" id="prev-btn" class="btn-secundario">Voltar</button>
-                        <button type="button" id="next-btn" class="btn-primario ml-auto">Próximo</button>
-                        <button type="submit" id="submit-btn" class="btn-primario">Cadastre-se</button>
-                    </div>
-
-                    <div class="mt-8 text-center text-sm">
-                        <a href="./login.htm" class="font-semibold text-[var(--azul-marinho)] hover:underline">Já tem login? Faça login</a>
-                    </div>
-                </form>
             </div>
         </section>
     </main>
 
+    <!-- MODAL DE TERMOS DE USO -->
+    <div id="termsModal" class="fixed inset-0 bg-black bg-opacity-50 z-50 hidden flex items-center justify-center p-4 backdrop-blur-sm" onclick="closeModal('termsModal')">
+        <div class="bg-white rounded-lg shadow-2xl max-w-2xl w-full max-h-[80vh] flex flex-col modal-content" onclick="event.stopPropagation()">
+            <div class="p-6 border-b bg-gray-50 rounded-t-lg flex justify-between items-center">
+                <h3 class="text-xl font-bold text-[#00356C]">Termos de Uso - Protegon</h3>
+                <button onclick="closeModal('termsModal')" class="text-gray-400 hover:text-gray-600">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
+                </button>
+            </div>
+            <div class="p-6 overflow-y-auto text-gray-600 text-sm leading-relaxed space-y-4">
+                <p><strong>1. Aceitação dos Termos</strong><br>Ao criar uma conta no Protegon, você concorda em cumprir estes termos de serviço, todas as leis e regulamentos aplicáveis. Se você não concordar com algum desses termos, está proibido de usar ou acessar este site.</p>
+                
+                <p><strong>2. Uso da Licença</strong><br>É concedida permissão para baixar temporariamente uma cópia dos materiais (informações ou software) no site Protegon, apenas para visualização transitória pessoal e não comercial.</p>
+                
+                <p><strong>3. Responsabilidades do Usuário</strong><br>O usuário se compromete a fornecer informações verdadeiras e a manter a confidencialidade de sua senha. O Protegon não se responsabiliza por acessos não autorizados resultantes de negligência do usuário.</p>
+                
+                <p><strong>4. Uso de Dados em Emergências</strong><br>Ao utilizar o sistema de alerta, você autoriza o Protegon a compartilhar sua localização em tempo real com contatos de emergência e autoridades competentes quando um alerta for acionado.</p>
+
+                <p><strong>5. Modificações</strong><br>O Protegon pode revisar estes termos de serviço a qualquer momento, sem aviso prévio. Ao usar este site, você concorda em ficar vinculado à versão atual desses termos de serviço.</p>
+            </div>
+            <div class="p-4 border-t bg-gray-50 rounded-b-lg flex justify-end">
+                <button onclick="closeModal('termsModal')" class="btn-primario">Entendi e Concordo</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- MODAL DE POLÍTICA DE PRIVACIDADE -->
+    <div id="privacyModal" class="fixed inset-0 bg-black bg-opacity-50 z-50 hidden flex items-center justify-center p-4 backdrop-blur-sm" onclick="closeModal('privacyModal')">
+        <div class="bg-white rounded-lg shadow-2xl max-w-2xl w-full max-h-[80vh] flex flex-col modal-content" onclick="event.stopPropagation()">
+            <div class="p-6 border-b bg-gray-50 rounded-t-lg flex justify-between items-center">
+                <h3 class="text-xl font-bold text-[#00356C]">Política de Privacidade</h3>
+                <button onclick="closeModal('privacyModal')" class="text-gray-400 hover:text-gray-600">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
+                </button>
+            </div>
+            <div class="p-6 overflow-y-auto text-gray-600 text-sm leading-relaxed space-y-4">
+                <p><strong>1. Coleta de Informações</strong><br>Coletamos informações que você nos fornece diretamente, como nome, e-mail, telefone e dados de localização quando utiliza nossos serviços de segurança.</p>
+                
+                <p><strong>2. Como Usamos Seus Dados</strong><br>Usamos as informações para operar, manter e fornecer os recursos do Protegon. Isso inclui o envio de alertas de segurança e a comunicação com seus contatos de emergência.</p>
+                
+                <p><strong>3. Compartilhamento de Informações</strong><br>Não vendemos suas informações pessoais. Seus dados só são compartilhados com terceiros (como serviços de emergência) quando estritamente necessário para sua segurança ou quando exigido por lei.</p>
+                
+                <p><strong>4. Segurança</strong><br>Valorizamos sua confiança em nos fornecer suas informações pessoais, por isso estamos nos empenhando para usar meios comercialmente aceitáveis de protegê-las.</p>
+            </div>
+            <div class="p-4 border-t bg-gray-50 rounded-b-lg flex justify-end">
+                <button onclick="closeModal('privacyModal')" class="btn-primario">Entendi</button>
+            </div>
+        </div>
+    </div>
+
     <script src="./assets/js/criarconta.js"></script>
 </body>
 </html>
-

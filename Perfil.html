@@ -7,12 +7,136 @@
     <title>Protegon - Sistema de Segurança</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link rel="stylesheet" href="./assets/css/style.css">
-    <link rel="stylesheet" href="./assets/css/Perfil.css">
+    <style>
+        /* CSS Original + Ajustes para Inputs */
+        :root {
+            --azul-marinho-escuro: #001c39;
+            --azul-marinho: #00356c;
+            --azul-claro: #d3e3ff;
+            --azul-claro-houver: #93add9;
+            --branco: #ffffff;
+            --texto-cinza: #5f5f5f;
+        }
 
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        /* Animações */
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(10px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .animate-fade-in {
+            animation: fadeIn 0.4s ease-out forwards;
+        }
+
+        @keyframes pulse-custom {
+
+            0%,
+            100% {
+                transform: scale(1);
+                box-shadow: 0 0 0 0 rgba(220, 38, 38, 0.7);
+            }
+
+            50% {
+                transform: scale(1.05);
+                box-shadow: 0 0 0 10px rgba(220, 38, 38, 0);
+            }
+        }
+
+        .pulse-btn {
+            animation: pulse-custom 2s infinite;
+        }
+
+        /* Scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: #f1f1f1;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: #cbd5e1;
+            border-radius: 4px;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: #94a3b8;
+        }
+
+        /* Estilos para Inputs no Perfil (Modo Leitura vs Edição) */
+        input:disabled {
+            background-color: transparent;
+            border-color: transparent;
+            padding-left: 0;
+            color: var(--texto-cinza);
+            cursor: default;
+        }
+
+        input:enabled,
+        textarea:enabled {
+            background-color: #fff;
+            border: 1px solid var(--azul-claro);
+            padding: 0.75rem;
+            color: var(--azul-marinho-escuro);
+            border-radius: 0.5rem;
+        }
+
+        /* Loading Dots para o Chat */
+        .typing-indicator span {
+            display: inline-block;
+            width: 6px;
+            height: 6px;
+            background-color: #94a3b8;
+            border-radius: 50%;
+            animation: typing 1.4s infinite ease-in-out both;
+            margin: 0 2px;
+        }
+
+        .typing-indicator span:nth-child(1) {
+            animation-delay: -0.32s;
+        }
+
+        .typing-indicator span:nth-child(2) {
+            animation-delay: -0.16s;
+        }
+
+        @keyframes typing {
+
+            0%,
+            80%,
+            100% {
+                transform: scale(0);
+            }
+
+            40% {
+                transform: scale(1);
+            }
+        }
+
+        /* Animação do Timer Circular (Simplificado com CSS) */
+        .timer-circle {
+            transition: stroke-dashoffset 1s linear;
+        }
+    </style>
 </head>
 
-<body class="bg-gray-50">
+<body class="bg-gray-50 text-gray-800">
+
+    <!-- Overlay para Mobile -->
+    <div id="mobileOverlay" class="fixed inset-0 bg-black/50 z-40 hidden lg:hidden transition-opacity duration-300 opacity-0" onclick="toggleSidebar(false)"></div>
+
     <!-- Botão Flutuante de Emergência -->
     <button id="floatingEmergencyBtn" class="fixed bottom-6 right-6 w-16 h-16 bg-red-600 hover:bg-red-700 text-white rounded-full shadow-lg z-50 flex flex-col items-center justify-center gap-1 pulse-btn transition-transform hover:scale-110">
         <i class="fas fa-exclamation-triangle text-xl"></i>
@@ -20,12 +144,15 @@
     </button>
 
     <!-- Container Principal -->
-    <div class="flex min-h-screen">
-        <!-- Sidebar -->
-        <aside class="w-64 bg-[var(--azul-marinho-escuro)] min-h-screen p-6 flex flex-col">
+    <div class="flex min-h-screen relative">
+
+        <!-- Sidebar Responsiva (Original) -->
+        <aside id="mainSidebar" class="fixed inset-y-0 left-0 z-50 w-64 bg-[var(--azul-marinho-escuro)] text-white min-h-screen p-6 flex flex-col transform -translate-x-full lg:translate-x-0 lg:static transition-transform duration-300 ease-in-out shadow-2xl lg:shadow-none">
+
             <!-- Logo -->
             <div class="mb-8">
-                <img src="./assets/img/nome.protegon002.png" alt="protegon">
+                <img src="./assets/img/protegon-azul.png" alt="protegon" class="h-8 object-contain" onerror="this.style.display='none'; this.nextElementSibling.style.display='block'">
+                <div class="hidden text-2xl font-bold tracking-wider items-center gap-2"><i class="fas fa-shield-alt text-blue-400"></i> PROTEGON</div>
             </div>
 
             <!-- Botão de Emergência na Sidebar -->
@@ -38,68 +165,79 @@
 
             <!-- Menu de Navegação -->
             <nav class="flex-1 space-y-2">
-                <button class=" item-nav-sidebar nav-item w-full flex items-center gap-3 px-4 py-3 rounded-lg text-left" data-page="security">
+                <button class="item-nav-sidebar nav-item w-full flex items-center gap-3 px-4 py-3 rounded-lg text-left hover:bg-white/5 transition-colors" data-page="security">
                     <i class="fas fa-shield-alt w-5"></i>
                     <span class="text-sm">Central de Segurança</span>
                 </button>
-                <button class=" item-nav-sidebar w-full flex items-center gap-3 px-4 py-3 rounded-lg text-left" data-page="profile">
+                <button class="item-nav-sidebar w-full flex items-center gap-3 px-4 py-3 rounded-lg text-left hover:bg-white/5 transition-colors" data-page="profile">
                     <i class="fas fa-user w-5"></i>
                     <span class="text-sm">Perfil</span>
                 </button>
-                <button class=" item-nav-sidebar w-full flex items-center gap-3 px-4 py-3 rounded-lg text-left" data-page="notes">
+                <button class="item-nav-sidebar w-full flex items-center gap-3 px-4 py-3 rounded-lg text-left hover:bg-white/5 transition-colors" data-page="notes">
                     <i class="fas fa-file-alt w-5"></i>
                     <span class="text-sm">Anotações</span>
                 </button>
-                <button class=" item-nav-sidebar w-full flex items-center gap-3 px-4 py-3 rounded-lg text-left" data-page="chat">
+                <button class="item-nav-sidebar w-full flex items-center gap-3 px-4 py-3 rounded-lg text-left hover:bg-white/5 transition-colors" data-page="chat">
                     <i class="fas fa-comment-dots w-5"></i>
                     <span class="text-sm">Chat com o Psicólogo</span>
                 </button>
-                <button class=" item-nav-sidebar w-full flex items-center gap-3 px-4 py-3 rounded-lg text-left" data-page="emergency">
+                <button class="item-nav-sidebar w-full flex items-center gap-3 px-4 py-3 rounded-lg text-left hover:bg-white/5 transition-colors" data-page="emergency">
                     <i class="fas fa-users w-5"></i>
                     <span class="text-sm">Contatos de Emergência</span>
                 </button>
-                <button class=" item-nav-sidebar w-full flex items-center gap-3 px-4 py-3 rounded-lg text-left" data-page="settings">
+                <button class="item-nav-sidebar w-full flex items-center gap-3 px-4 py-3 rounded-lg text-left hover:bg-white/5 transition-colors" data-page="settings">
                     <i class="fas fa-cog w-5"></i>
                     <span class="text-sm">Configurações</span>
                 </button>
             </nav>
 
-            <!-- Info do Usuário -->
+            <!-- Info do Usuário (Layout Original) -->
             <div class="mt-auto pt-6 border-t border-[var(--branco)] flex items-center gap-3">
-                <div class="w-10 h-10 rounded-full bg-[var(--azul-claro)] text-[var(--azul-marinho)] flex items-center justify-center text-sm">
+                <div class="w-10 h-10 rounded-full bg-[var(--azul-claro)] text-[var(--azul-marinho)] flex items-center justify-center text-sm font-bold shadow-sm">
                     MM
                 </div>
                 <div class="flex-1 min-w-0">
-                    <p class="text-sm text-[var(--branco)] truncate">Mariana Moenchiali</p>
-                    <p class="text-xs text-[var(--branco)] truncate">marimoenchiali@ema...</p>
+                    <p class="text-sm font-semibold text-[var(--branco)] truncate sidebar-username">Mariana Moenchiali</p>
+                    <p class="text-xs text-[var(--branco)] truncate sidebar-email">mariomoenchiali@ema...</p>
                 </div>
             </div>
         </aside>
 
         <!-- Conteúdo Principal -->
-        <main class="flex-1 flex flex-col">
+        <main class="flex-1 flex flex-col w-full min-w-0 bg-gray-50">
             <!-- Header -->
-            <header class="bg-[var(--branco)] border-b border-[var(--azul-claro)] px-8 py-4">
-                <div class="flex items-center justify-between">
+            <header class="bg-[var(--branco)] border-b border-[var(--azul-claro)] px-4 sm:px-8 py-4 sticky top-0 z-30 shadow-sm">
+                <div class="flex items-center justify-between gap-4">
+
+                    <!-- Botão Menu Hambúrguer -->
+                    <button onclick="toggleSidebar(true)" class="lg:hidden p-2 text-[var(--azul-marinho-escuro)] hover:bg-gray-100 rounded-lg">
+                        <i class="fas fa-bars text-xl"></i>
+                    </button>
+
                     <!-- Search Bar -->
-                    <div class="flex items-center gap-3 flex-1 max-w-md">
+                    <div class="flex items-center gap-3 flex-1 max-w-md hidden sm:flex">
                         <div class="relative flex-1">
                             <i class="fas fa-search absolute left-3 top-1/2 transform -translate-y-1/2 text-[var(--azul-marinho-escuro)]"></i>
                             <input type="text" placeholder="Search here..." class="w-full pl-10 pr-4 py-2 border border-[var(--azul-claro)] rounded-lg focus:outline-none focus:border-[var(--azul-claro)]">
                         </div>
                     </div>
 
+                    <!-- Search Icon Mobile -->
+                    <button class="sm:hidden p-2 text-[var(--azul-marinho-escuro)]">
+                        <i class="fas fa-search text-xl"></i>
+                    </button>
+
                     <!-- User Actions -->
                     <div class="flex items-center gap-4">
-                        <button class="relative p-2 text-[var(--azul-marinho)] hover:bg-[var(--azul-marinho-escuro)]rounded-lg">
-                            <i class="fas fa-bell text-xl "></i>
+                        <button class="relative p-2 text-[var(--azul-marinho)] hover:bg-[var(--azul-marinho-escuro)] hover:text-white rounded-lg transition-colors">
+                            <i class="fas fa-bell text-xl"></i>
                             <span class="absolute top-1 right-1 w-2 h-2 bg-red-500 rounded-full"></span>
                         </button>
                         <div class="flex items-center gap-3">
-                            <img src="./assets/img/foto perfil.png" alt="Mariana" class="w-9 h-9 rounded-full border-2 border-[var(--azul-marinho)]">
-                            <div class="text-right">
-                                <p class="text-sm text-[var(--azul-marinho-escuro)]">Mariana Moenchiali</p>
-                                <p class="text-xs text-[var(--azul-marinho-escuro)]">mariomoenchiali@ema</p>
+                            <img src="./assets/img/foto perfil.png" onerror="this.src='https://ui-avatars.com/api/?name=Mariana+Moenchiali&background=0D8ABC&color=fff'" alt="Mariana" class="w-9 h-9 rounded-full border-2 border-[var(--azul-marinho)]">
+                            <div class="hidden md:block text-right">
+                                <p class="text-sm text-[var(--azul-marinho-escuro)] sidebar-username">Mariana Silva</p>
+                                <p class="text-xs text-[var(--azul-marinho-escuro)] sidebar-email">marisilva@ema...</p>
                             </div>
                         </div>
                     </div>
@@ -107,46 +245,92 @@
             </header>
 
             <!-- Área de Conteúdo -->
-            <div class="flex-1 p-8 overflow-auto">
-                <div class="max-w-6xl mx-auto">
-                    <h2 id="pageTitle" class="text-3xl font-bold text-[var(--azul-marinho-escuro)] mb-6">Central de Segurança</h2>
-                    <div id="pageContent"></div>
+            <div class="flex-1 p-4 sm:p-8 overflow-y-auto h-[calc(100vh-73px)]">
+                <div class="max-w-6xl mx-auto pb-20">
+                    <h2 id="pageTitle" class="text-2xl sm:text-3xl font-bold text-[var(--azul-marinho-escuro)] mb-6 transition-all">Central de Segurança</h2>
+                    <div id="pageContent" class="animate-fade-in"></div>
                 </div>
             </div>
         </main>
     </div>
 
-    <!-- Modal de Emergência -->
-    <div id="emergencyModal" class="fixed inset-0 bg-blue-700/50 z-50 hidden items-center justify-center">
-        <div class="bg-[var(--branco)] rounded-xl max-w-md w-full mx-4 shadow-2xl">
-            <div class="border-b-2 border-red-200 p-6">
-                <h3 class="text-xl font-bold text-red-700 flex items-center gap-2">
-                    <i class="fas fa-exclamation-triangle"></i>
-                    Ativar SOS de Emergência?
-                </h3>
+    <!-- === MODAIS === -->
+
+    <!-- Modal de Emergência (COM TIMER) -->
+    <div id="emergencyModal" class="fixed inset-0 bg-blue-900/60 z-[60] hidden items-center justify-center p-4 backdrop-blur-sm">
+        <div class="bg-[var(--branco)] rounded-xl max-w-md w-full mx-4 shadow-2xl animate-fade-in overflow-hidden">
+            <div class="bg-red-50 border-b-2 border-red-100 p-6 text-center">
+                <div class="w-16 h-16 bg-red-100 text-red-600 rounded-full flex items-center justify-center mx-auto mb-3 animate-pulse">
+                    <i class="fas fa-exclamation-triangle text-3xl"></i>
+                </div>
+                <h3 class="text-xl font-bold text-red-700">SOS em andamento</h3>
+                <p class="text-red-600 text-sm mt-1">Enviando alerta para os seus contatos...</p>
             </div>
-            <div class="p-6 text-[var(--azul-marinho-escuro)]">
-                <p class="mb-4 font-semibold">Esta ação irá:</p>
-                <ul class="list-disc list-inside space-y-2 text-gray-700">
-                    <li>Notificar todos os seus contatos de confiança</li>
-                    <li>Compartilhar sua localização em tempo real</li>
-                    <li>Iniciar gravação de áudio (se configurado)</li>
-                </ul>
+
+            <div class="p-8 flex flex-col items-center justify-center">
+                <!-- Visual Timer -->
+                <div class="relative w-24 h-24 mb-6 flex items-center justify-center">
+                    <svg class="w-full h-full transform -rotate-90">
+                        <circle cx="48" cy="48" r="40" stroke="currentColor" stroke-width="8" fill="transparent" class="text-gray-200" />
+                        <circle id="sosProgressCircle" cx="48" cy="48" r="40" stroke="currentColor" stroke-width="8" fill="transparent" class="text-red-600 timer-circle" stroke-dasharray="251.2" stroke-dashoffset="0" />
+                    </svg>
+                    <span id="sosCountdownText" class="absolute text-3xl font-bold text-[var(--azul-marinho-escuro)]">5</span>
+                </div>
+
+                <p class="text-center text-sm text-gray-600 mb-2">Clique em cancelar se foi um engano.</p>
             </div>
-            <div class="border-t border-gray-200 p-4 flex gap-3 justify-end">
-                <button onclick="closeEmergencyModal()" class="px-4 py-2 border border-[var(--azul-claro)] text-[var(--azul-marinho-escuro)] rounded-lg ">
-                    Cancelar
+
+            <div class="border-t border-gray-200 p-4 bg-gray-50 flex flex-col gap-3">
+                <button id="confirmSOSBtn" onclick="confirmEmergency()" class="w-full py-3 bg-red-600 text-white hover:bg-red-700 rounded-lg transition-colors font-bold shadow-md flex items-center justify-center gap-2">
+                    <i class="fas fa-paper-plane"></i> ENVIAR AGORA
                 </button>
-                <button onclick="confirmEmergency()" class="px-4 py-2 bg-red-600 hover:bg-red-700 text-white rounded-lg transition-colors">
-                    Sim, Ativar SOS
+                <button onclick="closeEmergencyModal()" class="w-full py-3 border border-gray-300 text-gray-600 bg-white hover:bg-gray-100 rounded-lg font-medium transition-colors">
+                    Cancelar
                 </button>
             </div>
         </div>
     </div>
 
-    <!-- Modal de Alerta de Sensor -->
-    <div id="sensorModal" class="fixed inset-0 bg-black/50 z-50 hidden items-center justify-center">
-        <div class="bg-white rounded-xl max-w-md w-full mx-4 shadow-2xl">
+    <!-- Modal Alterar Senha -->
+    <div id="passwordModal" class="hidden fixed inset-0 bg-black/40 backdrop-blur-sm z-[70] flex items-center justify-center p-4">
+        <div class="bg-[var(--branco)] rounded-xl p-6 w-[90%] max-w-md shadow-2xl border border-[var(--azul-claro)] animate-fade-in">
+            <div class="flex justify-between items-center mb-6 border-b border-gray-100 pb-4">
+                <h2 class="text-xl font-bold text-[var(--azul-marinho)] flex items-center gap-2">
+                    <i class="fas fa-lock"></i> Alterar Senha
+                </h2>
+                <button onclick="closePasswordModal()" class="text-gray-400 hover:text-[var(--azul-marinho)] transition-colors">
+                    <i class="fas fa-times text-xl"></i>
+                </button>
+            </div>
+
+            <form onsubmit="event.preventDefault(); saveNewPassword();" class="space-y-4">
+                <div>
+                    <label class="block text-sm font-bold text-[var(--azul-marinho-escuro)] mb-1">Senha Atual</label>
+                    <div class="relative">
+                        <input type="password" id="currentPass" class="w-full p-3 border border-[var(--azul-claro)] rounded-lg focus:border-[var(--azul-marinho)] outline-none bg-gray-50 focus:bg-white transition-all">
+                        <i class="fas fa-key absolute right-3 top-3 text-[var(--azul-claro-houver)]"></i>
+                    </div>
+                </div>
+                <div>
+                    <label class="block text-sm font-bold text-[var(--azul-marinho-escuro)] mb-1">Nova Senha</label>
+                    <input type="password" id="newPass" class="w-full p-3 border border-[var(--azul-claro)] rounded-lg focus:border-[var(--azul-marinho)] outline-none bg-gray-50 focus:bg-white transition-all">
+                </div>
+                <div>
+                    <label class="block text-sm font-bold text-[var(--azul-marinho-escuro)] mb-1">Confirmar Nova Senha</label>
+                    <input type="password" id="confirmPass" class="w-full p-3 border border-[var(--azul-claro)] rounded-lg focus:border-[var(--azul-marinho)] outline-none bg-gray-50 focus:bg-white transition-all">
+                </div>
+
+                <div class="flex justify-end gap-3 mt-6 pt-4 border-t border-gray-100">
+                    <button type="button" onclick="closePasswordModal()" class="px-4 py-2 border border-gray-300 rounded-lg text-gray-600 hover:bg-gray-100 font-semibold transition-colors">Cancelar</button>
+                    <button type="submit" class="px-6 py-2 bg-[var(--azul-marinho)] text-white rounded-lg hover:bg-[var(--azul-marinho-escuro)] font-bold shadow-md transition-colors">Salvar Senha</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Modal Sensor (Original - Usado para Testes também) -->
+    <div id="sensorModal" class="fixed inset-0 bg-black/50 z-[60] hidden items-center justify-center p-4">
+        <div class="bg-white rounded-xl max-w-md w-full mx-4 shadow-2xl animate-fade-in">
             <div class="border-b-2 border-orange-200 p-6">
                 <h3 class="text-xl font-bold text-orange-600 flex items-center gap-2">
                     <i class="fas fa-exclamation-triangle animate-pulse"></i>
@@ -155,31 +339,17 @@
                 <p class="text-sm text-gray-600 mt-2">Detectamos uma atividade suspeita. Por favor, confirme sua segurança.</p>
             </div>
             <div class="p-6 space-y-4">
-                <!-- Countdown -->
                 <div class="text-center py-4">
                     <div class="text-7xl font-bold text-orange-600 mb-2" id="countdown">60</div>
                     <p class="text-sm text-gray-600">segundos para confirmar que está segura</p>
                 </div>
-
-                <!-- Progress Bar -->
                 <div class="h-3 bg-gray-200 rounded-full overflow-hidden">
                     <div id="progressFill" class="h-full bg-orange-600 transition-all duration-1000" style="width: 100%"></div>
                 </div>
-
-                <!-- Alert Box -->
                 <div class="bg-orange-50 border border-orange-200 rounded-lg p-4 space-y-2">
-                    <p class="text-sm text-orange-900">
-                        <strong>O que está acontecendo?</strong>
-                    </p>
-                    <p class="text-sm text-orange-900">
-                        Detectamos um padrão que pode indicar situação de perigo.
-                    </p>
-                    <p class="text-sm text-orange-900">
-                        Se você <strong>não confirmar</strong> que está segura nos próximos <strong><span id="countdownText">60</span> segundos</strong>, um alerta será enviado automaticamente para seus contatos de emergência com sua localização em tempo real.
-                    </p>
+                    <p class="text-sm text-orange-900"><strong>O que está acontecendo?</strong></p>
+                    <p class="text-sm text-orange-900">Detectamos um padrão que pode indicar situação de perigo.</p>
                 </div>
-
-                <!-- Actions -->
                 <div class="grid grid-cols-2 gap-3">
                     <button onclick="confirmSafe()" class="bg-green-600 hover:bg-green-700 text-white rounded-lg py-4 flex flex-col items-center gap-1 transition-colors">
                         <i class="fas fa-check-circle text-2xl"></i>
@@ -188,19 +358,56 @@
                     <button onclick="sendAlertNow()" class="border-2 border-red-500 text-red-600 hover:bg-red-50 rounded-lg py-4 flex flex-col items-center gap-1 transition-colors">
                         <i class="fas fa-exclamation-triangle text-2xl"></i>
                         <span class="text-sm font-semibold">Preciso de Ajuda</span>
-                        <small class="text-xs opacity-70">Enviar alerta agora</small>
                     </button>
                 </div>
+            </div>
+        </div>
+    </div>
 
-                <p class="text-center text-xs text-gray-500">
-                    Em situação de perigo? Não responda e aguarde o alerta automático.
-                </p>
+    <!-- Outros Modais (Exclusão, Adição) -->
+    <div id="deleteNoteModal" class="fixed inset-0 bg-red-700/50 z-[60] hidden items-center justify-center p-4">
+        <div class="bg-[var(--branco)] rounded-xl max-w-sm w-full mx-4 shadow-2xl animate-fade-in">
+            <div class="border-b-2 border-red-200 p-6">
+                <h3 class="text-xl font-bold text-red-700 flex items-center gap-2"><i class="fas fa-trash-alt"></i> Confirmar Exclusão</h3>
+            </div>
+            <div class="p-6 text-[var(--azul-marinho-escuro)]">
+                <p class="mb-4">Tem certeza que deseja excluir a anotação:</p>
+                <p class="font-semibold text-lg text-red-600 truncate" id="noteToDeleteTitle"></p>
+                <p class="mt-2 text-sm text-gray-700">Esta ação não pode ser desfeita.</p>
+            </div>
+            <div class="border-t border-gray-200 p-4 flex gap-3 justify-end">
+                <button onclick="closeDeleteNoteModal()" class="px-4 py-2 border border-[var(--azul-claro)] text-[var(--azul-marinho-escuro)] rounded-lg">Cancelar</button>
+                <button onclick="deleteNoteFromModal()" class="px-4 py-2 bg-red-600 hover:bg-red-700 text-white rounded-lg transition-colors">Sim, Excluir</button>
+            </div>
+        </div>
+    </div>
+
+    <div id="deleteConfirmationModal" class="hidden fixed inset-0 bg-black/40 backdrop-blur-sm z-[60] flex items-center justify-center p-4">
+        <div class="bg-gray-50 rounded-xl p-6 w-[90%] max-w-md shadow-xl border border-gray-200 animate-fade-in">
+            <h2 class="text-xl font-bold text-red-600 mb-4 flex items-center gap-2"><i class="fas fa-exclamation-triangle"></i> Confirmar Exclusão</h2>
+            <p class="text-[var(--azul-marinho-escuro)] mb-6">Tem certeza que deseja excluir o contato <strong id="contactToDeleteName" class="font-bold text-gray-900"></strong>?</p>
+            <div class="flex justify-end gap-3">
+                <button onclick="closeDeleteModal()" class="px-4 py-2 border border-gray-300 rounded-lg text-gray-600 hover:bg-gray-200">Cancelar</button>
+                <button id="confirmDeleteBtn" onclick="executeDelete()" class="px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700">Sim, Excluir</button>
+            </div>
+        </div>
+    </div>
+
+    <div id="addContactModal" class="hidden fixed inset-0 bg-black/40 backdrop-blur-sm z-[60] flex items-center justify-center p-4">
+        <div class="bg-gray-50 rounded-xl p-6 w-[90%] max-w-md shadow-xl border border-gray-200 animate-fade-in">
+            <h2 class="text-xl font-bold text-[var(--azul-marinho-escuro)] mb-4 flex items-center gap-2"><i class="fas fa-user-plus"></i> <span id="modalTitleText">Novo Contato</span></h2>
+            <input id="contactName" type="text" placeholder="Nome completo" class="w-full p-2 mb-3 border border-gray-300 rounded-lg">
+            <input id="contactPhone" type="text" placeholder="Telefone" class="w-full p-2 mb-3 border border-gray-300 rounded-lg">
+            <input id="contactRelation" type="text" placeholder="Parentesco" class="w-full p-2 mb-4 border border-gray-300 rounded-lg">
+            <div class="flex justify-end gap-3">
+                <button onclick="closeAddContactModal()" class="px-4 py-2 border border-gray-300 rounded-lg text-gray-600 hover:bg-gray-200">Cancelar</button>
+                <button onclick="saveNewEmergencyContact()" class="px-4 py-2 bg-[var(--azul-marinho)] text-white rounded-lg hover:bg-[var(--azul-marinho-escuro)]">Salvar</button>
             </div>
         </div>
     </div>
 
     <!-- Toast Container -->
-    <div id="toastContainer" class="fixed bottom-6 left-1/2 transform -translate-x-1/2 z-50 space-y-3 pointer-events-none"></div>
+    <div id="toastContainer" class="fixed bottom-6 left-1/2 transform -translate-x-1/2 z-[70] space-y-3 pointer-events-none w-full max-w-sm px-4"></div>
 
     <script src="./assets/js/perfil.js"></script>
 </body>
