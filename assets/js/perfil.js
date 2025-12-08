@@ -18,8 +18,8 @@
         let sensorTestInterval = null;
 
         let userData = {
-            name: "Mariana Moenchiali",
-            email: "marimoenchiali@email.com",
+            name: "Mariana Silva",
+            email: "marisilva@email.com",
             phone: "+55 11 98765-4321",
             birthDate: "1990-05-15",
             address: "Rua Example, 123 - São Paulo, SP",
